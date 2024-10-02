@@ -1,0 +1,12 @@
+{
+  "ammo": {
+    "brassbullet": {"name": "Bullet (brass)", "damage": 1},
+    "silverbullet": {"name": "Bullet (silver)", "damage": 1},
+    "goldbullet": {"name": "Bullet (gold)", "damage": 1},
+    "titaniumbullet": {"name": "Bullet (titanium)", "damage": 1},
+    "plutoniumbullet": {"name": "Bullet (plutonium)", "damage": 1}
+  },
+  "health": {
+    "gin": {"name": "Bottle of gin", "hp": 1}
+  }
+}
