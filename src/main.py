@@ -1,10 +1,10 @@
 import os
 import sys
-import random
+import numpy as np
 from logzero import logger
 import pygame
 
-import revolver
+import revolver, back
 
 
 class Hud:
@@ -55,12 +55,7 @@ class Player:
         self.screen.blit(self.sprites[self.current_index], (self.x, self.y))
 
 
-class Shop:
-    def __init__(self):
-        pass
-
-
-def run_game(screen, player):
+def run_game(screen, player, background):
     for event in pygame.event.get():
 
         if event.type == pygame.KEYDOWN:
@@ -78,7 +73,9 @@ def run_game(screen, player):
             sys.exit()
 
     # Draw background colour to clear screen
-    screen.fill(pygame.Color("#516c5e"))
+    screen.fill(pygame.Color("#4b5a57"))
+    background.update()
+    background.draw()
 
     player.update()
 
@@ -93,10 +90,12 @@ def main():
                                       screen_size['height']*screen_size['scale']))
     pygame.display.set_caption("Six-Gun Salute")
 
+    background = back.Background(screen, screen_size)
+
     player = Player(screen, screen_size)
 
     while True:
-        run_game(screen, player)
+        run_game(screen, player, background)
 
 
 if __name__ == '__main__':
