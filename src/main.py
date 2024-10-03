@@ -17,11 +17,11 @@ class Player:
         self.hp = 2
         self.money = 5
 
-        self.revolver = revolver.Revolver({i: f'ammo_brassbullet' for i in range(6)})
+        self.revolver = revolver.Revolver(screen, {i: f'ammo_brassbullet' for i in range(6)})
 
-        self.width = 23
-        self.height = 25
-        self.x = 160 * screen_size['scale']
+        self.width = 26
+        self.height = 28
+        self.x = 300 * screen_size['scale']
         self.y = 300 * screen_size['scale']
         self.scale = 6
 
@@ -78,6 +78,7 @@ def run_game(screen, player, background):
     background.draw()
 
     player.update()
+    player.revolver.draw()
 
     pygame.display.flip()
 
