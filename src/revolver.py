@@ -30,7 +30,7 @@ class Revolver:
             logger.debug(f'Barrel = {self.barrel}')
             self.active_chamber = -1
 
-    def draw(self):
+    def draw(self, screen_shake_x):
         base_dir = f"C:\Storage\Coding\Games\SixGunSalute"
 
         chamber_full_sprite = pygame.image.load(os.path.join(base_dir, 'bin', 'hud', 'chamber_full.png')).convert_alpha()
@@ -44,11 +44,11 @@ class Revolver:
                 sprite_scaled = pygame.transform.scale(chamber_empty_sprite, (42, 42))
             else:
                 sprite_scaled = pygame.transform.scale(chamber_full_sprite, (42, 42))
-            rect = sprite_scaled.get_rect(center=(coordinates[i][0]*6, coordinates[i][1]*6))
+            rect = sprite_scaled.get_rect(center=((coordinates[i][0]*6)+screen_shake_x, coordinates[i][1]*6))
             self.screen.blit(sprite_scaled, rect.topleft)
 
             if self.active_chamber == i:
                 sprite_scaled = pygame.transform.scale(chamber_selected_sprite, (42, 42))
-                rect = sprite_scaled.get_rect(center=(coordinates[i][0]*6, coordinates[i][1]*6))
+                rect = sprite_scaled.get_rect(center=((coordinates[i][0]*6)+screen_shake_x, coordinates[i][1]*6))
                 self.screen.blit(sprite_scaled, rect.topleft)
 
