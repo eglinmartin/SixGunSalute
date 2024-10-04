@@ -22,7 +22,7 @@ class Controller:
 
     def shake_screen(self):
         if self.screen_shake == 'shoot_right':
-            adjuster = [-35, -50, -40, -30, -25, -20, -17.5, -15, -12.5, -10, 8, 6, 4, 3, 2, 1, 0]
+            adjuster = [0, 0, -35, -50, -40, -30, -25, -20, -17.5, -15, -12.5, -10, 8, 6, 4, 3, 2, 1, 0]
             if self.screen_shake_frame < len(adjuster):
                 self.screen_shake_x = adjuster[self.screen_shake_frame]
                 self.screen_shake_frame += 1
@@ -53,7 +53,6 @@ class Controller:
         rotated_background = pygame.transform.rotate(scaled_background, self.background.rotation)
         rect = rotated_background.get_rect(center=((self.screen_size['width']/2)+self.screen_shake_x, self.screen_size['height']/2))
         self.screen.blit(rotated_background, rect.topleft)
-        print(self.screen_shake_x)
 
     def draw_sprite(self, sprite_dir, sprite_name, base_dir, x, y):
         sprite_img = pygame.image.load(os.path.join(base_dir, 'bin', sprite_dir, f'{sprite_name}.png')).convert_alpha()
@@ -75,12 +74,9 @@ class Player:
 
         self.state = 'idle'
         self.actions = ['idle1', 'idle2']
-        base_dir = f"C:\Storage\Coding\Games\SixGunSalute"
-        self.sprites = [pygame.transform.scale(
-            pygame.image.load(os.path.join(base_dir, 'bin', 'player', f'player_{action}.png')),
-            (self.scale * self.width, self.scale * self.height)) for action in self.actions]
+        self.max_index = 0
+        self.ticker = 0
 
-        self.max_index = len(self.sprites) - 1
         self.current_index = self.max_index
 
         self.screen = screen
@@ -91,15 +87,32 @@ class Player:
 
     def update(self):
         now = pygame.time.get_ticks()  # Get the current time
-        if now - self.last_update > self.animation_delay:
-            self.last_update = now  # Update the last update time
-            if self.current_index < self.max_index:
-                self.current_index += 1
-            else:
+
+        if self.state == 'idle':
+            self.actions = ['idle1', 'idle2']
+            if now - self.last_update > self.animation_delay:
+                self.last_update = now  # Update the last update time
+                if self.current_index < self.max_index:
+                    self.current_index += 1
+                else:
+                    self.current_index = 0
+
+        elif self.state == 'shoot':
+            self.actions = ['shoot']
+            if self.ticker < 60:
                 self.current_index = 0
+                self.ticker += 1
+            else:
+                self.ticker = 0
+                self.state = 'idle'
 
     def draw(self, screen_shake_x):
-        self.screen.blit(self.sprites[self.current_index], (300+(screen_shake_x*1), 300))
+        base_dir = f"C:\Storage\Coding\Games\SixGunSalute"
+        self.sprites = [pygame.transform.scale(
+            pygame.image.load(os.path.join(base_dir, 'bin', 'player', f'player_{action}.png')),
+            (self.scale * self.width, self.scale * self.height)) for action in self.actions]
+        self.max_index = len(self.sprites) - 1
+        self.screen.blit(self.sprites[self.current_index], (300+screen_shake_x, 300))
 
 
 def run_game(screen, player, background, controller):
@@ -117,6 +130,7 @@ def run_game(screen, player, background, controller):
                     if player.revolver.barrel[player.revolver.active_chamber] != 'empty':
                         controller.screen_shake = 'shoot_right'
                 player.revolver.shoot()
+                player.state = 'shoot'
 
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -130,8 +144,6 @@ def run_game(screen, player, background, controller):
     controller.shake_screen()
 
     player.update()
-
-    print(controller.screen_shake)
 
     pygame.display.flip()
 
