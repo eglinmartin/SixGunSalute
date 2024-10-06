@@ -32,8 +32,8 @@ def run_game(screen, player, background, controller):
     screen.fill(pygame.Color("#4b5a57"))
     background.update()
 
-    controller.draw()
     controller.shake_screen()
+    controller.draw()
 
     player.update()
 

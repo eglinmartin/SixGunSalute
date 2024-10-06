@@ -12,26 +12,22 @@ class Revolver:
         self.can_spin = True
         self.can_shoot = False
         self.screen = screen
-        logger.debug(f'Barrel = {self.barrel}')
 
     def spin(self):
         if self.can_spin:
             self.active_chamber = random.randint(0, 5)
             self.can_spin = False
             self.can_shoot = True
-            logger.debug(f'Active = {self.active_chamber} ({self.barrel[self.active_chamber]})')
 
     def shoot(self):
         if self.can_shoot:
             self.barrel[self.active_chamber] = 'empty'
             self.can_spin = True
             self.can_shoot = False
-            logger.debug(f'Active = {self.active_chamber} ({self.barrel[self.active_chamber]})')
-            logger.debug(f'Barrel = {self.barrel}')
             self.active_chamber = -1
 
     def draw(self, screen_shake_x):
-        base_dir = f"C:\Storage\Coding\Games\SixGunSalute"
+        base_dir = r"C:\Storage\Coding\Games\SixGunSalute"
 
         chamber_full_sprite = pygame.image.load(os.path.join(base_dir, 'bin', 'hud', 'chamber_full.png')).convert_alpha()
         chamber_empty_sprite = pygame.image.load(os.path.join(base_dir, 'bin', 'hud', 'chamber_empty.png')).convert_alpha()

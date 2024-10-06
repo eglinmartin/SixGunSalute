@@ -8,6 +8,9 @@ class Controller:
         self.player = player
         self.background = background
 
+        self.base_dir = r"C:\Storage\Coding\Games\SixGunSalute"
+        self.scale_factor = 6
+
         self.screen_size = screen_size
 
         self.screen_shake = None
@@ -26,31 +29,43 @@ class Controller:
                 self.screen_shake_frame = 0
 
     def draw(self):
-        base_dir = f"C:\Storage\Coding\Games\SixGunSalute"
+        # Draw background
+        self.draw_sprite('background', 'background_1',
+                         x=self.screen_size['width']/12, y=self.screen_size['height']/12, rot=self.background.rotation,
+                         scale=6+(self.background.size/6))
 
-        self.draw_background(base_dir)
+        # Draw the hud gun barrel
+        self.draw_sprite('hud', 'barrel_shadow', x=-1.5, y=82.5, rot=0, scale=6)
+        self.draw_sprite('hud', 'barrel_base', x=-2.5, y=82.5, rot=0, scale=6)
+        self.draw_sprite('hud', 'barrel_chambers', x=-2.5, y=82.5, rot=0, scale=6)
 
-        self.draw_sprite('hud', 'barrel_base', base_dir, -2.5, 82.5)
-        self.draw_sprite('hud', 'barrel_chambers', base_dir, -2.5, 82.5)
-        self.draw_sprite('hud', 'player_head', base_dir, 18.5, 12)
+        # Draw the player's hud
+        self.draw_sprite('hud', 'player_head', x=18.5, y=12, rot=0, scale=6)
 
-        self.player.draw(self.screen_shake_x)
-        self.player.revolver.draw(self.screen_shake_x)
+        # Draw the player's revolver
+        player_barrel = self.player.revolver.barrel
+        coordinates = [[59, 24], [66, 29], [66, 36], [59, 41], [52, 36], [52, 29]]
+        for i in range(len(player_barrel)):
+            coords = coordinates[i]
+            sprite_name = 'chamber_full'
+            if player_barrel[i] == 'empty':
+                sprite_name = 'chamber_empty'
+            self.draw_sprite('hud', sprite_name, x=coords[0], y=coords[1], rot=0, scale=6)
+            if i == self.player.revolver.active_chamber:
+                self.draw_sprite('hud', 'chamber_selected', x=coords[0], y=coords[1], rot=0, scale=6)
 
+        # Draw the item in the player's revolver
         if self.player.revolver.active_chamber >= 0:
             active_item = self.player.revolver.barrel[self.player.revolver.active_chamber]
-            if active_item != 'empty':
-                self.draw_sprite('items', active_item, base_dir, 16.5+self.screen_shake_x, 71.5)
+            self.draw_sprite('items', active_item, x=16.5, y=71.5, rot=0, scale=6)
 
-    def draw_background(self, base_dir):
-        background_img = pygame.image.load(os.path.join(base_dir, 'bin', 'background', 'background_1.png')).convert_alpha()
-        scaled_background = pygame.transform.scale(background_img, (self.screen_size['width'] + (self.background.size*25), self.screen_size['height'] + (self.background.size*25)))
-        rotated_background = pygame.transform.rotate(scaled_background, self.background.rotation)
-        rect = rotated_background.get_rect(center=((self.screen_size['width']/2)+self.screen_shake_x, self.screen_size['height']/2))
-        self.screen.blit(rotated_background, rect.topleft)
+        # Draw player
+        self.draw_sprite('player', self.player.current_sprite, x=63, y=64, rot=0, scale=6)
 
-    def draw_sprite(self, sprite_dir, sprite_name, base_dir, x, y):
-        sprite_img = pygame.image.load(os.path.join(base_dir, 'bin', sprite_dir, f'{sprite_name}.png')).convert_alpha()
-        scaled_sprite = pygame.transform.scale(sprite_img, (sprite_img.get_width()*6, sprite_img.get_height()*6))
-        rect = scaled_sprite.get_rect(center=((x*6)+self.screen_shake_x, y*6))
-        self.screen.blit(scaled_sprite, rect.topleft)
+    def draw_sprite(self, sprite_dir, sprite_name, x, y, rot, scale):
+        sprite_img = (pygame.image.load(os.path.join(self.base_dir, 'bin', sprite_dir, f'{sprite_name}.png'))
+                      .convert_alpha())
+        sprite_img_scaled = pygame.transform.scale(sprite_img, (sprite_img.get_width()*scale, sprite_img.get_height()*scale))
+        sprite_img_rotated = pygame.transform.rotate(sprite_img_scaled, rot)
+        rect = sprite_img_rotated.get_rect(center=((x*6)+self.screen_shake_x, (y*6)+self.screen_shake_y))
+        self.screen.blit(sprite_img_rotated, rect.topleft)
