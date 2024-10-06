@@ -30,9 +30,10 @@ class Revolver:
 
     def update(self):
         if self.spinning:
-            if self.spinning_frame < 48:
+            self.can_shoot = False
+            if self.spinning_frame < 36:
                 self.spinning_frame +=1
-                self.rotation += 30
+                self.rotation -= 20
             else:
                 self.spinning_frame = 0
                 self.spinning = False

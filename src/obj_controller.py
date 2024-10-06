@@ -35,8 +35,8 @@ class Controller:
                          scale=6+(self.background.size/6))
 
         # Draw the hud gun barrel
-        self.draw_sprite('hud', 'barrel_shadow', x=-1.5, y=82.5, rot=self.player.revolver.rotation, scale=6)
-        self.draw_sprite('hud', 'barrel_base', x=-2.5, y=82.5, rot=self.player.revolver.rotation, scale=6)
+        self.draw_sprite('hud', 'barrel_shadow', x=-1.5, y=82.5, rot=0, scale=6)
+        self.draw_sprite('hud', 'barrel_base', x=-2.5, y=82.5, rot=0, scale=6)
         self.draw_sprite('hud', 'barrel_chambers', x=-2.5, y=82.5, rot=self.player.revolver.rotation, scale=6)
 
         # Draw the player's hud
@@ -61,6 +61,12 @@ class Controller:
 
         # Draw player
         self.draw_sprite('player', self.player.current_sprite, x=63, y=64, rot=0, scale=6)
+
+        if self.player.revolver.can_spin:
+            self.draw_sprite('hud', 'tooltip_spin', x=26, y=67, rot=0, scale=6)
+
+        if self.player.revolver.can_shoot:
+            self.draw_sprite('hud', 'tooltip_shoot', x=26, y=67, rot=0, scale=6)
 
     def draw_sprite(self, sprite_dir, sprite_name, x, y, rot, scale):
         sprite_img = (pygame.image.load(os.path.join(self.base_dir, 'bin', sprite_dir, f'{sprite_name}.png'))
