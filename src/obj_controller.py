@@ -35,9 +35,9 @@ class Controller:
                          scale=6+(self.background.size/6))
 
         # Draw the hud gun barrel
-        self.draw_sprite('hud', 'barrel_shadow', x=-1.5, y=82.5, rot=0, scale=6)
-        self.draw_sprite('hud', 'barrel_base', x=-2.5, y=82.5, rot=0, scale=6)
-        self.draw_sprite('hud', 'barrel_chambers', x=-2.5, y=82.5, rot=0, scale=6)
+        self.draw_sprite('hud', 'barrel_shadow', x=-1.5, y=82.5, rot=self.player.revolver.rotation, scale=6)
+        self.draw_sprite('hud', 'barrel_base', x=-2.5, y=82.5, rot=self.player.revolver.rotation, scale=6)
+        self.draw_sprite('hud', 'barrel_chambers', x=-2.5, y=82.5, rot=self.player.revolver.rotation, scale=6)
 
         # Draw the player's hud
         self.draw_sprite('hud', 'player_head', x=18.5, y=12, rot=0, scale=6)

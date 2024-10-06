@@ -13,11 +13,30 @@ class Revolver:
         self.can_shoot = False
         self.screen = screen
 
+        self.spinning = False
+        self.spinning_frame = 0
+        self.rotation = 0
+
     def spin(self):
         if self.can_spin:
+            self.spinning = True
+            self.can_spin = False
+
+    def select_item(self):
+        if not self.spinning:
             self.active_chamber = random.randint(0, 5)
             self.can_spin = False
             self.can_shoot = True
+
+    def update(self):
+        if self.spinning:
+            if self.spinning_frame < 48:
+                self.spinning_frame +=1
+                self.rotation += 30
+            else:
+                self.spinning_frame = 0
+                self.spinning = False
+                self.select_item()
 
     def shoot(self):
         if self.can_shoot:

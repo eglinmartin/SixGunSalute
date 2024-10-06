@@ -36,6 +36,7 @@ def run_game(screen, player, background, controller):
     controller.draw()
 
     player.update()
+    player.revolver.update()
 
     pygame.display.flip()
 
