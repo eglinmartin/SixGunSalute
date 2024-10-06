@@ -5,9 +5,10 @@ import obj_revolver
 import obj_background
 import obj_controller
 import obj_player
+import obj_enemy
 
 
-def run_game(screen, player, background, controller):
+def run_game(screen, player, enemy, background, controller):
     for event in pygame.event.get():
 
         if event.type == pygame.KEYDOWN:
@@ -36,6 +37,8 @@ def run_game(screen, player, background, controller):
     controller.shake_screen()
     controller.draw()
 
+    enemy.update()
+
     player.update()
     player.revolver.update()
 
@@ -55,10 +58,13 @@ def main():
     player = obj_player.Player(screen, screen_size)
     player.revolver = obj_revolver.Revolver(screen, {i: f'ammo_brassbullet' for i in range(6)})
 
-    controller = obj_controller.Controller(screen, screen_size, player, background)
+    enemy = obj_enemy.Enemy(screen, screen_size)
+    enemy.revolver = obj_revolver.Revolver(screen, {i: f'ammo_brassbullet' for i in range(6)})
+
+    controller = obj_controller.Controller(screen, screen_size, player, enemy, background)
 
     while True:
-        run_game(screen, player, background, controller)
+        run_game(screen, player, enemy, background, controller)
 
 
 if __name__ == '__main__':
