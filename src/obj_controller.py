@@ -19,15 +19,50 @@ class Controller:
         self.screen_shake_y = 0
         self.screen_shake_frame = 0
 
+        self.debug_mode = False
+
+        self.money = 0
+
+        self.symbol_health_size = 1
+        self.symbol_money_size = 1
+
     def shake_screen(self):
+        adjuster = []
         if self.screen_shake == 'shoot_right':
             adjuster = [0, 0, -35, -50, -40, -30, -25, -20, -17.5, -15, -12.5, -10, 8, 6, 4, 3, 2, 1, 0]
-            if self.screen_shake_frame < len(adjuster):
-                self.screen_shake_x = adjuster[self.screen_shake_frame]
-                self.screen_shake_frame += 1
-            else:
-                self.screen_shake = None
-                self.screen_shake_frame = 0
+
+        if self.screen_shake_frame < len(adjuster):
+            self.screen_shake_x = adjuster[self.screen_shake_frame]
+            self.screen_shake_frame += 1
+        else:
+            self.screen_shake = None
+            self.screen_shake_frame = 0
+
+    def subtract_health(self):
+        if self.player.hp > 0:
+            self.player.hp -= 1
+            self.symbol_health_size = 4
+            self.player.state = 'hurt'
+
+    def add_money(self):
+        self.player.money += 1
+        self.symbol_money_size = 4
+
+    def animate_hud(self):
+        if self.symbol_money_size > 1:
+            self.symbol_money_size -= 0.2
+        if self.symbol_health_size > 1:
+            self.symbol_health_size -= 0.2
+
+    def update(self):
+        # Add screen-shake
+        self.shake_screen()
+
+        # Add hud animations
+        self.animate_hud()
+
+        # Draw everything
+        self.draw()
 
     def draw(self):
         # Draw background
@@ -42,6 +77,14 @@ class Controller:
 
         # Draw the player's hud
         self.draw_sprite('hud', 'player_head', x=18.5, y=12, rot=0, scale=6)
+
+        self.draw_sprite('hud', 'meter_health', x=9, y=26, rot=0, scale=(6+self.symbol_health_size)-1)
+        hp_text = f'{self.player.hp}/{self.player.hp_max}'
+        self.draw_text(hp_text, x=18, y=26, rot=0, scale=6, colour='red')
+
+        self.draw_sprite('hud', 'meter_money', x=9, y=36, rot=0, scale=(6+self.symbol_money_size)-1)
+        self.draw_sprite('number', 'number_$_yellow', x=18, y=36, rot=0, scale=6)
+        self.draw_text(self.player.money, x=22, y=36, rot=0, scale=6, colour='yellow')
 
         # Draw the player's revolver
         player_barrel = self.player.revolver.barrel
@@ -88,6 +131,10 @@ class Controller:
         # Draw player
         self.draw_sprite('enemy', self.enemy.current_sprite, x=self.enemy.x, y=self.enemy.y, rot=0, scale=6)
 
+        # Debug mode assets
+        if self.debug_mode:
+            self.draw_sprite('hud', 'debug_mode', x=80, y=10, rot=0, scale=6)
+
     def draw_sprite(self, sprite_dir, sprite_name, x, y, rot, scale):
         sprite_img = (pygame.image.load(os.path.join(self.base_dir, 'bin', sprite_dir, f'{sprite_name}.png'))
                       .convert_alpha())
@@ -95,3 +142,14 @@ class Controller:
         sprite_img_rotated = pygame.transform.rotate(sprite_img_scaled, rot)
         rect = sprite_img_rotated.get_rect(center=((x*6)+self.screen_shake_x, (y*6)+self.screen_shake_y))
         self.screen.blit(sprite_img_rotated, rect.topleft)
+
+    def draw_text(self, text, x, y, rot, scale, colour):
+        text_list = [x for x in str(text)]
+        text_list = ['slash' if t=='/' else t for t in text_list]
+
+        x_addon = 0
+        for t in text_list:
+            self.draw_sprite('number', f'number_{t}_{colour}', x=x+x_addon, y=y, rot=rot, scale=scale)
+            x_addon += 4
+            if t == 'slash':
+                x_addon += 4

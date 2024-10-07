@@ -17,6 +17,18 @@ def run_game(screen, player, enemy, background, controller):
             if event.key == pygame.K_a:
                 player.revolver.spin()
 
+            # Enable debug mode processes
+            if event.key == pygame.K_BACKSLASH:
+                controller.debug_mode = not controller.debug_mode
+
+            if event.key == pygame.K_1:
+                if controller.debug_mode:
+                    controller.subtract_health()
+
+            if event.key == pygame.K_2:
+                if controller.debug_mode:
+                    controller.add_money()
+
             # Player presses 'X' key to 'shoot' the current item
             if event.key == pygame.K_x:
                 if player.revolver.can_shoot:
@@ -35,7 +47,7 @@ def run_game(screen, player, enemy, background, controller):
     background.update()
 
     controller.shake_screen()
-    controller.draw()
+    controller.update()
 
     enemy.update()
 

@@ -53,7 +53,7 @@ class Revolver:
         chamber_empty_sprite = pygame.image.load(os.path.join(base_dir, 'bin', 'hud', 'chamber_empty.png')).convert_alpha()
         chamber_selected_sprite = pygame.image.load(os.path.join(base_dir, 'bin', 'hud', 'chamber_selected.png')).convert_alpha()
 
-        coordinates = [[59, 24], [66, 29], [66, 36], [59, 41], [52, 36], [52, 29]]
+        coordinates = [[58, 23], [65, 28], [65, 35], [58, 40], [51, 35], [51, 28]]
 
         for i in range(len(self.barrel)):
             if self.barrel[i] == 'empty':

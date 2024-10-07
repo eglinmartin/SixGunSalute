@@ -4,6 +4,7 @@ import os
 
 class Player:
     def __init__(self, screen, screen_size):
+        self.hp_max = 2
         self.hp = 2
         self.money = 5
 
@@ -20,6 +21,8 @@ class Player:
 
         self.screen = screen
         self.screen_size = screen_size
+
+        self.heart_growth = 0
 
         self.animation_delay = 400  # Delay in milliseconds between frames
         self.last_update = pygame.time.get_ticks()  # Store the current time
@@ -45,3 +48,12 @@ class Player:
                 self.ticker = 0
                 self.state = 'idle'
             self.current_sprite = 'player_shoot'
+
+        elif self.state == 'hurt':
+            if self.ticker < 20:
+                self.current_index = 0
+                self.ticker += 1
+            else:
+                self.ticker = 0
+                self.heart_growth = 0
+            self.current_sprite = 'player_idle1'
