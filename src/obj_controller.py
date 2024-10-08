@@ -26,6 +26,25 @@ class Controller:
         self.symbol_health_size = 1
         self.symbol_money_size = 1
 
+    def debug(self):
+        my_font = pygame.font.SysFont('Consolas', 16)
+        my_font.set_bold(True)
+
+        debug_text = [
+            f"DEBUG MODE",
+            f"- Player",
+            f"  - Health = {self.player.hp}",
+            f"  - Money = {self.player.money}",
+            f"- Enemy",
+            f"  - Health = {self.enemy.hp}"
+        ]
+
+        for i, text in enumerate(debug_text):
+            text_shadow = my_font.render(text, False, (0, 0, 0))
+            self.screen.blit(text_shadow, (12, 12 + (i * 20)))
+            text_main = my_font.render(text, False, (255, 255, 255))
+            self.screen.blit(text_main, (10, 10 + (i * 20)))
+
     def shake_screen(self):
         adjuster = []
         if self.screen_shake == 'shoot_right':
@@ -130,10 +149,6 @@ class Controller:
 
         # Draw player
         self.draw_sprite('enemy', self.enemy.current_sprite, x=self.enemy.x, y=self.enemy.y, rot=0, scale=6)
-
-        # Debug mode assets
-        if self.debug_mode:
-            self.draw_sprite('hud', 'debug_mode', x=80, y=10, rot=0, scale=6)
 
     def draw_sprite(self, sprite_dir, sprite_name, x, y, rot, scale):
         sprite_img = (pygame.image.load(os.path.join(self.base_dir, 'bin', sprite_dir, f'{sprite_name}.png'))

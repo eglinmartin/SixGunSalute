@@ -18,7 +18,7 @@ def run_game(screen, player, enemy, background, controller):
                 player.revolver.spin()
 
             # Enable debug mode processes
-            if event.key == pygame.K_BACKSLASH:
+            if event.key == pygame.K_BACKQUOTE:
                 controller.debug_mode = not controller.debug_mode
 
             if event.key == pygame.K_1:
@@ -46,13 +46,16 @@ def run_game(screen, player, enemy, background, controller):
     screen.fill(pygame.Color("#4b5a57"))
     background.update()
 
-    controller.shake_screen()
-    controller.update()
-
     enemy.update()
 
     player.update()
     player.revolver.update()
+
+    controller.shake_screen()
+    controller.update()
+
+    if controller.debug_mode:
+        controller.debug()
 
     pygame.display.flip()
 
