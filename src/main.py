@@ -8,6 +8,7 @@ import obj_player
 import obj_enemy
 
 
+
 def run_game(screen, player, enemy, background, controller):
     for event in pygame.event.get():
 
@@ -28,6 +29,14 @@ def run_game(screen, player, enemy, background, controller):
             if event.key == pygame.K_2:
                 if controller.debug_mode:
                     controller.add_money()
+
+            if event.key == pygame.K_8:
+                if controller.debug_mode:
+                    controller.room = 'gunfight'
+
+            if event.key == pygame.K_9:
+                if controller.debug_mode:
+                    controller.room = 'shop'
 
             # Player presses 'X' key to 'shoot' the current item
             if event.key == pygame.K_x:
@@ -68,6 +77,8 @@ def main():
                                       screen_size['height']*screen_size['scale']))
     pygame.display.set_caption("Six-Gun Salute")
 
+    room = 'gunfight'
+
     background = obj_background.Background(screen, screen_size)
 
     player = obj_player.Player(screen, screen_size)
@@ -76,7 +87,7 @@ def main():
     enemy = obj_enemy.Enemy(screen, screen_size)
     enemy.revolver = obj_revolver.Revolver(screen, {i: f'ammo_brassbullet' for i in range(6)})
 
-    controller = obj_controller.Controller(screen, screen_size, player, enemy, background)
+    controller = obj_controller.Controller(screen, screen_size, player, enemy, background, room)
 
     while True:
         run_game(screen, player, enemy, background, controller)
