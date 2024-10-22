@@ -7,6 +7,9 @@ def draw_room(controller):
     # Draw the player's hud
     controller.draw_sprite('hud', 'player_head', x=18.5, y=12, rot=0, scale=6)
 
+    # Draw the enemy's hud
+    controller.draw_sprite('hud', 'enemy_head', x=141.5, y=12, rot=0, scale=6)
+
     controller.draw_sprite('hud', 'meter_health', x=9, y=26, rot=0, scale=(6 + controller.symbol_health_size) - 1)
     hp_text = f'{controller.player.hp}/{controller.player.hp_max}'
     controller.draw_text(hp_text, x=18, y=26, rot=0, scale=6, colour='red')
