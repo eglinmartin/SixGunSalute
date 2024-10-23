@@ -6,11 +6,12 @@ import room_shop
 
 
 class Controller:
-    def __init__(self, screen, screen_size, player, enemy, background, room):
+    def __init__(self, screen, screen_size, player, enemy, background, shop, room):
         self.screen = screen
         self.player = player
         self.enemy = enemy
         self.background = background
+        self.shop = shop
 
         self.room = room
 
@@ -37,11 +38,12 @@ class Controller:
 
         debug_text = [
             f"DEBUG MODE",
-            f"- Player",
-            f"  - Health = {self.player.hp}",
-            f"  - Money = {self.player.money}",
-            f"- Enemy",
-            f"  - Health = {self.enemy.hp}"
+            f"",
+            f"- COMMANDS",
+            f"  - 1: +1 HP (player)",
+            f"  - 2: +1 Money (player)",
+            f"  - 8: Show gunfight",
+            f"  - 9: Reroll & show shop"
         ]
 
         for i, text in enumerate(debug_text):
@@ -99,7 +101,6 @@ class Controller:
 
         elif self.room == 'shop':
             room_shop.draw_room(self)
-
 
     def draw_sprite(self, sprite_dir, sprite_name, x, y, rot, scale):
         sprite_img = (pygame.image.load(os.path.join(self.base_dir, 'bin', sprite_dir, f'{sprite_name}.png'))

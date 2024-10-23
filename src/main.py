@@ -6,10 +6,11 @@ import obj_background
 import obj_controller
 import obj_player
 import obj_enemy
+import obj_shop
 
 
 
-def run_game(screen, player, enemy, background, controller):
+def run_game(screen, player, enemy, background, shop, controller):
     for event in pygame.event.get():
 
         if event.type == pygame.KEYDOWN:
@@ -37,6 +38,7 @@ def run_game(screen, player, enemy, background, controller):
             if event.key == pygame.K_9:
                 if controller.debug_mode:
                     controller.room = 'shop'
+                    shop.reroll_shop()
 
             # Player presses 'X' key to 'shoot' the current item
             if event.key == pygame.K_x:
@@ -59,6 +61,7 @@ def run_game(screen, player, enemy, background, controller):
 
     player.update()
     player.revolver.update()
+
 
     controller.shake_screen()
     controller.update()
@@ -87,10 +90,12 @@ def main():
     enemy = obj_enemy.Enemy(screen, screen_size, player)
     enemy.revolver = obj_revolver.Revolver(screen, {i: f'ammo_brassbullet' for i in range(6)})
 
-    controller = obj_controller.Controller(screen, screen_size, player, enemy, background, room)
+    shop = obj_shop.Shop(screen)
+
+    controller = obj_controller.Controller(screen, screen_size, player, enemy, background, shop, room)
 
     while True:
-        run_game(screen, player, enemy, background, controller)
+        run_game(screen, player, enemy, background, shop, controller)
 
 
 if __name__ == '__main__':
