@@ -39,7 +39,12 @@ def run_game(screen, player, enemy, background, shop, controller):
             if event.key == pygame.K_9:
                 if controller.debug_mode:
                     controller.room = 'shop'
-                    shop.reroll_shop()
+
+            if event.key == pygame.K_0:
+                if controller.debug_mode:
+                    if controller.room == 'shop':
+                        if shop.can_reroll:
+                            shop.reroll_shop()
 
             # Player presses 'X' key to 'shoot' the current item
             if event.key == pygame.K_x:
@@ -93,7 +98,7 @@ def main():
     enemy = obj_enemy.Enemy(screen, screen_size, player)
     enemy.revolver = obj_revolver.Revolver(screen, {i: f'ammo_brassbullet' for i in range(6)})
 
-    shop = obj_shop.Shop(screen)
+    shop = obj_shop.Shop(screen, player)
 
     controller = obj_controller.Controller(screen, screen_size, player, enemy, background, shop, room)
 
