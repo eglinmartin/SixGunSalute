@@ -84,7 +84,7 @@ def main():
     player = obj_player.Player(screen, screen_size)
     player.revolver = obj_revolver.Revolver(screen, {i: f'ammo_brassbullet' for i in range(6)})
 
-    enemy = obj_enemy.Enemy(screen, screen_size)
+    enemy = obj_enemy.Enemy(screen, screen_size, player)
     enemy.revolver = obj_revolver.Revolver(screen, {i: f'ammo_brassbullet' for i in range(6)})
 
     controller = obj_controller.Controller(screen, screen_size, player, enemy, background, room)

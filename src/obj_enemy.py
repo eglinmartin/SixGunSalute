@@ -3,7 +3,7 @@ import os
 
 
 class Enemy:
-    def __init__(self, screen, screen_size):
+    def __init__(self, screen, screen_size, player):
         self.hp = 2
 
         self.x = 106
@@ -18,6 +18,7 @@ class Enemy:
 
         self.screen = screen
         self.screen_size = screen_size
+        self.player = player
 
         self.last_update = pygame.time.get_ticks()  # Store the current time
 
@@ -26,12 +27,5 @@ class Enemy:
         animation_delay = 400
 
         if self.state == 'idle':
-            max_index = 1
-            if now - self.last_update > animation_delay:
-                self.last_update = now  # Update the last update time
-                if self.current_index < max_index:
-                    self.current_index += 1
-                else:
-                    self.current_index = 0
-                self.current_sprite = f'enemy1_idle{self.current_index+1}'
+            self.current_sprite = f'enemy1_idle{self.player.current_index+1}'
 
