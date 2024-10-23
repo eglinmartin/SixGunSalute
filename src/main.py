@@ -17,7 +17,8 @@ def run_game(screen, player, enemy, background, shop, controller):
 
             # Player presses 'A' key to spin the revolver barrel
             if event.key == pygame.K_a:
-                player.revolver.spin()
+                if controller.room == 'gunfight':
+                    player.revolver.spin()
 
             # Enable debug mode processes
             if event.key == pygame.K_BACKQUOTE:
@@ -42,12 +43,13 @@ def run_game(screen, player, enemy, background, shop, controller):
 
             # Player presses 'X' key to 'shoot' the current item
             if event.key == pygame.K_x:
-                if player.revolver.can_shoot:
-                    if player.revolver.active_chamber >= 0:
-                        if player.revolver.barrel[player.revolver.active_chamber] != 'empty':
-                            controller.screen_shake = 'shoot_right'
-                    player.revolver.shoot()
-                    player.state = 'shoot'
+                if controller.room == 'gunfight':
+                    if player.revolver.can_shoot:
+                        if player.revolver.active_chamber >= 0:
+                            if player.revolver.barrel[player.revolver.active_chamber] != 'empty':
+                                controller.screen_shake = 'shoot_right'
+                        player.revolver.shoot()
+                        player.state = 'shoot'
 
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -62,6 +64,7 @@ def run_game(screen, player, enemy, background, shop, controller):
     player.update()
     player.revolver.update()
 
+    shop.update()
 
     controller.shake_screen()
     controller.update()

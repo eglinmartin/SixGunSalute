@@ -38,14 +38,8 @@ class Controller:
 
         debug_text = [
             f"DEBUG MODE",
-            f"",
-            f"- COMMANDS",
-            f"  - 1: +1 HP (player)",
-            f"  - 2: +1 Money (player)",
-            f"  - 8: Show gunfight",
-            f"  - 9: Reroll & show shop"
+            f"{self.shop.token_size}"
         ]
-
         for i, text in enumerate(debug_text):
             text_shadow = my_font.render(text, False, (0, 0, 0))
             self.screen.blit(text_shadow, (12, 12 + (i * 20)))
