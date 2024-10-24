@@ -13,6 +13,7 @@ class Shop:
 
         self.token_size = [1, 1, 1]
         self.shop_animation_frame = 0
+        self.revolver_rotation = 1
 
         self.can_reroll = True
         self.reroll_shop()
@@ -25,6 +26,19 @@ class Shop:
         self.rolled_stock = [self.tokens_library[random.randint(0, len(self.tokens_library)-1)] for i in range(3)]
         self.rolled_stock.append(self.cards_library[random.randint(0, len(self.cards_library)-1)])
         self.rolled_stock.sort(key=lambda x: x.code)
+
+    def rotate_revolver(self, direction):
+        if direction == 'right':
+            if self.revolver_rotation > 0:
+                self.revolver_rotation -= 1
+            else:
+                self.revolver_rotation = 5
+
+        if direction == 'left':
+            if self.revolver_rotation < 5:
+                self.revolver_rotation += 1
+            else:
+                self.revolver_rotation = 0
 
     def update(self):
         animation_actions = {0: 15, 1: 10, 2: 5}

@@ -37,10 +37,7 @@ class Controller:
         my_font.set_bold(True)
 
         debug_text = [
-            f"DEBUG MODE",
-            f"{self.shop.token_size[0]}",
-            f"{self.shop.token_size[1]}",
-            f"{self.shop.token_size[2]}"
+            f"DEBUG MODE"
         ]
         for i, text in enumerate(debug_text):
             text_shadow = my_font.render(text, False, (0, 0, 0))

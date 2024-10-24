@@ -24,4 +24,7 @@ def draw_room(controller):
     coordinates_dict = {0: [119.5, 23.5], 1: [138.5, 34.5], 2: [138.5, 56.5],
                         3: [119.5, 67.5], 4: [100.5, 56.5], 5: [100.5, 34.5]}
     for item in coordinates_dict:
-        controller.draw_sprite('items', controller.player.revolver.barrel[item], x=coordinates_dict[item][0], y=coordinates_dict[item][1], rot=0, scale=6)
+        item_rotated = item + controller.shop.revolver_rotation
+        if item_rotated > 5:
+            item_rotated -= 6
+        controller.draw_sprite('items', controller.player.revolver.barrel[item_rotated], x=coordinates_dict[item][0], y=coordinates_dict[item][1], rot=0, scale=6)

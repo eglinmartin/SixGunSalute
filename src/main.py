@@ -32,6 +32,10 @@ def run_game(screen, player, enemy, background, shop, controller):
                 if controller.debug_mode:
                     controller.add_money()
 
+            if event.key == pygame.K_3:
+                if controller.debug_mode:
+                    player.revolver.barrel = {i: 'ammo_brassbullet' for i in range(6)}
+
             if event.key == pygame.K_8:
                 if controller.debug_mode:
                     controller.room = 'gunfight'
@@ -45,6 +49,14 @@ def run_game(screen, player, enemy, background, shop, controller):
                     if controller.room == 'shop':
                         if shop.can_reroll:
                             shop.reroll_shop()
+
+            if event.key == pygame.K_MINUS:
+                if controller.room == 'shop':
+                    shop.rotate_revolver('left')
+
+            if event.key == pygame.K_EQUALS:
+                if controller.room == 'shop':
+                    shop.rotate_revolver('right')
 
             # Player presses 'X' key to 'shoot' the current item
             if event.key == pygame.K_x:
