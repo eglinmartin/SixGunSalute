@@ -1,18 +1,19 @@
 import pygame
 import os
 
+import room_mainmenu
 import room_gunfight
 import room_shop
 
 
 class Controller:
-    def __init__(self, screen, screen_size, player, enemy, background, shop, room):
+    def __init__(self, screen, screen_size, player, enemy, background, shop, navigator, room):
         self.screen = screen
         self.player = player
         self.enemy = enemy
         self.background = background
         self.shop = shop
-
+        self.navigator = navigator
         self.room = room
 
         self.base_dir = r"C:\Storage\Coding\Games\SixGunSalute"
@@ -88,6 +89,9 @@ class Controller:
         self.draw_sprite('background', 'background_1',
                          x=self.screen_size['width']/12, y=self.screen_size['height']/12, rot=self.background.rotation,
                          scale=6+(self.background.size/6))
+
+        if self.room == 'mainmenu':
+            room_mainmenu.draw_room(self)
 
         if self.room == 'gunfight':
             room_gunfight.draw_room(self)

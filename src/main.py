@@ -7,7 +7,7 @@ import obj_controller
 import obj_player
 import obj_enemy
 import obj_shop
-
+import obj_navigator
 
 
 def run_game(screen, player, enemy, background, shop, controller):
@@ -35,6 +35,10 @@ def run_game(screen, player, enemy, background, shop, controller):
             if event.key == pygame.K_3:
                 if controller.debug_mode:
                     player.revolver.barrel = {i: 'ammo_brassbullet' for i in range(6)}
+
+            if event.key == pygame.K_7:
+                if controller.debug_mode:
+                    controller.room = 'mainmenu'
 
             if event.key == pygame.K_8:
                 if controller.debug_mode:
@@ -100,7 +104,7 @@ def main():
                                       screen_size['height']*screen_size['scale']))
     pygame.display.set_caption("Six-Gun Salute")
 
-    room = 'gunfight'
+    room = 'mainmenu'
 
     background = obj_background.Background(screen, screen_size)
 
@@ -112,7 +116,9 @@ def main():
 
     shop = obj_shop.Shop(screen, player)
 
-    controller = obj_controller.Controller(screen, screen_size, player, enemy, background, shop, room)
+    navigator = obj_navigator.Navigator(screen)
+
+    controller = obj_controller.Controller(screen, screen_size, player, enemy, background, shop, navigator, room)
 
     while True:
         run_game(screen, player, enemy, background, shop, controller)
