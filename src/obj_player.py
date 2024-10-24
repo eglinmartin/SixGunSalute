@@ -56,4 +56,5 @@ class Player:
             else:
                 self.ticker = 0
                 self.heart_growth = 0
+                self.state = 'idle'
             self.current_sprite = 'player_idle1'
