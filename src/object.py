@@ -10,8 +10,8 @@ class Object:
     x: int
     y: int
     depth: float
-    rotation: int
-    scale: int
+    rotation: int = field(default=0)
+    scale: int = field(default=1)
     shadow: bool = field(default=False)
     sprite: str = field(default=False)
     colour: Colour = field(default=None)
@@ -26,3 +26,9 @@ class Object:
 class Player(Object):
     def __init__(self):
         super.__init__()
+
+
+class Background(Object):
+    def __init__(self):
+        super.__init__()
+

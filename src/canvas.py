@@ -54,7 +54,7 @@ class Canvas:
         Takes all objects, sorts into layers and handles drawing
         """
         # Sort objects into depths
-        self.screen.fill(rgb(Colour.L_GREEN))
+        self.screen.fill(rgb(Colour.GREEN5))
 
         # Draw sprites for each depth layer, inverted
         for depth_layer_type, surface in self.surfaces.items():
@@ -65,8 +65,14 @@ class Canvas:
                 colour = obj.colour
                 if depth_layer_type == DepthLayer.SHADOW:
                     colour = Colour.BLACK
-                sprite, rect = self.draw_sprite(self.sprites[obj.sprite], obj.x, obj.y, obj.rotation, obj.scale, colour)
-                surface.blit(sprite, rect)
+                scale = obj.scale * self.screen_scale
+                sprite, rect = self.draw_sprite(self.sprites[obj.sprite], obj.x, obj.y, obj.rotation, scale, colour)
+
+                if depth_layer_type == DepthLayer.SHADOW:
+                    if obj.shadow:
+                        surface.blit(sprite, rect)
+                else:
+                    surface.blit(sprite, rect)
 
             if depth_layer_type == DepthLayer.SHADOW:
                 self.screen.blit(surface, (0+self.screen_scale, 0+self.screen_scale))

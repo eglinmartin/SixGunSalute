@@ -21,12 +21,10 @@ class Controller:
     def __post_init__(self):
         self.objects = []
 
-        for i in range(64):
-            self.create_object(Object(
-                x=random.randint(0, self.screen_width), y=random.randint(0, self.screen_height),
-                depth=(random.randint(0, 10)/10), sprite='square', colour=Colour.M_BLUE, rotation=0,
-                scale=self.screen_scale * random.randint(0, 10), shadow=True
-            ))
+        self.background = Object(x=int(self.screen_width/2), y=int(self.screen_height/2), depth=255,
+                                 sprite='square', colour=Colour.GREEN4)
+        self.objects.append(self.background)
+
 
     def update(self):
         self.canvas.draw(self.objects)
