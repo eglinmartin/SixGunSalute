@@ -33,8 +33,8 @@ class Object:
 
 
 class Player(Object):
-    def __init__(self, x, y, depth, shadow, background):
-        super().__init__(x=x, y=y, depth=depth, shadow=shadow, background=background)
+    def __init__(self, x, y, depth, shadow):
+        super().__init__(x=x, y=y, depth=depth, shadow=shadow)
         self.health = 5
         self.sprite = 'player_shoot'
 
@@ -50,9 +50,9 @@ class Background(Object):
         self.scale_frame = 0
 
     def update(self):
-        self.rotation = self.rotation_wave[self.rotation_frame]
+        self.rotation = (self.rotation_wave[self.rotation_frame-1])
         self.rotation_frame = self.loop_through_sequence(self.rotation_frame, self.rotation_wave)
 
-        self.scale = abs(1 + self.scale_wave[self.scale_frame] / 500)
+        self.scale = abs(1 + self.scale_wave[self.scale_frame-1] / 500)
         self.scale_frame = self.loop_through_sequence(self.scale_frame, self.scale_wave)
 

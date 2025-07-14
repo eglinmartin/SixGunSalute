@@ -22,12 +22,13 @@ class Controller:
         self.objects = []
         self.backgrounds = []
 
-        # self.create_object(Background(x=int(self.screen_width/2), y=int(self.screen_height/2), depth=255, sprite='square', colour=Colour.GREEN4, background=True))
-
-        self.create_object(Player(x=48.5, y=64.5, depth=10, shadow=True, background=False))
-
+        self.create_object(Player(x=48.5, y=64.5, depth=10, shadow=True))
         self.create_object(Background(x=80, y=45, depth=255, sprite='square', colour=Colour.GREEN4, background=True))
 
+        # Create heads-up display
+        self.create_object(Object(x=16, y=16, depth=0, sprite='player_head', shadow=True))
+        self.create_object(Object(x=8, y=32, depth=0, sprite='meter_health', shadow=True))
+        self.create_object(Object(x=8, y=42, depth=0, sprite='meter_money', shadow=True))
 
     def update(self):
         self.canvas.draw(self.objects)

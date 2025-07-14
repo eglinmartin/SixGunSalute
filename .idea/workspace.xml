@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Draw background on screen">
-      <change afterPath="$PROJECT_DIR$/.idea/SixGunSalute.iml" afterDir="false" />
+    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Draw background on screen and rotate/scale">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/canvas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/canvas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/hud/meter_health.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/hud/meter_health.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/hud/player_head.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/hud/player_head.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/object.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/object.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/runner.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,14 +127,23 @@
       <option name="project" value="LOCAL" />
       <updated>1752509208536</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Draw background on screen and rotate/scale">
+      <option name="closed" value="true" />
+      <created>1752523187917</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1752523187917</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add binary files" />
     <MESSAGE value="Add files from game engine" />
     <MESSAGE value="Draw background on screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="Draw background on screen" />
+    <MESSAGE value="Draw background on screen and rotate/scale" />
+    <option name="LAST_COMMIT_MESSAGE" value="Draw background on screen and rotate/scale" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
