@@ -12,5 +12,6 @@ class Colour(Enum):
     BLACK = '281F23'
 
 class DepthLayer(Enum):
+    BACKGROUND = 'background'
     SHADOW = 'shadow'
     FOREGROUND = 'foreground'

@@ -23,6 +23,7 @@ class Canvas:
         self.surfaces = {}
         for depth_layer_type in DepthLayer:
             self.surfaces[depth_layer_type] = self.generate_layer_surface(depth_layer_type)
+        pass
 
     def load_sprites(self):
         """
@@ -53,7 +54,7 @@ class Canvas:
         """
         Takes all objects, sorts into layers and handles drawing
         """
-        # Sort objects into depths
+        # Fill screen with background colour
         self.screen.fill(rgb(Colour.GREEN5))
 
         # Draw sprites for each depth layer, inverted
@@ -62,16 +63,24 @@ class Canvas:
 
             # Draw all objects
             for obj in objects:
-                colour = obj.colour
-                if depth_layer_type == DepthLayer.SHADOW:
-                    colour = Colour.BLACK
-                scale = obj.scale * self.screen_scale
-                sprite, rect = self.draw_sprite(self.sprites[obj.sprite], obj.x, obj.y, obj.rotation, scale, colour)
+                # Don't draw on background layer if not a background object
+                if depth_layer_type == DepthLayer.FOREGROUND and obj.background:
+                    pass
 
-                if depth_layer_type == DepthLayer.SHADOW:
-                    if obj.shadow:
-                        surface.blit(sprite, rect)
+                elif depth_layer_type == DepthLayer.BACKGROUND and not obj.background:
+                    pass
+
+                # Don't draw on background layer if not a background object
+                elif depth_layer_type == DepthLayer.SHADOW and not obj.shadow:
+                    pass
+
                 else:
+                    colour = obj.colour
+                    if depth_layer_type == DepthLayer.SHADOW:
+                        colour = Colour.BLACK
+
+                    scale = obj.scale * self.screen_scale
+                    sprite, rect = self.draw_sprite(self.sprites[obj.sprite], obj.x, obj.y, obj.rotation, scale, colour)
                     surface.blit(sprite, rect)
 
             if depth_layer_type == DepthLayer.SHADOW:
@@ -106,3 +115,4 @@ class Canvas:
 
         rect = sprite_img.get_rect(center=((x*self.screen_scale), (y*self.screen_scale)))
         return sprite_img, rect
+
