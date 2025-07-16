@@ -46,7 +46,7 @@ class Canvas:
         layer.set_colorkey((2, 3, 4))
 
         if depth_layer_type == DepthLayer.SHADOW:
-            layer.set_alpha(128)
+            layer.set_alpha(70)
 
         return layer
 

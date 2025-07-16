@@ -22,7 +22,7 @@ class Controller:
         self.objects = []
         self.backgrounds = []
 
-        self.create_object(Player(x=48.5, y=64.5, depth=10, shadow=True))
+        self.create_object(Player(self, x=58.5, y=64.5, depth=10, shadow=True))
         self.create_object(Background(x=80, y=45, depth=255, sprite='square', colour=Colour.GREEN4, background=True))
 
         # Create heads-up display

@@ -12,6 +12,17 @@ def create_sine_wave(frequency: float, amplitude: float, duration: float, sampli
     return sine
 
 
+def loop_through_sequence(frame, sequence, frame_delay, counter):
+    counter += 1
+    if counter >= frame_delay:
+        counter = 0
+        frame += 1
+        if frame == len(sequence):
+            frame = 0
+
+    return frame
+
+
 def rgb(colour: Colour):
     """
     Converts hex code to rgb tuple and returns
