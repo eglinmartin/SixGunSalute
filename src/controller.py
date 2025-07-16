@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from canvas import Canvas
 from constants import Colour
 from mixer import Mixer
-from object import Object, Background, Player
+from object import Object, Background, Player, Enemy, Cursor
 
 
 @dataclass
@@ -19,16 +19,23 @@ class Controller:
     mixer: Mixer
 
     def __post_init__(self):
+
         self.objects = []
         self.backgrounds = []
+        self.create_object(Background(x=self.screen_width/2, y=self.screen_height/2, depth=255, sprite='square', colour=Colour.GREEN4, background=True))
 
-        self.create_object(Player(self, x=58.5, y=64.5, depth=10, shadow=True))
-        self.create_object(Background(x=80, y=45, depth=255, sprite='square', colour=Colour.GREEN4, background=True))
+        self.player = Player(self, x=self.screen_width*0.33, y=80.5, depth=10, shadow=True)
+        self.create_object(self.player)
+        self.create_object(Enemy(self, x=self.screen_width*0.67, y=80.5, depth=10, shadow=True))
 
         # Create heads-up display
-        self.create_object(Object(x=16, y=16, depth=0, sprite='player_head', shadow=True))
-        self.create_object(Object(x=8, y=32, depth=0, sprite='meter_health', shadow=True))
-        self.create_object(Object(x=8, y=42, depth=0, sprite='meter_money', shadow=True))
+        self.create_object(Object(x=20, y=20, depth=1, sprite='player_head', shadow=True))
+        self.create_object(Object(x=12, y=40, depth=1, sprite='meter_health', shadow=True))
+        self.create_object(Object(x=12, y=52, depth=1, sprite='meter_money', shadow=True))
+
+        # Create cursor
+        pygame.mouse.set_visible(False)
+        self.create_object(Cursor(self, x=0, y=0, depth=0, sprite='cursor', shadow=True))
 
     def update(self):
         self.canvas.draw(self.objects)
@@ -38,3 +45,5 @@ class Controller:
 
     def create_object(self, obj):
         self.objects.append(obj)
+
+

@@ -1,11 +1,9 @@
-import glob
-import os
 import pygame
 
 from dataclasses import dataclass
 
 from constants import Colour, DepthLayer
-from utils import rgb
+from utils import rgb, load_sprites
 
 
 @dataclass
@@ -18,21 +16,12 @@ class Canvas:
 
     def __post_init__(self):
         # Load sprites from bin directory
-        self.sprites = self.load_sprites()
+        self.sprites = load_sprites(self)
+        self.recolored_cache = {}
 
         self.surfaces = {}
         for depth_layer_type in DepthLayer:
             self.surfaces[depth_layer_type] = self.generate_layer_surface(depth_layer_type)
-        pass
-
-    def load_sprites(self):
-        """
-        Loads sprite image files from disk
-        """
-        sprite_dir = os.path.join(self.base_dir, 'bin')
-        sprites = {os.path.splitext(os.path.basename(f))[0]: pygame.image.load(f).convert_alpha() for f in
-                   glob.glob(f"{sprite_dir}/**/*.png", recursive=True)}
-        return sprites
 
     def generate_layer_surface(self, depth_layer_type: DepthLayer):
         """
@@ -80,7 +69,7 @@ class Canvas:
                         colour = Colour.BLACK
 
                     scale = obj.scale * self.screen_scale
-                    sprite, rect = self.draw_sprite(self.sprites[obj.sprite], obj.x, obj.y, obj.rotation, scale, colour)
+                    sprite, rect = self.draw_sprite(obj.sprite, self.sprites[obj.sprite], obj.x, obj.y, obj.rotation, scale, colour)
                     surface.blit(sprite, rect)
 
             if depth_layer_type == DepthLayer.SHADOW:
@@ -88,31 +77,36 @@ class Canvas:
             else:
                 self.screen.blit(surface, (0, 0))
 
-    def draw_sprite(self, sprite_img_original, x, y, rot, scale, colour=None, flipped=False):
+    def draw_sprite(self, sprite_name, sprite_img_original, x, y, rot, scale, colour=None, flipped=False):
         """
         Draws individual sprite on the screen
         """
-        sprite_img = sprite_img_original.copy()
+        scale_rounded = round(scale, 2)
+        rot_rounded = round(rot, 2)
 
-        # Recolour the sprite if colour = True
-        if colour:
-            pixel_array = pygame.PixelArray(sprite_img)
-            for px in range(sprite_img.get_width()):
-                for py in range(sprite_img.get_height()):
-                    alpha = pixel_array[px, py] >> 24
-                    pixel_array[px, py] = (alpha << 24) | (rgb(colour)[0] << 16) | (rgb(colour)[1] << 8) | rgb(colour)[2]
+        key = (sprite_name, colour, scale_rounded, rot_rounded)
+        if key not in self.recolored_cache:
+            sprite_img = sprite_img_original.copy()
+            if colour:
+                self.recolour_sprite(sprite_img, colour)
 
-        # Upscale sprite if scalable
-        sprite_img = pygame.transform.scale(sprite_img, (sprite_img.get_width()*scale, sprite_img.get_height()*scale))
+            # Upscale sprite if scalable
+            if scale_rounded != 1:
+                sprite_img = pygame.transform.scale(sprite_img,(sprite_img.get_width() * scale_rounded, sprite_img.get_height() * scale_rounded))
 
-        # Rotate the sprite if rotatable
-        if rot:
-            sprite_img = pygame.transform.rotate(sprite_img, rot)
+            if rot != 0:
+                sprite_img = pygame.transform.rotate(sprite_img, rot)
 
-        # Flip the sprite if flippable
-        if flipped:
-            sprite_img = pygame.transform.flip(sprite_img, flip_x=flipped, flip_y=False)
+            self.recolored_cache[key] = sprite_img
+
+        sprite_img = self.recolored_cache[key]
 
         rect = sprite_img.get_rect(center=((x*self.screen_scale), (y*self.screen_scale)))
         return sprite_img, rect
 
+    def recolour_sprite(self, sprite_img, colour):
+        pixel_array = pygame.PixelArray(sprite_img)
+        for px in range(sprite_img.get_width()):
+            for py in range(sprite_img.get_height()):
+                alpha = pixel_array[px, py] >> 24
+                pixel_array[px, py] = (alpha << 24) | (rgb(colour)[0] << 16) | (rgb(colour)[1] << 8) | rgb(colour)[2]

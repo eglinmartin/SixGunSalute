@@ -6,6 +6,7 @@ from canvas import Canvas
 from constants import Colour
 from controller import Controller
 from mixer import Mixer
+from debugger import Debugger
 from utils import create_sine_wave, rgb
 
 
@@ -19,9 +20,9 @@ def main():
     base_dir = os.getcwd()
 
     # Set display parameters
-    screen_width = 160
-    screen_height = 90
-    screen_scale = 6
+    screen_width = 192
+    screen_height = 108
+    screen_scale = 8
 
     # Create screen
     screen = pygame.display.set_mode((screen_width * screen_scale, screen_height * screen_scale))
@@ -30,21 +31,19 @@ def main():
     canvas = Canvas(base_dir, screen, screen_width, screen_height, screen_scale)
     mixer = Mixer(base_dir)
 
-    # Create controller
-    controller = Controller(screen, screen_width, screen_height, screen_scale, canvas, mixer)
-
     # Set FPS
     fps = 60
     clock = pygame.time.Clock()
 
+    # Create controller
+    controller = Controller(screen, screen_width, screen_height, screen_scale, canvas, mixer)
+    debugger = Debugger(controller, screen, clock)
+
     while True:
-        run_game(screen, clock, fps, controller)
+        run_game(clock, fps, controller, debugger)
 
 
-def run_game(screen: pygame.Surface,
-             clock: pygame.time.Clock,
-             fps: int,
-             controller: Controller):
+def run_game(clock: pygame.time.Clock, fps: int, controller: Controller, debugger: Debugger):
     """
     Main game loop
     """
@@ -54,6 +53,7 @@ def run_game(screen: pygame.Surface,
             sys.exit()
 
     controller.update()
+    debugger.update()
 
     pygame.display.flip()
     clock.tick(fps)
