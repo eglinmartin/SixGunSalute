@@ -15,3 +15,10 @@ class DepthLayer(Enum):
     BACKGROUND = 'background'
     SHADOW = 'shadow'
     FOREGROUND = 'foreground'
+
+
+class ItemTypes(Enum):
+    AMMO = 'ammo'
+    HEALTH = 'health'
+    EXPLOSIVE = 'explosive'
+    MONEY = 'money'

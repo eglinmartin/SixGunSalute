@@ -19,14 +19,15 @@ class Controller:
     mixer: Mixer
 
     def __post_init__(self):
-
         self.objects = []
         self.backgrounds = []
         self.create_object(Background(x=self.screen_width/2, y=self.screen_height/2, depth=255, sprite='square', colour=Colour.GREEN4, background=True))
 
         self.player = Player(self, x=self.screen_width*0.33, y=80.5, depth=10, shadow=True)
         self.create_object(self.player)
-        self.create_object(Enemy(self, x=self.screen_width*0.67, y=80.5, depth=10, shadow=True))
+
+        self.enemy = Enemy(self, self.player, x=self.screen_width*0.67, y=80.5, depth=10, shadow=True)
+        self.create_object(self.enemy)
 
         # Create heads-up display
         self.create_object(Object(x=20, y=20, depth=1, sprite='player_head', shadow=True))
@@ -45,5 +46,4 @@ class Controller:
 
     def create_object(self, obj):
         self.objects.append(obj)
-
 

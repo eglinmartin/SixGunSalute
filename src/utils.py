@@ -34,7 +34,7 @@ def loop_through_sequence(frame, sequence, frame_delay, counter):
         if frame == len(sequence):
             frame = 0
 
-    return frame
+    return frame, counter
 
 
 def rgb(colour: Colour):

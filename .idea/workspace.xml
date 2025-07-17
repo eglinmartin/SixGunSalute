@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Draw barrel and chambers">
-      <change afterPath="$PROJECT_DIR$/src/debugger.py" afterDir="false" />
+    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Cursor drawing and optimizations, sprite caching">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/hud/square.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/hud/square.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/player/player_idle1.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/player/player_idle1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/canvas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/canvas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/player/player_idle2.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/player/player_idle2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/debugger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/debugger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/object.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/object.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/runner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.py" afterDir="false" />
@@ -53,15 +52,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.runner.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Storage/Coding/Games"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.runner.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Storage/Coding/Games&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="runner" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SixGunSalute" />
@@ -155,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752664080285</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Cursor drawing and optimizations, sprite caching">
+      <option name="closed" value="true" />
+      <created>1752697422342</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1752697422342</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -165,7 +172,8 @@
     <MESSAGE value="Draw background on screen and rotate/scale" />
     <MESSAGE value="Add some hud elements" />
     <MESSAGE value="Draw barrel and chambers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Draw barrel and chambers" />
+    <MESSAGE value="Cursor drawing and optimizations, sprite caching" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cursor drawing and optimizations, sprite caching" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

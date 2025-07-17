@@ -7,7 +7,6 @@ from constants import Colour
 from controller import Controller
 from mixer import Mixer
 from debugger import Debugger
-from utils import create_sine_wave, rgb
 
 
 def main():
@@ -22,7 +21,7 @@ def main():
     # Set display parameters
     screen_width = 192
     screen_height = 108
-    screen_scale = 8
+    screen_scale = 6
 
     # Create screen
     screen = pygame.display.set_mode((screen_width * screen_scale, screen_height * screen_scale))

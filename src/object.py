@@ -37,31 +37,34 @@ class Player(Object):
 
         self.idle_animation = [0, 1]
         self.idle_frame = 0
+        self.idle_counter = 0
 
         self.barrel = Barrel(self, x=2, y=self.controller.screen_height-2, depth=0, sprite='barrel_base', shadow=shadow)
+
         self.controller.create_object(self.barrel)
+        self.controller.create_object(self.barrel.spinner)
 
     def update(self):
-        self.idle_frame = loop_through_sequence(self.idle_frame, self.idle_animation, frame_delay=30, counter=self.counter)
+        self.idle_frame, self.idle_counter = loop_through_sequence(self.idle_frame, self.idle_animation, frame_delay=25, counter=self.idle_counter)
         self.sprite = f'player_idle{self.idle_frame+1}'
 
 
 class Enemy(Object):
-    def __init__(self, controller, x, y, depth, shadow):
+    def __init__(self, controller, player, x, y, depth, shadow):
         super().__init__(x=x, y=y, depth=depth, shadow=shadow)
         self.controller = controller
         self.health = 5
         self.sprite = 'enemy_idle1'
-
-        self.idle_animation = [0, 1]
-        self.idle_frame = 0
+        self.player = player
 
         self.barrel = Barrel(self, x=controller.screen_width-2, y=self.controller.screen_height-2, depth=2, sprite='barrel_base', shadow=shadow)
+        self.barrel.spinner = Object(x=self.barrel.x, y=self.barrel.y, depth=1,sprite='barrel_chambers', shadow=False)
+
         self.controller.create_object(self.barrel)
+        self.controller.create_object(self.barrel.spinner)
 
     def update(self):
-        self.idle_frame = loop_through_sequence(self.idle_frame, self.idle_animation, frame_delay=30, counter=self.counter)
-        self.sprite = f'enemy_idle{self.idle_frame+1}'
+        self.sprite = f'enemy_idle{self.player.idle_frame + 1}'
 
 
 class Barrel(Object):
@@ -78,6 +81,8 @@ class Barrel(Object):
                                  shadow=shadow) for i in range(len(self.coordinates))]
         for chamber in self.chambers:
             self.player.controller.create_object(chamber)
+
+        self.spinner = Object(x=self.x, y=self.y, depth=1, sprite='barrel_chambers', shadow=False)
 
 
 class Chamber(Object):
@@ -99,4 +104,3 @@ class Background(Object):
     def __init__(self, x, y, depth, sprite, colour, background):
         super().__init__(x=x, y=y, depth=depth, sprite=sprite, colour=colour, background=background)
         self.scale = 4
-
