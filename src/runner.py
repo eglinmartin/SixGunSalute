@@ -46,11 +46,6 @@ def run_game(clock: pygame.time.Clock, fps: int, controller: Controller, debugge
     """
     Main game loop
     """
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
     controller.update()
     debugger.update()
 

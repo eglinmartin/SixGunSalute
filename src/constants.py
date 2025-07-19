@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Colour(Enum):
     """
     Stores colour hex codes with names
@@ -11,10 +12,17 @@ class Colour(Enum):
     GREEN5 = '4B5A57'
     BLACK = '281F23'
 
+
 class DepthLayer(Enum):
     BACKGROUND = 'background'
     SHADOW = 'shadow'
     FOREGROUND = 'foreground'
+
+
+class FontColour(Enum):
+    RED = 'red'
+    WHITE = 'white'
+    YELLOW = 'yellow'
 
 
 class ItemTypes(Enum):
@@ -22,3 +30,18 @@ class ItemTypes(Enum):
     HEALTH = 'health'
     EXPLOSIVE = 'explosive'
     MONEY = 'money'
+
+
+class Direction(Enum):
+    LEFT = 'left'
+    RIGHT = 'right'
+    UP = 'up'
+    DOWN = 'down'
+
+
+class State(Enum):
+    IDLE = 0
+    SHOOT = 1
+    DEAD = 2
+
+

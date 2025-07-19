@@ -1,12 +1,15 @@
+import sys
+
 import pygame
 import random
 
 from dataclasses import dataclass
 
 from canvas import Canvas
-from constants import Colour
+from constants import Colour, Direction, FontColour, State
 from mixer import Mixer
 from object import Object, Background, Player, Enemy, Cursor
+from utils import text_to_sprites
 
 
 @dataclass
@@ -20,6 +23,7 @@ class Controller:
 
     def __post_init__(self):
         self.objects = []
+
         self.backgrounds = []
         self.create_object(Background(x=self.screen_width/2, y=self.screen_height/2, depth=255, sprite='square', colour=Colour.GREEN4, background=True))
 
@@ -43,6 +47,21 @@ class Controller:
 
         for obj in self.objects:
             obj.update()
+            obj.return_to_xy()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+
+                    if self.player.state == State.IDLE:
+                        for obj in self.objects:
+                            obj.move(Direction.LEFT, distance=8)
+                            self.player.shoot()
+                            self.enemy.die()
 
     def create_object(self, obj):
         self.objects.append(obj)

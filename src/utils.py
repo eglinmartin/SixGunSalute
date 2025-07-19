@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pygame
 
-from constants import Colour
+from constants import Colour, FontColour
 
 
 def create_sine_wave(frequency: float, amplitude: float, duration: float, sampling_rate: float):
@@ -42,3 +42,9 @@ def rgb(colour: Colour):
     Converts hex code to rgb tuple and returns
     """
     return tuple(int(colour.value[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def text_to_sprites(text: str, colour: FontColour):
+    letter_sprites = [f'number_{character}_{colour.value}' for character in [character for character in text]]
+    return letter_sprites
+

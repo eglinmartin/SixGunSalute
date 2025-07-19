@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Cursor drawing and optimizations, sprite caching">
+    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Cursor, fps, debug, idle animation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/player/player_idle2.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/player/player_idle2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/player/player_shoot.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/player/player_shoot.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/debugger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/debugger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/object.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/object.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/runner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.py" afterDir="false" />
@@ -162,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752697422342</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Cursor, fps, debug, idle animation">
+      <option name="closed" value="true" />
+      <created>1752779098887</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1752779098887</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -173,7 +180,8 @@
     <MESSAGE value="Add some hud elements" />
     <MESSAGE value="Draw barrel and chambers" />
     <MESSAGE value="Cursor drawing and optimizations, sprite caching" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cursor drawing and optimizations, sprite caching" />
+    <MESSAGE value="Cursor, fps, debug, idle animation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cursor, fps, debug, idle animation" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
