@@ -1,9 +1,25 @@
 import pygame
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from constants import Colour, DepthLayer
 from utils import rgb, load_sprites
+
+
+@dataclass()
+class Sprite:
+    image: str
+    x: int
+    y: int
+    depth: float
+
+    rotation: int = field(default=0)
+    scale: int = field(default=1)
+    sprite_img: str = field(default=False)
+    colour: Colour = field(default=None)
+
+    background: bool = field(default=False)
+    shadow: bool = field(default=False)
 
 
 @dataclass
@@ -16,8 +32,9 @@ class Canvas:
 
     def __post_init__(self):
         # Load sprites from bin directory
-        self.sprites = load_sprites(self)
+        self.sprites_from_file = load_sprites(self)
         self.recolored_cache = {}
+        self.sprites = []
 
         self.surfaces = {}
         for depth_layer_type in DepthLayer:
@@ -39,43 +56,46 @@ class Canvas:
 
         return layer
 
-    def draw(self, objects: list):
+    def add_sprite(self, sprite: Sprite):
+        self.sprites.append(sprite)
+
+    def draw_screen(self):
         """
-        Takes all objects, sorts into layers and handles drawing
+        The main function - draws on each depth layer surface
         """
-        # Fill screen with background colour
         self.screen.fill(rgb(Colour.GREEN5))
 
-        # Draw sprites for each depth layer, inverted
-        for depth_layer_type, surface in self.surfaces.items():
-            surface.fill((2, 3, 4))
+        # Sort sprites by depth layer
+        sprites_by_depth = sorted(self.sprites, key=lambda spr: spr.depth)
 
-            # Draw all objects
-            for obj in objects:
-                # Don't draw on background layer if not a background object
-                if depth_layer_type == DepthLayer.FOREGROUND and obj.background:
+        for depth_layer_type, depth_layer_surface in self.surfaces.items():
+            depth_layer_surface.fill((2, 3, 4))
+            for sprite in sprites_by_depth:
+
+                if depth_layer_type == DepthLayer.FOREGROUND and sprite.background:
                     pass
 
-                elif depth_layer_type == DepthLayer.BACKGROUND and not obj.background:
+                elif depth_layer_type == DepthLayer.BACKGROUND and not sprite.background:
                     pass
 
-                # Don't draw on background layer if not a background object
-                elif depth_layer_type == DepthLayer.SHADOW and not obj.shadow:
+                elif depth_layer_type == DepthLayer.SHADOW and not sprite.shadow:
                     pass
 
                 else:
-                    colour = obj.colour
+                    colour = sprite.colour
                     if depth_layer_type == DepthLayer.SHADOW:
                         colour = Colour.BLACK
 
-                    scale = obj.scale * self.screen_scale
-                    sprite, rect = self.draw_sprite(obj.sprite, self.sprites[obj.sprite], obj.x, obj.y, obj.rotation, scale, colour)
-                    surface.blit(sprite, rect)
+                    scale = sprite.scale * self.screen_scale
+
+                    sprite, rect = self.draw_sprite(sprite.image, self.sprites_from_file[sprite.image], sprite.x, sprite.y,
+                    sprite.rotation, scale, colour)
+                    depth_layer_surface.blit(sprite, rect)
 
             if depth_layer_type == DepthLayer.SHADOW:
-                self.screen.blit(surface, (0+self.screen_scale, 0+self.screen_scale))
+                self.screen.blit(depth_layer_surface, (0+self.screen_scale, 0+self.screen_scale))
             else:
-                self.screen.blit(surface, (0, 0))
+                self.screen.blit(depth_layer_surface, (0, 0))
 
     def draw_sprite(self, sprite_name, sprite_img_original, x, y, rot, scale, colour=None, flipped=False):
         """

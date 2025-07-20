@@ -4,14 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Cursor, fps, debug, idle animation">
+    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Shoot + idle / death / shooting states">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/player/player_shoot.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/player/player_shoot.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/number/number_0_red.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/number/number_0_red.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/number/number_0_yellow.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/number/number_0_yellow.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/number/number_1_red.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/number/number_1_red.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/number/number_1_yellow.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/number/number_1_yellow.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/number/number_5_yellow.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/number/number_5_yellow.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/canvas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/canvas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/debugger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/debugger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/object.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/object.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752779098887</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Shoot + idle / death / shooting states">
+      <option name="closed" value="true" />
+      <created>1752923072930</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1752923072930</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -181,9 +192,24 @@
     <MESSAGE value="Draw barrel and chambers" />
     <MESSAGE value="Cursor drawing and optimizations, sprite caching" />
     <MESSAGE value="Cursor, fps, debug, idle animation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cursor, fps, debug, idle animation" />
+    <MESSAGE value="Shoot + idle / death / shooting states" />
+    <option name="LAST_COMMIT_MESSAGE" value="Shoot + idle / death / shooting states" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/canvas.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/canvas.py</url>
+          <line>76</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="obj" />

@@ -5,10 +5,10 @@ import random
 
 from dataclasses import dataclass
 
-from canvas import Canvas
+from canvas import Canvas, Sprite
 from constants import Colour, Direction, FontColour, State
 from mixer import Mixer
-from object import Object, Background, Player, Enemy, Cursor
+from object import Player, Cursor
 from utils import text_to_sprites
 
 
@@ -24,30 +24,27 @@ class Controller:
     def __post_init__(self):
         self.objects = []
 
-        self.backgrounds = []
-        self.create_object(Background(x=self.screen_width/2, y=self.screen_height/2, depth=255, sprite='square', colour=Colour.GREEN4, background=True))
-
-        self.player = Player(self, x=self.screen_width*0.33, y=80.5, depth=10, shadow=True)
-        self.create_object(self.player)
-
-        self.enemy = Enemy(self, self.player, x=self.screen_width*0.67, y=80.5, depth=10, shadow=True)
-        self.create_object(self.enemy)
-
-        # Create heads-up display
-        self.create_object(Object(x=20, y=20, depth=1, sprite='player_head', shadow=True))
-        self.create_object(Object(x=12, y=40, depth=1, sprite='meter_health', shadow=True))
-        self.create_object(Object(x=12, y=52, depth=1, sprite='meter_money', shadow=True))
+        # Create player
+        self.player = Player(self, self.canvas)
+        self.objects.append(self.player)
 
         # Create cursor
         pygame.mouse.set_visible(False)
-        self.create_object(Cursor(self, x=0, y=0, depth=0, sprite='cursor', shadow=True))
+        self.cursor = Cursor(self, self.canvas)
+        self.objects.append(self.cursor)
 
     def update(self):
-        self.canvas.draw(self.objects)
+        self.canvas.sprites = []
 
         for obj in self.objects:
             obj.update()
-            obj.return_to_xy()
+            obj.draw()
+
+        self.canvas.add_sprite(Sprite(image='square', x=int(self.screen_width/2), y=int(self.screen_height/2), depth=0,
+                                      background=True, scale=4))
+
+        self.create_hud()
+        self.canvas.draw_screen()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -58,11 +55,19 @@ class Controller:
                 if event.button == 1:
 
                     if self.player.state == State.IDLE:
-                        for obj in self.objects:
-                            obj.move(Direction.LEFT, distance=8)
-                            self.player.shoot()
-                            self.enemy.die()
+                        self.player.shoot()
+                            # self.enemy.die()
 
-    def create_object(self, obj):
-        self.objects.append(obj)
+    def create_hud(self):
+        # Draw heads
+        self.canvas.sprites.append(Sprite(image='player_head', x=16, y=18, depth=254, shadow=True))
 
+        # Draw player health
+        self.canvas.sprites.append(Sprite(image='meter_health', x=16, y=32, depth=254, shadow=True))
+        for i, spr in enumerate(text_to_sprites(str(self.player.health), colour=FontColour.RED)):
+            self.canvas.sprites.append(Sprite(image=spr, x=24+(i*4), y=32, depth=254, shadow=True))
+
+        # Draw player money
+        self.canvas.sprites.append(Sprite(image='meter_money', x=16, y=42, depth=254, shadow=True))
+        for i, spr in enumerate(text_to_sprites(str(self.player.money), colour=FontColour.YELLOW)):
+            self.canvas.sprites.append(Sprite(image=spr, x=24+(i*4), y=42, depth=254, shadow=True))

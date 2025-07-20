@@ -11,7 +11,7 @@ class Debugger:
     def update(self):
         debug_parameters = {
             'fps': int(self.clock.get_fps()),
-            'health': self.controller.player.health
+            # 'health': self.controller.player.health
         }
 
         for index, (key, param) in enumerate(debug_parameters.items()):
