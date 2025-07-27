@@ -83,13 +83,14 @@ class Canvas:
 
                 else:
                     colour = sprite.colour
-                    if depth_layer_type == DepthLayer.SHADOW:
-                        colour = Colour.BLACK
-
                     scale = sprite.scale * self.screen_scale
 
-                    sprite, rect = self.draw_sprite(sprite.image, self.sprites_from_file[sprite.image], sprite.x, sprite.y,
-                    sprite.rotation, scale, colour)
+                    if depth_layer_type == DepthLayer.SHADOW:
+                        colour = Colour.BLACK
+                        scale = self.screen_scale
+
+                    sprite, rect = self.draw_sprite(sprite.image, self.sprites_from_file[sprite.image], sprite.x,
+                                                    sprite.y, sprite.rotation, scale, colour)
                     depth_layer_surface.blit(sprite, rect)
 
             if depth_layer_type == DepthLayer.SHADOW:
@@ -107,8 +108,9 @@ class Canvas:
         key = (sprite_name, colour, scale_rounded, rot_rounded)
         if key not in self.recolored_cache:
             sprite_img = sprite_img_original.copy()
+
             if colour:
-                self.recolour_sprite(sprite_img, colour)
+                sprite_img.fill(rgb(colour), special_flags=pygame.BLEND_RGB_MULT)
 
             # Upscale sprite if scalable
             if scale_rounded != 1:
@@ -123,10 +125,3 @@ class Canvas:
 
         rect = sprite_img.get_rect(center=((x*self.screen_scale), (y*self.screen_scale)))
         return sprite_img, rect
-
-    def recolour_sprite(self, sprite_img, colour):
-        pixel_array = pygame.PixelArray(sprite_img)
-        for px in range(sprite_img.get_width()):
-            for py in range(sprite_img.get_height()):
-                alpha = pixel_array[px, py] >> 24
-                pixel_array[px, py] = (alpha << 24) | (rgb(colour)[0] << 16) | (rgb(colour)[1] << 8) | rgb(colour)[2]
