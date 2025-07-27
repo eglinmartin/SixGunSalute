@@ -6,9 +6,9 @@ import random
 from dataclasses import dataclass
 
 from canvas import Canvas, Sprite
-from constants import Colour, Direction, FontColour, State
+from constants import FontColour, State, Token
 from mixer import Mixer
-from object import Player, Cursor
+from object import Player, Cursor, Enemy
 from utils import text_to_sprites
 
 
@@ -27,6 +27,10 @@ class Controller:
         # Create player
         self.player = Player(self, self.canvas)
         self.objects.append(self.player)
+
+        # Create enemy
+        self.enemy = Enemy(self, self.canvas)
+        self.objects.append(self.enemy)
 
         # Create cursor
         pygame.mouse.set_visible(False)
@@ -51,16 +55,21 @@ class Controller:
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
                     if self.player.state == State.IDLE:
                         self.player.shoot()
-                            # self.enemy.die()
+
+                if event.key == pygame.K_a:
+                    self.player.barrel.spin()
+
+                if event.key == pygame.K_s:
+                    self.player.barrel.reload()
 
     def create_hud(self):
         # Draw heads
         self.canvas.sprites.append(Sprite(image='player_head', x=16, y=18, depth=254, shadow=True))
+        self.canvas.sprites.append(Sprite(image='enemy_head', x=self.screen_width-16, y=18, depth=254, shadow=True))
 
         # Draw player health
         self.canvas.sprites.append(Sprite(image='meter_health', x=16, y=32, depth=254, shadow=True))

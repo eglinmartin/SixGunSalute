@@ -45,3 +45,5 @@ class State(Enum):
     DEAD = 2
 
 
+class Token(Enum):
+    AMMO_BRASSBULLET = 'ammo_brassbullet'

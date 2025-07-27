@@ -21,7 +21,7 @@ def main():
     # Set display parameters
     screen_width = 192
     screen_height = 108
-    screen_scale = 6
+    screen_scale = 5
 
     # Create screen
     screen = pygame.display.set_mode((screen_width * screen_scale, screen_height * screen_scale))
