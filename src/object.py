@@ -82,6 +82,7 @@ class Player(Object):
             self.state = State.SHOOT
             self.barrel.shoot()
             self.shoot_cooldown = 20
+            self.canvas.camera.x -= 32
 
     def update(self):
         if self.shoot_cooldown > 0:

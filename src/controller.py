@@ -48,6 +48,7 @@ class Controller:
                                       background=True, scale=4))
 
         self.create_hud()
+        self.canvas.camera.update()
         self.canvas.draw_screen()
 
         for event in pygame.event.get():
