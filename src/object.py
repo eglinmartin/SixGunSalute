@@ -52,6 +52,7 @@ class Enemy(Object):
 
     def hit(self):
         self.xy[0] += 20
+        self.health -= 2
 
     def draw(self):
         if self.state == State.IDLE:

@@ -68,9 +68,8 @@ class Controller:
                     self.player.barrel.reload()
 
     def create_hud(self):
-        # Draw heads
+        # Draw player head
         self.canvas.sprites.append(Sprite(image='player_head', x=16, y=18, depth=254, shadow=True))
-        self.canvas.sprites.append(Sprite(image='enemy_head', x=self.screen_width-16, y=18, depth=254, shadow=True))
 
         # Draw player health
         self.canvas.sprites.append(Sprite(image='meter_health', x=16, y=32, depth=254, shadow=True))
@@ -81,3 +80,12 @@ class Controller:
         self.canvas.sprites.append(Sprite(image='meter_money', x=16, y=42, depth=254, shadow=True))
         for i, spr in enumerate(text_to_sprites(str(self.player.money), colour=FontColour.YELLOW)):
             self.canvas.sprites.append(Sprite(image=spr, x=24+(i*4), y=42, depth=254, shadow=True))
+
+        # Draw enemy head
+        self.canvas.sprites.append(Sprite(image='enemy_head', x=self.screen_width-16, y=18, depth=254, shadow=True))
+
+        # Draw player health
+        self.canvas.sprites.append(Sprite(image='meter_health', x=self.screen_width-16, y=32, depth=254, shadow=True))
+        enemy_health_text = text_to_sprites(str(self.enemy.health), colour=FontColour.RED)
+        for i, spr in enumerate(enemy_health_text):
+            self.canvas.sprites.append(Sprite(image=spr, x=self.screen_width-20-(len(enemy_health_text)*4)+(i*4), y=32, depth=254, shadow=True))
