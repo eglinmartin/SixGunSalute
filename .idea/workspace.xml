@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Add chamber and token selection">
+    <list default="true" id="64fa3e95-cb8c-4947-b4f3-8ea22f8ec67f" name="Changes" comment="Implement camera and gun recoil parallax effect">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/canvas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/canvas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/object.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/object.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/runner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +38,12 @@
     &quot;accountId&quot;: &quot;ca3cf777-b656-46cd-a680-9915a1a34e96&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/controller.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -51,6 +57,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python.Six-Gun Salute.executor&quot;: &quot;Run&quot;,
     &quot;Python.runner.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
@@ -60,7 +67,7 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration name="runner" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="Six-Gun Salute" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="SixGunSalute" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -84,7 +91,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.runner" />
+        <item itemvalue="Python.Six-Gun Salute" />
       </list>
     </recent_temporary>
   </component>
@@ -200,7 +207,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753657385475</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Implement camera and gun recoil parallax effect">
+      <option name="closed" value="true" />
+      <created>1753772432404</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1753772432404</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -216,9 +231,24 @@
     <MESSAGE value="Rework structure of objects and sprites to allow several sprites per object" />
     <MESSAGE value="Optimize sprite shadow colourization to avoid lag" />
     <MESSAGE value="Add chamber and token selection" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add chamber and token selection" />
+    <MESSAGE value="Implement camera and gun recoil parallax effect" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement camera and gun recoil parallax effect" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/utils.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/object.py</url>
+          <line>58</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="obj" />

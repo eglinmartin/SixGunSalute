@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 
 from constants import Colour, Direction, State, Token
 from src.canvas import Sprite
-from utils import create_sine_wave, loop_through_sequence
+from utils import create_sine_wave, loop_through_sequence, return_to_xy
 
 
 class Object(ABC):
@@ -24,7 +24,6 @@ class Cursor(Object):
         self.canvas = canvas
 
         self.xy = [0, 0]
-        self.draw()
 
     def update(self):
         self.xy[0] = (pygame.mouse.get_pos()[0] / self.controller.screen_scale) + (self.controller.screen_scale / 2)
@@ -39,14 +38,20 @@ class Enemy(Object):
         self.controller = controller
         self.canvas = canvas
 
+        self.base_xy = [self.controller.screen_width*0.67, self.controller.player.xy[1]]
         self.xy = [self.controller.screen_width*0.67, self.controller.player.xy[1]]
+
         self.health = 5
 
         self.state = State.IDLE
         self.sprite = Sprite(image='enemy_idle1', x=self.xy[0], y=self.xy[1], depth=10, shadow=True)
 
-    def update(self):
-        self.draw()
+    def update(self, return_speed=8, tolerance=0.1):
+        if self.xy != self.base_xy:
+            self.xy = return_to_xy(self.xy, self.base_xy)
+
+    def hit(self):
+        self.xy[0] += 20
 
     def draw(self):
         if self.state == State.IDLE:
@@ -82,7 +87,9 @@ class Player(Object):
             self.state = State.SHOOT
             self.barrel.shoot()
             self.shoot_cooldown = 20
-            self.canvas.camera.x -= 32
+            self.canvas.camera.xy[0] -= 32
+
+            self.controller.enemy.hit()
 
     def update(self):
         if self.shoot_cooldown > 0:
@@ -118,8 +125,6 @@ class Barrel:
         self.can_spin = True
         self.spin_cooldown = 0
 
-        self.draw()
-
     def spin(self):
         if self.can_spin:
             self.selected_chamber = None
@@ -138,7 +143,6 @@ class Barrel:
                 if not chamber:
                     self.chambers[i] = Token.AMMO_BRASSBULLET
                     self.chambers_scale[i] += 0.5
-            print('reloaded')
 
     def update(self):
         if not self.can_spin:

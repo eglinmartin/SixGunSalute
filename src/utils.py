@@ -16,11 +16,11 @@ def create_sine_wave(frequency: float, amplitude: float, duration: float, sampli
     return sine
 
 
-def load_sprites(self):
+def load_sprites(canvas):
     """
     Loads sprite image files from disk
     """
-    sprite_dir = os.path.join(self.base_dir, 'bin')
+    sprite_dir = os.path.join(canvas.base_dir, 'bin')
     sprites = {os.path.splitext(os.path.basename(f))[0]: pygame.image.load(f).convert_alpha() for f in
                glob.glob(f"{sprite_dir}/**/*.png", recursive=True)}
     return sprites
@@ -35,6 +35,20 @@ def loop_through_sequence(frame, sequence, frame_delay, counter):
             frame = 0
 
     return frame, counter
+
+
+def return_to_xy(xy, base_xy, return_speed=8, tolerance=0.1):
+    for i, xy_key in enumerate(xy):
+        if xy[i] > base_xy[i]:
+            xy[i] -= abs((base_xy[i] - xy[i]) / return_speed)
+
+        if xy[i] < base_xy[i]:
+            xy[i] += abs((base_xy[i] - xy[i]) / return_speed)
+
+        elif -tolerance < xy[i] < tolerance:
+            xy[i] = base_xy[i]
+
+    return xy
 
 
 def rgb(colour: Colour):

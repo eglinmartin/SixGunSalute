@@ -21,11 +21,11 @@ def main():
     # Set display parameters
     screen_width = 192
     screen_height = 108
-    screen_scale = 5
+    screen_scale = 5   
 
     # Create screen
-    screen = pygame.display.set_mode((screen_width * screen_scale, screen_height * screen_scale))
-    # screen = pygame.display.set_mode((screen_width * screen_scale, screen_height * screen_scale), pygame.FULLSCREEN | pygame.SCALED)
+    # screen = pygame.display.set_mode((screen_width * screen_scale, screen_height * screen_scale))
+    screen = pygame.display.set_mode((screen_width * screen_scale, screen_height * screen_scale), pygame.FULLSCREEN | pygame.SCALED)
 
     # Create runners
     canvas = Canvas(base_dir, screen, screen_width, screen_height, screen_scale)

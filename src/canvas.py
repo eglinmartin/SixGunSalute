@@ -3,7 +3,7 @@ import pygame
 from dataclasses import dataclass, field
 
 from constants import Colour, DepthLayer
-from utils import rgb, load_sprites
+from utils import rgb, load_sprites, return_to_xy
 
 
 @dataclass()
@@ -24,26 +24,12 @@ class Sprite:
 
 class Camera:
     def __init__(self):
-        self.base_x = 0
-        self.base_y = 0
+        self.base_xy = [0, 0]
+        self.xy = [0, 0]
 
-        self.x = self.base_x
-        self.y = self.base_y
-
-    def update(self, tolerance=0.1, return_speed=8):
-        if self.x < self.base_x:
-            self.x += abs((self.base_x - self.x) / return_speed)
-        elif self.x > self.base_x:
-            self.x -= abs((self.base_x - self.x) / return_speed)
-        elif -tolerance < self.x < tolerance:
-            self.x = self.base_x
-
-        if self.y < self.base_y:
-            self.y += abs((self.base_y - self.y) / return_speed)
-        elif self.y > self.base_y:
-            self.y -= abs((self.base_y - self.y) / return_speed)
-        elif -tolerance < self.y < tolerance:
-            self.y = self.base_y
+    def update(self):
+        if self.xy != self.base_xy:
+            self.xy = return_to_xy(self.xy, self.base_xy)
 
 
 @dataclass
@@ -112,18 +98,18 @@ class Canvas:
                     colour = sprite.colour
                     scale = sprite.scale * self.screen_scale
 
-                    draw_x = sprite.x + self.camera.x
-                    draw_y = sprite.y + self.camera.y
+                    draw_x = sprite.x + self.camera.xy[0]
+                    draw_y = sprite.y + self.camera.xy[1]
 
                     if depth_layer_type == DepthLayer.SHADOW:
                         colour = Colour.BLACK
                         scale = self.screen_scale
-                        draw_x = sprite.x + (self.camera.x/2)
-                        draw_y = sprite.y + (self.camera.y/2)
+                        draw_x = sprite.x + (self.camera.xy[0]/2)
+                        draw_y = sprite.y + (self.camera.xy[1]/2)
 
                     elif depth_layer_type == DepthLayer.BACKGROUND:
-                        draw_x = sprite.x + (self.camera.x/4)
-                        draw_y = sprite.y + (self.camera.y/4)
+                        draw_x = sprite.x + (self.camera.xy[0]/4)
+                        draw_y = sprite.y + (self.camera.xy[1]/4)
 
                     if sprite.image == 'cursor':
                         draw_x = sprite.x
@@ -148,7 +134,6 @@ class Canvas:
         key = (sprite_name, colour, scale_rounded, rot_rounded)
         if key not in self.recolored_cache:
             sprite_img = sprite_img_original.copy()
-            print(key)
 
             if colour:
                 sprite_img.fill(rgb(colour), special_flags=pygame.BLEND_RGB_MULT)
