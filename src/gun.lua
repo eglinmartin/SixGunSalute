@@ -1,22 +1,17 @@
+local Class = require("src/hump/class")
 local Constants = require("src/constants")
+local Gun = Class{}
 
 
-local Gun = {
-    xy = {2, ScreenHeight-8},
-    ammo = {}
-}
-
-
-function Gun:new(owner)
-    local obj = {}
-    setmetatable(obj, {__index = Gun})
-    obj.owner = owner
+function Gun:init(owner)
+    self.owner = owner
+    self.xy = {2, ScreenHeight - 8}
+    self.ammo = {}
 
     for i = 1, 6 do
-        obj.ammo[i] = Constants.Tokens.AMMO_BRASSBULLET
+        self.ammo[i] = Constants.Tokens.AMMO_BRASSBULLET
     end
-
-    return obj
+    
 end
 
 

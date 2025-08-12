@@ -1,26 +1,18 @@
-local Gun = require("src/gun")
+local Class = require("src/hump/class")
 local Constants = require("src/constants")
+local Gun = require("src/gun")
+
+local Player = Class{}
 
 
-local Player = {
-}
-
-
-function Player:new()
-    local obj = {}
-    setmetatable(obj, {__index = Player})
-    return obj
-end
-
-
-function Player:load()
+function Player:init()
     self.sprite = love.graphics.newImage("assets/sprites/player/player_idle1.png")
     self.sprite:setFilter("nearest", "nearest")
     self.width = self.sprite:getWidth()
     self.height = self.sprite:getHeight()
-    
-    self.base_xy = {63, 75}
-    self.gun = Gun:new(self)
+
+    self.base_xy = {64, 75}
+    self.gun = Gun(self)
 end
 
 

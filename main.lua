@@ -13,13 +13,11 @@ function love.load()
 
     love.graphics.setBackgroundColor(75/255, 90/255, 87/255)
 
-    player = Player:new()
-    player:load()
-
+    player = Player()
 end
 
 
-function love.update()
+function love.update(dt)
 end
 
 
