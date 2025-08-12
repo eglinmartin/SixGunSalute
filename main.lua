@@ -33,7 +33,6 @@ end
 function love.draw()    
     -- camera:attach()
 
-
     player:draw()
 
     canvas:draw()
