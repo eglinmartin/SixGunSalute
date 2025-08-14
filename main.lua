@@ -34,7 +34,7 @@ function love.keypressed(key)
         player.gun:spin()
     end
     if key == "space" then
-        player.gun:shoot()
+        player:shoot()
     end
     if key == "escape" then
         love.event.quit()
@@ -59,8 +59,11 @@ function love.draw()
     love.graphics.pop()
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
-
-    -- camera:detach()
+    love.graphics.print("Shooting: " .. tostring(player.shooting), 10, 30)
+    if player.gun.selected_chamber then
+        love.graphics.print("Shooting: " .. tostring(player.gun.selected_chamber), 10, 50)
+        love.graphics.print("Shooting: " .. tostring(player.gun.ammo[player.gun.selected_chamber].type), 10, 70)
+    end
 end
 
 
