@@ -33,6 +33,7 @@ camera.__index = camera
 -- Movement interpolators (for camera locking/windowing)
 camera.smooth = {}
 
+
 function camera.smooth.none()
 	return function(dx,dy) return dx,dy end
 end
