@@ -1,3 +1,4 @@
+local anim8 = require("src/libraries/anim8")
 local Class = require("src/libraries/class")
 local Tokens = require("src/tokens")
 
@@ -27,8 +28,8 @@ function AnimatedSprite:init(animation, sprite_sheet_image, x, y, w, h, rotation
 end
 
 
-function Canvas:add_animated_sprite(animation, sprite_sheet_image, x, y, w, h, rotation, depth, shadow, background)
-    local sprite = AnimatedSprite(animation, sprite_sheet_image, x, y, w, h, rotation, depth, shadow, background)
+function Canvas:add_animated_sprite(animation, sprite_sheet_image, x, y, w, h, rotation, scale, depth, shadow, background)
+    local sprite = AnimatedSprite(animation, sprite_sheet_image, x, y, w, h, rotation, scale, depth, shadow, background)
 
     table.insert(self.sprites_foreground, sprite)
 
@@ -45,7 +46,7 @@ end
 
 function Canvas:draw()
     love.graphics.clear(75/255, 90/255, 87/255)
-
+    
     -- Draw the player sprite at its x, y position
     table.sort(self.sprites_foreground, function(a, b)
         return a.depth < b.depth

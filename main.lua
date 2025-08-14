@@ -3,6 +3,7 @@ ScreenWidth = 1920
 ScreenHeight = math.floor(ScreenWidth / 1.77777)
 ScreenScale = ScreenWidth/192
 
+local anim8 = require("src/libraries/anim8")
 local Camera = require("src/libraries/camera")
 local Canvas = require("src/canvas")
 local Player = require("src/player")
@@ -19,6 +20,8 @@ end
 
 function love.load()
     math.randomseed(os.time())
+    love.mouse.setVisible(false)
+
     camera = Camera(96 * ScreenScale, 54 * ScreenScale)
     canvas = Canvas()
 
@@ -26,6 +29,10 @@ function love.load()
 
     love.window.setTitle("Six-Gun Silliness")
     love.window.setMode(ScreenWidth, ScreenHeight, {fullscreen=false, vsync=true, resizable=false})
+
+    Cursor_sprite_sheet_image = love.graphics.newImage('assets/sprites/cursor.png')
+    local cursor_sprite_sheet = anim8.newGrid(8, 12, Cursor_sprite_sheet_image:getWidth(), Cursor_sprite_sheet_image:getHeight(), 0, 0, 1)
+    Animation_cursor = anim8.newAnimation(cursor_sprite_sheet('1-1', 1), 1)
 end
 
 
@@ -62,8 +69,11 @@ function love.draw()
     love.graphics.print("Shooting: " .. tostring(player.shooting), 10, 30)
     if player.gun.selected_chamber then
         love.graphics.print("Shooting: " .. tostring(player.gun.selected_chamber), 10, 50)
-        love.graphics.print("Shooting: " .. tostring(player.gun.ammo[player.gun.selected_chamber].type), 10, 70)
     end
+
+    local mouse_x, mouse_y = love.mouse.getPosition()
+    canvas:add_animated_sprite(Animation_cursor, Cursor_sprite_sheet_image, mouse_x / ScreenScale, mouse_y / ScreenScale, 8, 12, 0, 1, 257, true, false)
+    love.graphics.print("Shooting: " .. tostring(mouse_x) .. (mouse_y), 10, 70)
 end
 
 

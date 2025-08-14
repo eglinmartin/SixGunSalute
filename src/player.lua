@@ -43,7 +43,7 @@ function Player:shoot()
     if self.gun.selected_chamber and self.gun.ammo[self.gun.selected_chamber].type == 'AMMO' then
         self.shooting = true
         self.shoot_cooldown = 30
-        self.xy[1] = self.xy[1] - 16
+        self.xy[1] = self.xy[1] - 12
         self.gun:shoot()
     end
 end
