@@ -40,6 +40,15 @@ function love.load()
 end
 
 
+function love.keypressed(key)
+    if key == "1" then
+        GameState.switch(gamestate_gunfight, canvas, player)
+    elseif key == "2" then
+        GameState.switch(gamestate_shop, canvas, player)
+    end
+end
+
+
 function gamestate_gunfight:enter(previous, canvas, player)
 end
 
@@ -72,8 +81,6 @@ end
 function gamestate_gunfight:keypressed(key)
     if key == "a" then
         player.gun:spin()
-    elseif key == "s" then
-        GameState.switch(gamestate_shop, canvas, player)
     elseif key == "space" then
         player:shoot()
     elseif key == "escape" then
