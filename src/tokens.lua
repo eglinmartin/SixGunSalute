@@ -29,11 +29,12 @@ end
 
 local token_list = {
     AMMO_BRASSBULLET = Token(1, 'AMMO', 'Brass bullet', AbilityTypes.DAMAGE, 2, true),
-    AMMO_SILVERBULLET = Token(2, 'AMMO', 'Silver bullet', AbilityTypes.DAMAGE, 2, true),
-    AMMO_GOLDBULLET = Token(3, 'AMMO', 'Gold bullet', AbilityTypes.DAMAGE, 2, true),
-    AMMO_TITANIUMBULLET = Token(4, 'AMMO', 'Titanium bullet', AbilityTypes.DAMAGE, 2, true),
-    AMMO_PLUTONIUMBULLET = Token(5, 'AMMO', 'Plutonium bullet', AbilityTypes.DAMAGE, 2, true),
-    HEALTH_GIN = Token(6, 'HEALTH', 'Gin', AbilityTypes.DAMAGE, 2, true)
+    AMMO_SILVERBULLET = Token(2, 'AMMO', 'Silver bullet', AbilityTypes.DAMAGE, 2, false),
+    AMMO_GOLDBULLET = Token(3, 'AMMO', 'Gold bullet', AbilityTypes.DAMAGE, 2, false),
+    AMMO_TITANIUMBULLET = Token(4, 'AMMO', 'Titanium bullet', AbilityTypes.DAMAGE, 2, false),
+    AMMO_PLUTONIUMBULLET = Token(5, 'AMMO', 'Plutonium bullet', AbilityTypes.DAMAGE, 2, false),
+    HEALTH_GIN = Token(6, 'HEALTH', 'Gin', AbilityTypes.HEALTH, 2, false)
+
 }
 
 

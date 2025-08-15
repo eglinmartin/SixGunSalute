@@ -69,6 +69,9 @@ function Canvas:draw()
     end
     self.sprites_foreground = {}
 
+    love.graphics.setColor(0/255, 0/255, 0/255, 1)
+    love.graphics.rectangle("fill", 0, 108, 192, 108)
+
 end
 
 
