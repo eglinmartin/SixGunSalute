@@ -56,11 +56,10 @@ function Player:return_to_xy()
 end
 
 
-function Player:update(dt)
+function Player:update(dt, time)
     self.animation:update(dt)
     self.animation_head:update(dt)
 
-    local time = love.timer.getTime()
     self.rotation = math.sin(time * 1) * 0.05
     self.scale = math.sin(time * 1.75) * 0.025 + 1.025
 

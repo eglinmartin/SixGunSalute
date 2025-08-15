@@ -45,7 +45,8 @@ end
 
 
 function gamestate_gunfight:update(dt)
-    player:update(dt)
+    local time = love.timer.getTime()
+    player:update(dt, time)
 end
 
 
@@ -86,7 +87,15 @@ function gamestate_shop:enter(previous, canvas, player)
     self.shop = Shop(canvas)
 end
 
-function gamestate_shop:draw(previous, canvas, player)
+
+function gamestate_shop:update()
+    local time = love.timer.getTime()
+    local mouse_x, mouse_y = love.mouse.getPosition()
+    self.shop:update(time, mouse_x, mouse_y)
+end
+
+
+function gamestate_shop:draw()
     love.graphics.push()
     love.graphics.scale(ScreenScale, ScreenScale)
 
