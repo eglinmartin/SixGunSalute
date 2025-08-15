@@ -36,7 +36,7 @@ function love.load()
     canvas = Canvas()
     player = Player(canvas)
 
-    GameState.switch(gamestate_shop, canvas, player)
+    GameState.switch(gamestate_gunfight, canvas, player)
 end
 
 
@@ -72,6 +72,8 @@ end
 function gamestate_gunfight:keypressed(key)
     if key == "a" then
         player.gun:spin()
+    elseif key == "s" then
+        GameState.switch(gamestate_shop, canvas, player)
     elseif key == "space" then
         player:shoot()
     elseif key == "escape" then
@@ -84,7 +86,7 @@ end
 function gamestate_shop:enter(previous, canvas, player)
     self.player = player
     self.canvas = canvas
-    self.shop = Shop(canvas)
+    self.shop = Shop(canvas, player)
 end
 
 

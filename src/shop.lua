@@ -5,8 +5,9 @@ local Tokens = require("src/tokens")
 local Shop = Class{}
 
 
-function Shop:init(canvas)
+function Shop:init(canvas, player)
     self.canvas = canvas
+    self.player = player
     self.randomized_token_ids = {}
     self.randomized_card_ids = {}
 
@@ -79,6 +80,13 @@ function Shop:draw()
     -- Draw shop hud (sign, text, buttons)
     self.canvas:add_animated_sprite(self.shop_sign_sprite, self.shop_sign_sprite_sheet_image, 54, 23, 38, 12, self.shop_sign_rotation, self.shop_sign_scale, 255, true, false)
 
+    -- Draw player's current gun barrel
+    local barrel_coordinates = {{132.5, 31.5}, {151.5, 42.5}, {151.5, 64.5}, {131.5, 76.5}, {112.5, 64.5}, {112.5, 42.5}}
+    for i = 1, #self.player.gun.ammo do
+        if self.player.gun.ammo[i] ~= 'empty' then
+            self.canvas:add_animated_sprite(self.player.gun.ammo[i].sprite, self.player.gun.ammo[i].sprite_sheet_image, barrel_coordinates[i][1], barrel_coordinates[i][2], 15, 15, 0, 1, 252, true, false)
+        end
+    end
     
     for i = 1, #self.tokens do
         self.canvas:add_animated_sprite(self.tokens[i].sprite, self.tokens[i].sprite_sheet_image, self.token_grid[i][1], self.token_grid[i][2], 15, 15, 0, self.tokens[i].scale, 252, true, false)
