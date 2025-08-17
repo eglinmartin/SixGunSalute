@@ -44,44 +44,39 @@ function Shop:init(canvas, player)
 
     -- Create list of all cards
     self.all_cards = {}
-    self.card_grid = {{32, 53}, {46, 53}, {60, 53}, {74, 53}}
+    self.card_grid = {{34, 53}, {48, 53}, {62, 53}, {76, 53}}
     for _, card in pairs(Cards) do
         table.insert(self.all_cards, card)
     end
 
-    if self.current_mode == self.modes.TOKENS then
-        self:restock(self.current_mode, self.all_tokens, self.tokens)
-    elseif self.current_mode == self.modes.CARDS then
-        self:restock(self.current_mode, self.all_cards, self.cards)
-    end
+    self:restock()
 end
 
 
-function Shop:restock(current_mode, all_list, stock_list)
-    local keys = {}
-    local stock_count
-
-    if current_mode == self.modes.TOKENS then
-        stock_count = 6
-    elseif current_mode == self.modes.CARDS then
-        stock_count = 4
-    end
-
-    for k in pairs(all_list) do
-        table.insert(keys, k)
-    end
-
-    for i = #keys, 2, -1 do
+function Shop:restock()
+    -- Restock tokens
+    local token_keys = {}
+    for k in pairs(self.all_tokens) do table.insert(token_keys, k) end
+    for i = #token_keys, 2, -1 do
         local j = math.random(i)
-        keys[i], keys[j] = keys[j], keys[i]
+        token_keys[i], token_keys[j] = token_keys[j], token_keys[i]
+    end
+    for i = 1, 6 do
+        local key = token_keys[i]
+        self.tokens[i] = self.all_tokens[key]
     end
 
-    for i = 1, stock_count do
-        local key = keys[i]
-        stock_list[i] = all_list[key]
+    -- Restock cards
+    local card_keys = {}
+    for k in pairs(self.all_cards) do table.insert(card_keys, k) end
+    for i = #card_keys, 2, -1 do
+        local j = math.random(i)
+        card_keys[i], card_keys[j] = card_keys[j], card_keys[i]
     end
-
-    print(stock_list[1].name, stock_list[2].name, stock_list[3].name, stock_list[4].name)
+    for i = 1, 4 do
+        local key = card_keys[i]
+        self.cards[i] = self.all_cards[key]
+    end
 
 end
 
@@ -95,10 +90,14 @@ end
 function Shop:draw()
     -- Draw shop hud (sign, text, buttons)
     self.canvas:add_animated_sprite(self.shop_sign_sprite, self.shop_sign_sprite_sheet_image, 54, 23, 38, 12, self.shop_sign_rotation, self.shop_sign_scale, 255, true, false)
-    
     self.canvas:add_animated_sprite(self.arrows_sprites[1], self.arrows_sprite_sheet_image, 30, 79, 7, 7, 0, 1, 255, true, false)
-    self.text_tokens = self.canvas:draw_letters_to_numbers('tokens', 41.5, 80, 'white')
     self.canvas:add_animated_sprite(self.arrows_sprites[3], self.arrows_sprite_sheet_image, 74, 79, 7, 7, 0, 1, 255, true, false)
+
+    if self.current_mode == self.modes.TOKENS then
+        self.text_tokens = self.canvas:draw_letters_to_numbers('tokens', 41.5, 80, 'white')
+    elseif self.current_mode == self.modes.CARDS then
+        self.text_tokens = self.canvas:draw_letters_to_numbers('cards', 43.5, 80, 'white')
+    end
 
     -- Add player info
     self.canvas:add_animated_sprite(self.player.animation_icons[1], self.player.icons_sprite_sheet_image, 32, 92, 7, 7, 0, 1, 1, true, false)
@@ -128,7 +127,7 @@ function Shop:draw()
             self.canvas:add_animated_sprite(self.cards[i].sprite, self.cards[i].sprite_sheet_image, self.card_grid[i][1], self.card_grid[i][2], 15, 15, 0, self.cards[i].scale, 252, true, false)
         end
 
-        local poker_hand_grid = {{103, 84}, {117, 84}, {131, 84}, {145, 84}, {159, 84},}
+        local poker_hand_grid = {{106.5, 84}, {120.5, 84}, {134.5, 84}, {148.5, 84}, {162.5, 84},}
         for i = 1, 5 do
             self.canvas:add_animated_sprite(self.empty_card_sprite, self.card_sprite_sheet_image, poker_hand_grid[i][1], poker_hand_grid[i][2], 15, 15, 0, 1, 252, true, false)
         end

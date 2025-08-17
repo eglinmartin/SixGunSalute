@@ -97,6 +97,17 @@ function gamestate_shop:enter(previous, canvas, player)
 end
 
 
+function gamestate_shop:keypressed(key)
+    if key == "q" then
+        if self.shop.current_mode == self.shop.modes.TOKENS then
+            self.shop.current_mode = self.shop.modes.CARDS
+        elseif self.shop.current_mode == self.shop.modes.CARDS then
+            self.shop.current_mode = self.shop.modes.TOKENS
+        end
+    end
+end
+
+
 function gamestate_shop:update()
     local time = love.timer.getTime()
     local mouse_x, mouse_y = love.mouse.getPosition()
