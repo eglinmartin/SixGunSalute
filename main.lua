@@ -1,5 +1,5 @@
-ScreenWidth, ScreenHeight = love.window.getDesktopDimensions()
--- ScreenWidth = 1920
+-- ScreenWidth, ScreenHeight = love.window.getDesktopDimensions()
+ScreenWidth = 800
 ScreenHeight = math.floor(ScreenWidth / 1.77777)
 ScreenScale = ScreenWidth/192
 
@@ -29,7 +29,7 @@ function love.load()
     -- love.mouse.setVisible(false)
 
     love.window.setTitle("Six-Gun Silliness")
-    love.window.setMode(ScreenWidth, ScreenHeight, {fullscreen=true, vsync=true, resizable=false})
+    love.window.setMode(ScreenWidth, ScreenHeight, {fullscreen=false, vsync=true, resizable=false})
 
     GameState.registerEvents()
 

@@ -3,7 +3,7 @@ local Class = require("src/libraries/class")
 local Timer = require("src/libraries/timer")
 
 local Canvas = require("src/canvas")
-local Tokens = require("src/tokens")
+local Tokens = require("src/tokens").Tokens
 
 
 local Gun = Class{}
