@@ -44,7 +44,7 @@ function Card:init(id, type, name, ability_type, ability_val, active)
 
     local columnsPerRow = math.floor(self.sprite_sheet_image:getWidth() / 11) - 1
     local x = ((self.id - 1) % columnsPerRow) + 1
-    local y = math.floor((id - 1) / columnsPerRow) + 1
+    local y = math.floor((self.id - 1) / columnsPerRow) + 1
 
     self.sprite = anim8.newAnimation(sprite_sheet(x, y), 1)
 end

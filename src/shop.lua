@@ -26,14 +26,24 @@ function Shop:init(canvas, player)
     self.arrows_sprite_sheet_image = love.graphics.newImage('assets/sprites/arrows.png')
     local arrows_sign_sprite_sheet = anim8.newGrid(8, 8, self.arrows_sprite_sheet_image:getWidth(), self.arrows_sprite_sheet_image:getHeight(), 0, 0, 0)
     self.arrows_sprites = {}
-    for i = 1, 4 do
-        self.arrows_sprites[i] = anim8.newAnimation(arrows_sign_sprite_sheet(i, 1), 1)
-    end
+    for i = 1, 4 do self.arrows_sprites[i] = anim8.newAnimation(arrows_sign_sprite_sheet(i, 1), 1) end
 
     -- Create empty card sprite
     self.card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards.png')
     local sprite_sheet = anim8.newGrid(11, 15, self.card_sprite_sheet_image:getWidth(), self.card_sprite_sheet_image:getHeight(), 0, 0, 1)
     self.empty_card_sprite = anim8.newAnimation(sprite_sheet(1, 5), 1)
+    for i = 1, 4 do self.arrows_sprites[i] = anim8.newAnimation(arrows_sign_sprite_sheet(i, 1), 1) end
+
+    -- Create large card sprites
+    self.large_card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards_large.png')
+    local large_card_sprite_sheet = anim8.newGrid(33, 47, self.large_card_sprite_sheet_image:getWidth(), self.large_card_sprite_sheet_image:getHeight(), 0, 0, 1)
+    self.large_card_sprites = {}
+    for i=1, 52 do
+        local columnsPerRow = 13
+        local x = ((i - 1) % columnsPerRow) + 1
+        local y = math.floor((i - 1) / columnsPerRow) + 1
+        self.large_card_sprites[i] = anim8.newAnimation(large_card_sprite_sheet(x, y), 1)
+    end
 
     -- Create list of all tokens
     self.all_tokens = {}
@@ -50,6 +60,9 @@ function Shop:init(canvas, player)
     end
 
     self:restock()
+
+    self.stock_animations = {0, 0, 0, 0, 0, 0}
+    self:animate_stock()
 end
 
 
@@ -81,11 +94,30 @@ function Shop:restock()
 end
 
 
+function Shop:animate_stock()
+    self.stock_clock = 0
+    self.stock_time_interval = 3
+    self.stock_animations = {-1, -1, -1, -1, -1, -1}
+end
+
+
 function Shop:update(time, mouse_x, mouse_y)
     self.shop_sign_rotation = math.sin(time * 0.8) * 0.03
     self.shop_sign_scale = math.sin(time * 1.5) * 0.025 + 1.025
-end
 
+    self.stock_clock = self.stock_clock + 1
+
+    for i = 1, #self.stock_animations do
+        if self.stock_animations[i] == -1 then
+            if self.stock_clock > self.stock_time_interval * (i-1) then
+                self.stock_animations[i] = 3
+            end
+        end
+        if self.stock_animations[i] > 0 then
+            self.stock_animations[i] = self.stock_animations[i] - 1
+        end
+    end
+end
 
 function Shop:draw()
     -- Draw shop hud (sign, text, buttons)
@@ -118,17 +150,22 @@ function Shop:draw()
         end
 
         for i = 1, #self.tokens do
-            self.canvas:add_animated_sprite(self.tokens[i].sprite, self.tokens[i].sprite_sheet_image, self.token_grid[i][1], self.token_grid[i][2], 15, 15, 0, self.tokens[i].scale, 252, true, false)
+            if self.stock_clock > self.stock_time_interval * (i-1) then
+                self.canvas:add_animated_sprite(self.tokens[i].sprite, self.tokens[i].sprite_sheet_image, self.token_grid[i][1], self.token_grid[i][2] + self.stock_animations[i], 15, 15, 0, self.tokens[i].scale, 252, true, false)
+            end
         end
     end
 
     if self.current_mode == self.modes.CARDS then
         for i = 1, #self.cards do
-            self.canvas:add_animated_sprite(self.cards[i].sprite, self.cards[i].sprite_sheet_image, self.card_grid[i][1], self.card_grid[i][2], 15, 15, 0, self.cards[i].scale, 252, true, false)
+            if self.stock_clock > self.stock_time_interval * (i-1) then
+                self.canvas:add_animated_sprite(self.cards[i].sprite, self.cards[i].sprite_sheet_image, self.card_grid[i][1], self.card_grid[i][2] + self.stock_animations[i], 15, 15, 0, self.cards[i].scale, 252, true, false)
+            end
         end
+        self.canvas:add_animated_sprite(self.large_card_sprites[self.cards[1].id], self.large_card_sprite_sheet_image, 123.5, 24, 15, 15, 0, 1, 252, true, false)
 
-        local poker_hand_grid = {{106.5, 84}, {120.5, 84}, {134.5, 84}, {148.5, 84}, {162.5, 84},}
-        for i = 1, 5 do
+        local poker_hand_grid = {{113.5, 84}, {127.5, 84}, {141.5, 84}, {155.5, 84}}
+        for i = 1, 4 do
             self.canvas:add_animated_sprite(self.empty_card_sprite, self.card_sprite_sheet_image, poker_hand_grid[i][1], poker_hand_grid[i][2], 15, 15, 0, 1, 252, true, false)
         end
     end

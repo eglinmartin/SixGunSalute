@@ -1,5 +1,5 @@
 -- ScreenWidth, ScreenHeight = love.window.getDesktopDimensions()
-ScreenWidth = 1280
+ScreenWidth = 800
 ScreenHeight = math.floor(ScreenWidth / 1.77777)
 ScreenScale = ScreenWidth/192
 
@@ -98,11 +98,13 @@ end
 
 
 function gamestate_shop:keypressed(key)
-    if key == "q" then
+    if key == "d" or key == "a" then
         if self.shop.current_mode == self.shop.modes.TOKENS then
             self.shop.current_mode = self.shop.modes.CARDS
+            self.shop:animate_stock()
         elseif self.shop.current_mode == self.shop.modes.CARDS then
             self.shop.current_mode = self.shop.modes.TOKENS
+            self.shop:animate_stock()
         end
     end
 end
