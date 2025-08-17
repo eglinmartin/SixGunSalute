@@ -1,5 +1,5 @@
 -- ScreenWidth, ScreenHeight = love.window.getDesktopDimensions()
-ScreenWidth = 800
+ScreenWidth = 1280
 ScreenHeight = math.floor(ScreenWidth / 1.77777)
 ScreenScale = ScreenWidth/192
 

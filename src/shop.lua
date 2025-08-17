@@ -13,22 +13,27 @@ function Shop:init(canvas, player)
     self.randomized_card_ids = {}
 
     self.modes = {TOKENS = 'Tokens', CARDS = 'Cards'}
-    self.current_mode = self.modes.CARDS
+    self.current_mode = self.modes.TOKENS
     self.tokens = {}
     self.cards = {}
-
-    -- Create barrel sprites
-    self.barrel_sprite_sheet_image = love.graphics.newImage('assets/sprites/barrel.png')
-    local barrel_sprite_sheet = anim8.newGrid(72, 72, self.barrel_sprite_sheet_image:getWidth(), self.barrel_sprite_sheet_image:getHeight(), 0, 0, 0)
-    self.barrel_sprites = {}
-    for i = 1, 2 do
-        self.barrel_sprites[i] = anim8.newAnimation(barrel_sprite_sheet(i, 1), 1)
-    end
 
     -- Create hud sprites
     self.shop_sign_sprite_sheet_image = love.graphics.newImage('assets/sprites/title_shop.png')
     local shop_sign_sprite_sheet = anim8.newGrid(38, 12, self.shop_sign_sprite_sheet_image:getWidth(), self.shop_sign_sprite_sheet_image:getHeight(), 0, 0, 0)
     self.shop_sign_sprite = anim8.newAnimation(shop_sign_sprite_sheet(1, 1), 1)
+
+    -- Create hud sprites
+    self.arrows_sprite_sheet_image = love.graphics.newImage('assets/sprites/arrows.png')
+    local arrows_sign_sprite_sheet = anim8.newGrid(8, 8, self.arrows_sprite_sheet_image:getWidth(), self.arrows_sprite_sheet_image:getHeight(), 0, 0, 0)
+    self.arrows_sprites = {}
+    for i = 1, 4 do
+        self.arrows_sprites[i] = anim8.newAnimation(arrows_sign_sprite_sheet(i, 1), 1)
+    end
+
+    -- Create empty card sprite
+    self.card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards.png')
+    local sprite_sheet = anim8.newGrid(11, 15, self.card_sprite_sheet_image:getWidth(), self.card_sprite_sheet_image:getHeight(), 0, 0, 1)
+    self.empty_card_sprite = anim8.newAnimation(sprite_sheet(1, 5), 1)
 
     -- Create list of all tokens
     self.all_tokens = {}
@@ -90,10 +95,20 @@ end
 function Shop:draw()
     -- Draw shop hud (sign, text, buttons)
     self.canvas:add_animated_sprite(self.shop_sign_sprite, self.shop_sign_sprite_sheet_image, 54, 23, 38, 12, self.shop_sign_rotation, self.shop_sign_scale, 255, true, false)
+    
+    self.canvas:add_animated_sprite(self.arrows_sprites[1], self.arrows_sprite_sheet_image, 30, 79, 7, 7, 0, 1, 255, true, false)
+    self.text_tokens = self.canvas:draw_letters_to_numbers('tokens', 41.5, 80, 'white')
+    self.canvas:add_animated_sprite(self.arrows_sprites[3], self.arrows_sprite_sheet_image, 74, 79, 7, 7, 0, 1, 255, true, false)
+
+    -- Add player info
+    self.canvas:add_animated_sprite(self.player.animation_icons[1], self.player.icons_sprite_sheet_image, 32, 92, 7, 7, 0, 1, 1, true, false)
+    self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.health, 38.5, 92, 'red')
+    self.canvas:add_animated_sprite(self.player.animation_icons[2], self.player.icons_sprite_sheet_image, 56, 92, 7, 7, 0, 1, 1, true, false)
+    self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.money, 66.5, 92, 'yellow')
 
     if self.current_mode == self.modes.TOKENS then
-        self.canvas:add_animated_sprite(self.barrel_sprites[1], self.barrel_sprite_sheet_image, 132, 54, 72, 72, 0, 1, 250, true, false)
-        self.canvas:add_animated_sprite(self.barrel_sprites[2], self.barrel_sprite_sheet_image, 132, 54, 72, 72, self.rotation, 1, 251, true, false)
+        self.canvas:add_animated_sprite(self.player.gun.barrel_sprites[1], self.player.gun.barrel_sprite_sheet_image, 132, 54, 72, 72, 0, 1, 250, true, false)
+        self.canvas:add_animated_sprite(self.player.gun.barrel_sprites[2], self.player.gun.barrel_sprite_sheet_image, 132, 54, 72, 72, self.rotation, 1, 251, true, false)
 
         -- Draw player's current gun barrel
         local barrel_coordinates = {{132.5, 31.5}, {151.5, 42.5}, {151.5, 64.5}, {131.5, 76.5}, {112.5, 64.5}, {112.5, 42.5}}
@@ -113,8 +128,11 @@ function Shop:draw()
             self.canvas:add_animated_sprite(self.cards[i].sprite, self.cards[i].sprite_sheet_image, self.card_grid[i][1], self.card_grid[i][2], 15, 15, 0, self.cards[i].scale, 252, true, false)
         end
 
+        local poker_hand_grid = {{103, 84}, {117, 84}, {131, 84}, {145, 84}, {159, 84},}
+        for i = 1, 5 do
+            self.canvas:add_animated_sprite(self.empty_card_sprite, self.card_sprite_sheet_image, poker_hand_grid[i][1], poker_hand_grid[i][2], 15, 15, 0, 1, 252, true, false)
+        end
     end
- 
 
 end
 

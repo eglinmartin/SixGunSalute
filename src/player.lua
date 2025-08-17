@@ -1,7 +1,6 @@
 local anim8 = require("src/libraries/anim8")
 local Class = require("src/libraries/class")
 local Canvas = require("src/canvas")
-local Constants = require("src/constants")
 local Gun = require("src/gun")
 
 local Player = Class{}
@@ -13,6 +12,9 @@ function Player:init(canvas, camera)
     self.canvas = canvas
     self.camera = camera
     self.gun = Gun(self, self.canvas, self.camera)
+
+    self.health = 5
+    self.money = 0
 
     self.shooting = false
     self.shoot_cooldown = 0
@@ -86,8 +88,8 @@ function Player:draw()
 
     -- Draw player head and hud elements
     self.canvas:add_animated_sprite(self.animation_head, self.head_sprite_sheet_image, 16, 18, 18, 15, self.rotation, self.scale, 1, true, false)
-    self.canvas:add_animated_sprite(self.animation_icons[1], self.icons_sprite_sheet_image, 20, 38, 18, 15, 0, 1, 1, true, false)
-    self.canvas:add_animated_sprite(self.animation_icons[2], self.icons_sprite_sheet_image, 20, 48, 18, 15, 0, 1, 1, true, false)
+    self.canvas:add_animated_sprite(self.animation_icons[1], self.icons_sprite_sheet_image, 20, 38, 7, 7, 0, 1, 1, true, false)
+    self.canvas:add_animated_sprite(self.animation_icons[2], self.icons_sprite_sheet_image, 20, 48, 7, 7, 0, 1, 1, true, false)
 
     self.gun:draw()
 end

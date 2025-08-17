@@ -26,7 +26,6 @@ function Token:init(id, type, name, ability_type, ability_val, discovered)
     local columnsPerRow = math.floor(self.sprite_sheet_image:getWidth() / 15)
     local x = ((self.id - 1) % columnsPerRow) + 1
     local y = math.floor((id - 1) / columnsPerRow) + 1
-
     self.sprite = anim8.newAnimation(sprite_sheet(x, y), 1)
 end
 
