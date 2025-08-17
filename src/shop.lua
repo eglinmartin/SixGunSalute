@@ -32,7 +32,6 @@ function Shop:init(canvas, player)
     self.card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards.png')
     local sprite_sheet = anim8.newGrid(11, 15, self.card_sprite_sheet_image:getWidth(), self.card_sprite_sheet_image:getHeight(), 0, 0, 1)
     self.empty_card_sprite = anim8.newAnimation(sprite_sheet(1, 5), 1)
-    for i = 1, 4 do self.arrows_sprites[i] = anim8.newAnimation(arrows_sign_sprite_sheet(i, 1), 1) end
 
     -- Create large card sprites
     self.large_card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards_large.png')
@@ -45,9 +44,12 @@ function Shop:init(canvas, player)
         self.large_card_sprites[i] = anim8.newAnimation(large_card_sprite_sheet(x, y), 1)
     end
 
+    -- Create large card back sprite
+    self.card_back_sprite = anim8.newAnimation(large_card_sprite_sheet(1, 5), 1)
+
     -- Create list of all tokens
     self.all_tokens = {}
-    self.token_grid = {{33, 42}, {53, 42}, {73, 42}, {33, 60}, {53, 60}, {73, 60}}
+    self.token_grid = {{33, 43}, {53, 43}, {73, 43}, {33, 61}, {53, 61}, {73, 61}}
     for _, token in pairs(Tokens) do
         table.insert(self.all_tokens, token)
     end
@@ -90,7 +92,6 @@ function Shop:restock()
         local key = card_keys[i]
         self.cards[i] = self.all_cards[key]
     end
-
 end
 
 
@@ -132,20 +133,20 @@ function Shop:draw()
     end
 
     -- Add player info
-    self.canvas:add_animated_sprite(self.player.animation_icons[1], self.player.icons_sprite_sheet_image, 32, 92, 7, 7, 0, 1, 1, true, false)
-    self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.health, 38.5, 92, 'red')
+    self.canvas:add_animated_sprite(self.player.animation_icons[1], self.player.icons_sprite_sheet_image, 36, 92, 7, 7, 0, 1, 1, true, false)
+    self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.health, 42.5, 92, 'red')
     self.canvas:add_animated_sprite(self.player.animation_icons[2], self.player.icons_sprite_sheet_image, 56, 92, 7, 7, 0, 1, 1, true, false)
     self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.money, 66.5, 92, 'yellow')
 
     if self.current_mode == self.modes.TOKENS then
         self.canvas:add_animated_sprite(self.player.gun.barrel_sprites[1], self.player.gun.barrel_sprite_sheet_image, 132, 54, 72, 72, 0, 1, 250, true, false)
-        self.canvas:add_animated_sprite(self.player.gun.barrel_sprites[2], self.player.gun.barrel_sprite_sheet_image, 132, 54, 72, 72, self.rotation, 1, 251, true, false)
+        self.canvas:add_animated_sprite(self.player.gun.barrel_sprites[2], self.player.gun.barrel_sprite_sheet_image, 132, 54, 72, 72, 0, 1, 251, true, false)
 
         -- Draw player's current gun barrel
         local barrel_coordinates = {{132.5, 31.5}, {151.5, 42.5}, {151.5, 64.5}, {131.5, 76.5}, {112.5, 64.5}, {112.5, 42.5}}
         for i = 1, #self.player.gun.ammo do
             if self.player.gun.ammo[i] ~= 'empty' then
-                self.canvas:add_animated_sprite(self.player.gun.ammo[i].sprite, self.player.gun.ammo[i].sprite_sheet_image, barrel_coordinates[i][1], barrel_coordinates[i][2], 15, 15, 0, 1, 252, true, false)
+                self.canvas:add_animated_sprite(self.player.gun.ammo[i].sprite, self.player.gun.ammo[i].sprite_sheet_image, barrel_coordinates[i][1], barrel_coordinates[i][2], 15, 15, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
             end
         end
 
@@ -162,7 +163,7 @@ function Shop:draw()
                 self.canvas:add_animated_sprite(self.cards[i].sprite, self.cards[i].sprite_sheet_image, self.card_grid[i][1], self.card_grid[i][2] + self.stock_animations[i], 15, 15, 0, self.cards[i].scale, 252, true, false)
             end
         end
-        self.canvas:add_animated_sprite(self.large_card_sprites[self.cards[1].id], self.large_card_sprite_sheet_image, 123.5, 24, 15, 15, 0, 1, 252, true, false)
+        self.canvas:add_animated_sprite(self.card_back_sprite, self.large_card_sprite_sheet_image, 132.5, 40, 33, 47, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
 
         local poker_hand_grid = {{113.5, 84}, {127.5, 84}, {141.5, 84}, {155.5, 84}}
         for i = 1, 4 do
