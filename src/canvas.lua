@@ -15,7 +15,8 @@ function Canvas:init()
     self.text_white_sprite_sheet = anim8.newGrid(7, 7, self.text_white_sprite_sheet_image:getWidth(), self.text_white_sprite_sheet_image:getHeight(), 0, 0, 1)
 
     self.text_yellow_sprite_sheet_image = love.graphics.newImage('assets/sprites/text_yellow.png')
-    self.text_yellow_sprite_sheet = anim8.newGrid(7, 7, self.text_yellow_sprite_sheet_image:getWidth(), self.text_yellow_sprite_sheet_image:getHeight(), 0, 0, 1)
+    self.text_yellow_sprite_sheet = anim8.newGrid(7, 9, self.text_yellow_sprite_sheet_image:getWidth(), self.text_yellow_sprite_sheet_image:getHeight(), 0, 0, 1)
+    self.digit_sprite = anim8.newAnimation(self.text_yellow_sprite_sheet(1, 5), 1)
 
     self.text_red_sprite_sheet_image = love.graphics.newImage('assets/sprites/text_red.png')
     self.text_red_sprite_sheet = anim8.newGrid(7, 7, self.text_red_sprite_sheet_image:getWidth(), self.text_red_sprite_sheet_image:getHeight(), 0, 0, 1)

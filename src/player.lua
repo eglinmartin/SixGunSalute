@@ -88,8 +88,13 @@ function Player:draw()
 
     -- Draw player head and hud elements
     self.canvas:add_animated_sprite(self.animation_head, self.head_sprite_sheet_image, 16, 18, 18, 15, self.rotation, self.scale, 1, true, false)
+
     self.canvas:add_animated_sprite(self.animation_icons[1], self.icons_sprite_sheet_image, 14.5, 33, 7, 7, 0, 1, 1, true, false)
+    self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 21, 33, 'red')
+
     self.canvas:add_animated_sprite(self.animation_icons[2], self.icons_sprite_sheet_image, 14.5, 43, 7, 7, 0, 1, 1, true, false)
+    self.canvas:add_animated_sprite(self.canvas.digit_sprite, self.canvas.text_yellow_sprite_sheet_image, 22.5, 43, 7, 9, 0, 1, 1, true, false)
+    self.text_money = self.canvas:draw_letters_to_numbers(self.money, 25, 42, 'yellow')
 
     self.gun:draw()
 end

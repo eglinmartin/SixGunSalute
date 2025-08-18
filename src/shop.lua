@@ -17,6 +17,9 @@ function Shop:init(canvas, player)
     self.tokens = {}
     self.cards = {}
 
+    self.selection = 0
+    self.selection_scale = 1
+
     -- Create hud sprites
     self.shop_sign_sprite_sheet_image = love.graphics.newImage('assets/sprites/title_shop.png')
     local shop_sign_sprite_sheet = anim8.newGrid(38, 12, self.shop_sign_sprite_sheet_image:getWidth(), self.shop_sign_sprite_sheet_image:getHeight(), 0, 0, 0)
@@ -32,6 +35,7 @@ function Shop:init(canvas, player)
     self.card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards.png')
     local sprite_sheet = anim8.newGrid(11, 15, self.card_sprite_sheet_image:getWidth(), self.card_sprite_sheet_image:getHeight(), 0, 0, 1)
     self.empty_card_sprite = anim8.newAnimation(sprite_sheet(1, 5), 1)
+    self.card_selection_sprite = anim8.newAnimation(sprite_sheet(2, 5), 1)
 
     -- Create large card sprites
     self.large_card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards_large.png')
@@ -56,15 +60,33 @@ function Shop:init(canvas, player)
 
     -- Create list of all cards
     self.all_cards = {}
-    self.card_grid = {{34, 53}, {48, 53}, {62, 53}, {76, 53}}
+    self.card_grid = {{32, 53}, {46, 53}, {60, 53}, {74, 53}}
     for _, card in pairs(Cards) do
         table.insert(self.all_cards, card)
     end
 
     self:restock()
-
     self.stock_animations = {0, 0, 0, 0, 0, 0}
     self:animate_stock()
+end
+
+
+function Shop:select(direction)
+    if not self.selection then
+        self.selection = 1
+    end
+
+    local max_selection = 0
+    if self.current_mode == self.modes.TOKENS then max_selection = 6 end
+    if self.current_mode == self.modes.CARDS then max_selection = 4 end
+
+    if direction == 'right' and self.selection < max_selection then
+        self.selection = self.selection + 1
+        self.selection_scale = 1.25
+    elseif direction == 'left' and self.selection > 1 then
+        self.selection = self.selection - 1
+        self.selection_scale = 1.25
+    end
 end
 
 
@@ -97,7 +119,8 @@ end
 
 function Shop:animate_stock()
     self.stock_clock = 0
-    self.stock_time_interval = 3
+    self.stock_time_interval = 2
+    if self.current_mode == self.modes.CARDS then self.stock_time_interval = 3 end
     self.stock_animations = {-1, -1, -1, -1, -1, -1}
 end
 
@@ -105,6 +128,10 @@ end
 function Shop:update(time, mouse_x, mouse_y)
     self.shop_sign_rotation = math.sin(time * 0.8) * 0.03
     self.shop_sign_scale = math.sin(time * 1.5) * 0.025 + 1.025
+
+    if self.selection_scale > 1 then
+        self.selection_scale = self.selection_scale - 0.05
+    end
 
     self.stock_clock = self.stock_clock + 1
 
@@ -120,7 +147,9 @@ function Shop:update(time, mouse_x, mouse_y)
     end
 end
 
+
 function Shop:draw()
+
     -- Draw shop hud (sign, text, buttons)
     self.canvas:add_animated_sprite(self.shop_sign_sprite, self.shop_sign_sprite_sheet_image, 54, 23, 38, 12, self.shop_sign_rotation, self.shop_sign_scale, 255, true, false)
     self.canvas:add_animated_sprite(self.arrows_sprites[1], self.arrows_sprite_sheet_image, 30, 79, 7, 7, 0, 1, 255, true, false)
@@ -136,7 +165,8 @@ function Shop:draw()
     self.canvas:add_animated_sprite(self.player.animation_icons[1], self.player.icons_sprite_sheet_image, 36, 92, 7, 7, 0, 1, 1, true, false)
     self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.health, 42.5, 92, 'red')
     self.canvas:add_animated_sprite(self.player.animation_icons[2], self.player.icons_sprite_sheet_image, 56, 92, 7, 7, 0, 1, 1, true, false)
-    self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.money, 66.5, 92, 'yellow')
+    self.canvas:add_animated_sprite(self.canvas.digit_sprite, self.canvas.text_yellow_sprite_sheet_image, 64, 92, 7, 9, 0, 1, 1, true, false)
+    self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.money, 66.5, 91, 'yellow')
 
     if self.current_mode == self.modes.TOKENS then
         self.canvas:add_animated_sprite(self.player.gun.barrel_sprites[1], self.player.gun.barrel_sprite_sheet_image, 132, 54, 72, 72, 0, 1, 250, true, false)
@@ -160,14 +190,24 @@ function Shop:draw()
     if self.current_mode == self.modes.CARDS then
         for i = 1, #self.cards do
             if self.stock_clock > self.stock_time_interval * (i-1) then
-                self.canvas:add_animated_sprite(self.cards[i].sprite, self.cards[i].sprite_sheet_image, self.card_grid[i][1], self.card_grid[i][2] + self.stock_animations[i], 15, 15, 0, self.cards[i].scale, 252, true, false)
+                self.canvas:add_animated_sprite(self.cards[i].sprite, self.cards[i].sprite_sheet_image, self.card_grid[i][1], self.card_grid[i][2] + self.stock_animations[i], 11, 15, 0, self.cards[i].scale, 252, true, false)
             end
         end
-        self.canvas:add_animated_sprite(self.card_back_sprite, self.large_card_sprite_sheet_image, 132.5, 40, 33, 47, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
+
+        if self.selection == 0 then
+            self.canvas:add_animated_sprite(self.card_back_sprite, self.large_card_sprite_sheet_image, 134.5, 30 + (self.selection_scale * 10), 33, 47, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
+        elseif self.selection > 0 and self.selection <= 4 then
+            self.canvas:add_animated_sprite(self.large_card_sprites[self.cards[self.selection].id], self.large_card_sprite_sheet_image, 134.5, 30 + (self.selection_scale * 10), 33, 47, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
+        end
+        
 
         local poker_hand_grid = {{113.5, 84}, {127.5, 84}, {141.5, 84}, {155.5, 84}}
         for i = 1, 4 do
-            self.canvas:add_animated_sprite(self.empty_card_sprite, self.card_sprite_sheet_image, poker_hand_grid[i][1], poker_hand_grid[i][2], 15, 15, 0, 1, 252, true, false)
+            self.canvas:add_animated_sprite(self.empty_card_sprite, self.card_sprite_sheet_image, poker_hand_grid[i][1], poker_hand_grid[i][2], 11, 15, 0, 1, 252, true, false)
+        end
+
+        if self.selection > 0 and self.selection <= 4 then
+            self.canvas:add_animated_sprite(self.card_selection_sprite, self.card_sprite_sheet_image, self.card_grid[self.selection][1], self.card_grid[self.selection][2], 11, 15, 0, self.selection_scale, 253, true, false)
         end
     end
 

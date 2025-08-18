@@ -1,5 +1,5 @@
 -- ScreenWidth, ScreenHeight = love.window.getDesktopDimensions()
-ScreenWidth = 800
+ScreenWidth = 1920
 ScreenHeight = math.floor(ScreenWidth / 1.77777)
 ScreenScale = ScreenWidth/192
 
@@ -29,7 +29,7 @@ function love.load()
     -- love.mouse.setVisible(false)
 
     love.window.setTitle("Six-Gun Silliness")
-    love.window.setMode(ScreenWidth, ScreenHeight, {fullscreen=false, vsync=true, resizable=false})
+    love.window.setMode(ScreenWidth, ScreenHeight, {fullscreen=true, vsync=true, resizable=false, msaa=4})
 
     GameState.registerEvents()
 
@@ -98,7 +98,8 @@ end
 
 
 function gamestate_shop:keypressed(key)
-    if key == "d" or key == "a" then
+    if key == "q" or key == "e" then
+        self.shop.selection = 0
         if self.shop.current_mode == self.shop.modes.TOKENS then
             self.shop.current_mode = self.shop.modes.CARDS
             self.shop:animate_stock()
@@ -106,6 +107,13 @@ function gamestate_shop:keypressed(key)
             self.shop.current_mode = self.shop.modes.TOKENS
             self.shop:animate_stock()
         end
+    end
+
+    if key == "a" then
+        self.shop:select('left')
+    end
+    if key == 'd' then
+        self.shop:select('right')
     end
 end
 
