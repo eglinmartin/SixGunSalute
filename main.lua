@@ -1,14 +1,17 @@
 -- ScreenWidth, ScreenHeight = love.window.getDesktopDimensions()
-ScreenWidth = 1920
+ScreenWidth = 1280
 ScreenHeight = math.floor(ScreenWidth / 1.77777)
 ScreenScale = ScreenWidth/192
+
+Canvas = require("src/canvas")
 
 local anim8 = require("src/libraries/anim8")
 local Camera = require("src/libraries/camera")
 local GameState = require("src/libraries/gamestate")
-local Canvas = require("src/canvas")
 local Player = require("src/player")
 local Shop = require("src/shop")
+
+local Tokens = require("src/tokens")
 
 local canvas
 local camera
@@ -29,12 +32,19 @@ function love.load()
     -- love.mouse.setVisible(false)
 
     love.window.setTitle("Six-Gun Silliness")
-    love.window.setMode(ScreenWidth, ScreenHeight, {fullscreen=true, vsync=true, resizable=false, msaa=4})
+    love.window.setMode(ScreenWidth, ScreenHeight, {fullscreen=false, vsync=true, resizable=false, msaa=4})
 
     GameState.registerEvents()
 
     canvas = Canvas()
-    player = Player(canvas)
+    
+    local tokens
+    tokens = Tokens.generate_tokens(canvas)
+
+    local cards
+    cards = Tokens.generate_cards(canvas)
+
+    player = Player(canvas, tokens, cards)
 
     GameState.switch(gamestate_gunfight, canvas, player)
 end
@@ -93,7 +103,14 @@ end
 function gamestate_shop:enter(previous, canvas, player)
     self.player = player
     self.canvas = canvas
-    self.shop = Shop(canvas, player)
+    
+    local tokens
+    tokens = Tokens.generate_tokens(canvas)
+
+    local cards
+    cards = Tokens.generate_cards(canvas)
+
+    self.shop = Shop(canvas, player, tokens, cards)
 end
 
 

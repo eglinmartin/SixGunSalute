@@ -2,19 +2,15 @@ local anim8 = require("src/libraries/anim8")
 local Class = require("src/libraries/class")
 local Timer = require("src/libraries/timer")
 
-local Canvas = require("src/canvas")
-local Tokens = require("src/tokens").Tokens
-
-
 local Gun = Class{}
 
 
-function Gun:init(owner, canvas, camera)
+function Gun:init(owner, canvas, tokens)
     self.owner = owner
     self.xy = {2, 100}
     self.ammo = {}
-    self.camera = camera
     self.canvas = canvas
+    self.tokens = tokens
 
     self.can_spin = true
     self.can_shoot = false
@@ -30,25 +26,22 @@ function Gun:init(owner, canvas, camera)
 
     -- Fill chambers
     for i=1, 6 do
-        self.ammo[i] = Tokens.AMMO_BRASSBULLET
+        self.ammo[i] = tokens.AMMO_BRASSBULLET
     end
-    self.ammo[4] = Tokens.AMMO_SILVERBULLET
-    self.ammo[5] = Tokens.HEALTH_GIN
+    self.ammo[4] = tokens.AMMO_SILVERBULLET
+    self.ammo[5] = tokens.HEALTH_GIN
 
     -- Create chamber sprites
-    self.chamber_sprite_sheet_image = love.graphics.newImage('assets/sprites/chamber.png')
-    local chamber_sprite_sheet = anim8.newGrid(6, 6, self.chamber_sprite_sheet_image:getWidth(), self.chamber_sprite_sheet_image:getHeight(), 0, 0, 1)
     self.chamber_sprites = {}
     for i = 1, 6 do
-        self.chamber_sprites[i] = anim8.newAnimation(chamber_sprite_sheet(i, 1), 1)
+        self.chamber_sprites[i] = anim8.newAnimation(self.canvas.sprite_sheets.chambers[2](i, 1), 1)
+        self.chamber_sprites[i] = anim8.newAnimation(self.canvas.sprite_sheets.chambers[2](i, 1), 1)
     end
 
     -- Create barrel sprites
-    self.barrel_sprite_sheet_image = love.graphics.newImage('assets/sprites/barrel.png')
-    local barrel_sprite_sheet = anim8.newGrid(72, 72, self.barrel_sprite_sheet_image:getWidth(), self.barrel_sprite_sheet_image:getHeight(), 0, 0, 0)
     self.barrel_sprites = {}
     for i = 1, 2 do
-        self.barrel_sprites[i] = anim8.newAnimation(barrel_sprite_sheet(i, 1), 1)
+        self.barrel_sprites[i] = anim8.newAnimation(self.canvas.sprite_sheets.barrel[2](i, 1), 1)
     end
 end
 
@@ -119,14 +112,14 @@ function Gun:draw()
         elseif self.ammo[i].type == 'MONEY' then
             spr = self.chamber_sprites[5]
         end
-        self.canvas:add_animated_sprite(spr, self.chamber_sprite_sheet_image, coordinates[i][1], coordinates[i][2], 6, 6, 0, 1, 0, true, false)
+        self.canvas:add_animated_sprite(spr, self.canvas.sprite_sheets.chambers[1], coordinates[i][1], coordinates[i][2], 6, 6, 0, 1, 0, true, false)
     end
 
-    self.canvas:add_animated_sprite(self.barrel_sprites[1], self.barrel_sprite_sheet_image, 2, 100, 72, 72, 0, 1, 250, true, false)
-    self.canvas:add_animated_sprite(self.barrel_sprites[2], self.barrel_sprite_sheet_image, 2, 100, 72, 72, self.rotation, 1, 251, true, false)
+    self.canvas:add_animated_sprite(self.barrel_sprites[1], self.canvas.sprite_sheets.barrel[1], 2, 100, 72, 72, 0, 1, 250, true, false)
+    self.canvas:add_animated_sprite(self.barrel_sprites[2], self.canvas.sprite_sheets.barrel[1], 2, 100, 72, 72, self.rotation, 1, 251, true, false)
     
     if self.selected_chamber then
-        self.canvas:add_animated_sprite(self.chamber_sprites[6], self.chamber_sprite_sheet_image, coordinates[self.selected_chamber][1], coordinates[self.selected_chamber][2], 6, 6, 0, self.chamber_scale, 200, false, false)
+        self.canvas:add_animated_sprite(self.chamber_sprites[6], self.canvas.sprite_sheets.chambers[1], coordinates[self.selected_chamber][1], coordinates[self.selected_chamber][2], 6, 6, 0, self.chamber_scale, 200, false, false)
 
         self.token = self.ammo[self.selected_chamber]
         if self.token ~= 'empty' then

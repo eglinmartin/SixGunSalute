@@ -6,40 +6,31 @@ local Gun = require("src/gun")
 local Player = Class{}
 
 
-function Player:init(canvas, camera)
+function Player:init(canvas, tokens, cards)
     self.base_xy = {64, 75}
     self.xy = {64, 75}
     self.canvas = canvas
-    self.camera = camera
-    self.gun = Gun(self, self.canvas, self.camera)
+
+    self.gun = Gun(self, self.canvas, tokens)
 
     self.health = 5
     self.money = 0
-    self.cards = {false, false, false, false}
+    self.hand = {false, false, false, false}
 
     self.shooting = false
     self.shoot_cooldown = 0
 
-    self.sprite_sheet_image = love.graphics.newImage('assets/sprites/player.png')
-    local sprite_sheet = anim8.newGrid(28, 28, self.sprite_sheet_image:getWidth(), self.sprite_sheet_image:getHeight())
-    self.animation_idle = anim8.newAnimation(sprite_sheet('1-2', 1), 0.5)
-    self.animation_shoot = anim8.newAnimation(sprite_sheet('3-3', 1), 0.5)
+    self.animation_idle = anim8.newAnimation(self.canvas.sprite_sheets.player[2]('1-2', 1), 0.5)
+    self.animation_shoot = anim8.newAnimation(self.canvas.sprite_sheets.player[2]('3-3', 1), 0.5)
+    self.animation_head = anim8.newAnimation(self.canvas.sprite_sheets.player_head[2]('1-2', 1), {4.8, 0.2})
 
-    self.head_sprite_sheet_image = love.graphics.newImage('assets/sprites/player_head.png')
-    local head_sprite_sheet = anim8.newGrid(16, 13, self.head_sprite_sheet_image:getWidth(), self.head_sprite_sheet_image:getHeight(), 0, 0, 1)
-    self.animation_head = anim8.newAnimation(head_sprite_sheet('1-2', 1), {4.8, 0.2})
-
-    self.icons_sprite_sheet_image = love.graphics.newImage('assets/sprites/icons.png')
-    local icons_sprite_sheet = anim8.newGrid(7, 7, self.icons_sprite_sheet_image:getWidth(), self.icons_sprite_sheet_image:getHeight(), 0, 0, 1)
     self.animation_icons = {}
     for i = 1, 3 do
-        self.animation_icons[i] = anim8.newAnimation(icons_sprite_sheet(i, 1), 1)
+        self.animation_icons[i] = anim8.newAnimation(self.canvas.sprite_sheets.icons[2](i, 1), 1)
     end
 
     -- Create empty card sprite
-    self.card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards.png')
-    local sprite_sheet = anim8.newGrid(11, 15, self.card_sprite_sheet_image:getWidth(), self.card_sprite_sheet_image:getHeight(), 0, 0, 1)
-    self.empty_card_sprite = anim8.newAnimation(sprite_sheet(1, 5), 1)
+    self.empty_card_sprite = anim8.newAnimation(self.canvas.sprite_sheets.cards[2](1, 5), 1)
 
     self.animation = self.animation_idle
     self.rotation = 0
@@ -90,22 +81,21 @@ end
 
 function Player:draw()
     -- Draw the player sprite at its x, y position
-    self.canvas:add_animated_sprite(self.animation, self.sprite_sheet_image, self.xy[1], self.xy[2], 28, 28, 0, 1, 0, true, false)
+    self.canvas:add_animated_sprite(self.animation, self.canvas.sprite_sheets.player[1], self.xy[1], self.xy[2], 28, 28, 0, 1, 0, true, false)
 
     -- Draw player head and hud elements
-    self.canvas:add_animated_sprite(self.animation_head, self.head_sprite_sheet_image, 16, 18, 18, 15, self.rotation, self.scale, 1, true, false)
+    self.canvas:add_animated_sprite(self.animation_head, self.canvas.sprite_sheets.player_head[1], 16, 18, 18, 15, self.rotation, self.scale, 1, true, false)
 
-    self.canvas:add_animated_sprite(self.animation_icons[1], self.icons_sprite_sheet_image, 14.5, 33, 7, 7, 0, 1, 1, true, false)
+    self.canvas:add_animated_sprite(self.animation_icons[1], self.canvas.sprite_sheets.icons[1], 14.5, 33, 7, 7, 0, 1, 1, true, false)
     self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 21, 33, 'red')
 
-    self.canvas:add_animated_sprite(self.animation_icons[2], self.icons_sprite_sheet_image, 14.5, 43, 7, 7, 0, 1, 1, true, false)
-    self.canvas:add_animated_sprite(self.canvas.digit_sprite, self.canvas.text_yellow_sprite_sheet_image, 22.5, 43, 7, 9, 0, 1, 1, true, false)
+    self.canvas:add_animated_sprite(self.animation_icons[2], self.canvas.sprite_sheets.icons[1], 14.5, 43, 7, 7, 0, 1, 1, true, false)
     self.text_money = self.canvas:draw_letters_to_numbers(self.money, 25, 42, 'yellow')
 
     local cards_grid = {{73, 12}, {88, 12}, {103, 12}, {118, 12}}
-    for i = 1, #self.cards do
-        if not self.cards[i] then
-            self.canvas:add_animated_sprite(self.empty_card_sprite, self.card_sprite_sheet_image, cards_grid[i][1], cards_grid[i][2], 11, 15, 0, 1, 252, true, false)
+    for i = 1, #self.hand do
+        if not self.hand[i] then
+            self.canvas:add_animated_sprite(self.empty_card_sprite, self.canvas.sprite_sheets.cards[1], cards_grid[i][1], cards_grid[i][2], 11, 15, 0, 1, 252, true, false)
         end
     end
 

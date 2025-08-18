@@ -1,26 +1,8 @@
 local anim8 = require("src/libraries/anim8")
 local Class = require("src/libraries/class")
-local Tokens = require("src/tokens")
 
 local Canvas = Class{}
 local AnimatedSprite = Class{}
-
-
-function Canvas:init()
-    self.sprites_foreground = {}
-    self.sprites_shadow = {}
-    self.sprites_background = {}
-
-    self.text_white_sprite_sheet_image = love.graphics.newImage('assets/sprites/text_white.png')
-    self.text_white_sprite_sheet = anim8.newGrid(7, 7, self.text_white_sprite_sheet_image:getWidth(), self.text_white_sprite_sheet_image:getHeight(), 0, 0, 1)
-
-    self.text_yellow_sprite_sheet_image = love.graphics.newImage('assets/sprites/text_yellow.png')
-    self.text_yellow_sprite_sheet = anim8.newGrid(7, 9, self.text_yellow_sprite_sheet_image:getWidth(), self.text_yellow_sprite_sheet_image:getHeight(), 0, 0, 1)
-    self.digit_sprite = anim8.newAnimation(self.text_yellow_sprite_sheet(1, 5), 1)
-
-    self.text_red_sprite_sheet_image = love.graphics.newImage('assets/sprites/text_red.png')
-    self.text_red_sprite_sheet = anim8.newGrid(7, 7, self.text_red_sprite_sheet_image:getWidth(), self.text_red_sprite_sheet_image:getHeight(), 0, 0, 1)
-end
 
 
 function AnimatedSprite:init(animation, sprite_sheet_image, x, y, w, h, rotation, scale, depth, shadow, background)
@@ -35,6 +17,56 @@ function AnimatedSprite:init(animation, sprite_sheet_image, x, y, w, h, rotation
     self.depth = depth
     self.shadow = shadow
     self.background = background
+end
+
+
+function Canvas:init()
+    self.sprites_foreground = {}
+    self.sprites_shadow = {}
+    self.sprites_background = {}
+
+    self.sprite_sheets = {}
+    self:load_sprites()
+
+    self:parse_sprite_sheet(self.sprite_sheets.barrel, 70, 70)
+    self:parse_sprite_sheet(self.sprite_sheets.cards, 11, 15)
+    self:parse_sprite_sheet(self.sprite_sheets.cards_large, 33, 47)
+    self:parse_sprite_sheet(self.sprite_sheets.chambers, 6, 6)
+    self:parse_sprite_sheet(self.sprite_sheets.cursors, 8, 12)
+    self:parse_sprite_sheet(self.sprite_sheets.icons, 7, 7)
+    self:parse_sprite_sheet(self.sprite_sheets.player, 28, 28)
+    self:parse_sprite_sheet(self.sprite_sheets.player_head, 16, 13)
+    self:parse_sprite_sheet(self.sprite_sheets.text_red, 7, 7)
+    self:parse_sprite_sheet(self.sprite_sheets.text_white, 7, 7)
+    self:parse_sprite_sheet(self.sprite_sheets.text_yellow, 7, 9)
+    self:parse_sprite_sheet(self.sprite_sheets.titles, 37, 11)
+    self:parse_sprite_sheet(self.sprite_sheets.tokens, 15, 15)
+end
+
+
+function Canvas:load_sprites()
+    local files = {}
+    local path = 'assets/sprites'
+    local items = love.filesystem.getDirectoryItems(path)
+
+    for _, item in ipairs(items) do
+        local fullPath = path .. "/" .. item
+        if love.filesystem.getInfo(fullPath, "directory") then
+            -- Recurse into subdirectory
+            local subFiles = getAllPNGs_LoveFS(fullPath)
+            for _, f in ipairs(subFiles) do
+                table.insert(files, f)
+            end
+        elseif item:match("%.png$") then
+            local key = item:match("^(.*)%.png$")
+            self.sprite_sheets[key] = {love.graphics.newImage(fullPath)}
+        end
+    end
+end
+
+
+function Canvas:parse_sprite_sheet(sprite, frame_width, frame_height)
+    table.insert(sprite, anim8.newGrid(frame_width, frame_height, sprite[1]:getWidth(), sprite[1]:getHeight(), 0, 0, 1))
 end
 
 
@@ -61,14 +93,14 @@ function Canvas:draw_letters_to_numbers(input, x, y, colour)
         local sprite_sheet
         local sprite_sheet_image
         if colour == 'white' then
-            sprite_sheet = self.text_white_sprite_sheet
-            sprite_sheet_image = self.text_white_sprite_sheet_image
+            sprite_sheet = self.sprite_sheets.text_white[2]
+            sprite_sheet_image = self.sprite_sheets.text_white[1]
         elseif colour == 'yellow' then
-            sprite_sheet = self.text_yellow_sprite_sheet
-            sprite_sheet_image = self.text_yellow_sprite_sheet_image
+            sprite_sheet = self.sprite_sheets.text_yellow[2]
+            sprite_sheet_image = self.sprite_sheets.text_yellow[1]
         elseif colour == 'red' then
-            sprite_sheet = self.text_red_sprite_sheet
-            sprite_sheet_image = self.text_red_sprite_sheet_image
+            sprite_sheet = self.sprite_sheets.text_red[2]
+            sprite_sheet_image = self.sprite_sheets.text_red[1]
         end
 
         local digit_sprite = anim8.newAnimation(sprite_sheet(digit_x, digit_y), 1)
