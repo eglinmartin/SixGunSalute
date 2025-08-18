@@ -15,6 +15,7 @@ function Player:init(canvas, camera)
 
     self.health = 5
     self.money = 0
+    self.cards = {false, false, false, false}
 
     self.shooting = false
     self.shoot_cooldown = 0
@@ -34,6 +35,11 @@ function Player:init(canvas, camera)
     for i = 1, 3 do
         self.animation_icons[i] = anim8.newAnimation(icons_sprite_sheet(i, 1), 1)
     end
+
+    -- Create empty card sprite
+    self.card_sprite_sheet_image = love.graphics.newImage('assets/sprites/cards.png')
+    local sprite_sheet = anim8.newGrid(11, 15, self.card_sprite_sheet_image:getWidth(), self.card_sprite_sheet_image:getHeight(), 0, 0, 1)
+    self.empty_card_sprite = anim8.newAnimation(sprite_sheet(1, 5), 1)
 
     self.animation = self.animation_idle
     self.rotation = 0
@@ -95,6 +101,13 @@ function Player:draw()
     self.canvas:add_animated_sprite(self.animation_icons[2], self.icons_sprite_sheet_image, 14.5, 43, 7, 7, 0, 1, 1, true, false)
     self.canvas:add_animated_sprite(self.canvas.digit_sprite, self.canvas.text_yellow_sprite_sheet_image, 22.5, 43, 7, 9, 0, 1, 1, true, false)
     self.text_money = self.canvas:draw_letters_to_numbers(self.money, 25, 42, 'yellow')
+
+    local cards_grid = {{73, 12}, {88, 12}, {103, 12}, {118, 12}}
+    for i = 1, #self.cards do
+        if not self.cards[i] then
+            self.canvas:add_animated_sprite(self.empty_card_sprite, self.card_sprite_sheet_image, cards_grid[i][1], cards_grid[i][2], 11, 15, 0, 1, 252, true, false)
+        end
+    end
 
     self.gun:draw()
 end
