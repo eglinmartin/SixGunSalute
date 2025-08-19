@@ -29,6 +29,9 @@ function Player:init(canvas, tokens, cards)
         self.animation_icons[i] = anim8.newAnimation(self.canvas.sprite_sheets.icons[2](i, 1), 1)
     end
 
+    -- Create dollar sign sprite
+    self.dollar_sign_sprite = anim8.newAnimation(self.canvas.sprite_sheets.text_yellow[2](1, 5), 1)
+
     -- Create empty card sprite
     self.empty_card_sprite = anim8.newAnimation(self.canvas.sprite_sheets.cards[2](1, 5), 1)
 
@@ -90,6 +93,7 @@ function Player:draw()
     self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 21, 33, 'red')
 
     self.canvas:add_animated_sprite(self.animation_icons[2], self.canvas.sprite_sheets.icons[1], 14.5, 43, 7, 7, 0, 1, 1, true, false)
+    self.canvas:add_animated_sprite(self.dollar_sign_sprite, self.canvas.sprite_sheets.text_yellow[1], 22.5, 42, 7, 7, 0, 1, 1, true, false)
     self.text_money = self.canvas:draw_letters_to_numbers(self.money, 25, 42, 'yellow')
 
     local cards_grid = {{73, 12}, {88, 12}, {103, 12}, {118, 12}}

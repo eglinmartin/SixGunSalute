@@ -115,15 +115,15 @@ function Gun:draw()
         self.canvas:add_animated_sprite(spr, self.canvas.sprite_sheets.chambers[1], coordinates[i][1], coordinates[i][2], 6, 6, 0, 1, 0, true, false)
     end
 
-    self.canvas:add_animated_sprite(self.barrel_sprites[1], self.canvas.sprite_sheets.barrel[1], 2, 100, 72, 72, 0, 1, 250, true, false)
-    self.canvas:add_animated_sprite(self.barrel_sprites[2], self.canvas.sprite_sheets.barrel[1], 2, 100, 72, 72, self.rotation, 1, 251, true, false)
+    self.canvas:add_animated_sprite(self.barrel_sprites[1], self.canvas.sprite_sheets.barrel[1], 2, 100, 70, 70, 0, 1, 250, true, false)
+    self.canvas:add_animated_sprite(self.barrel_sprites[2], self.canvas.sprite_sheets.barrel[1], 2, 100, 70, 70, self.rotation, 1, 251, true, false)
     
     if self.selected_chamber then
         self.canvas:add_animated_sprite(self.chamber_sprites[6], self.canvas.sprite_sheets.chambers[1], coordinates[self.selected_chamber][1], coordinates[self.selected_chamber][2], 6, 6, 0, self.chamber_scale, 200, false, false)
 
         self.token = self.ammo[self.selected_chamber]
         if self.token ~= 'empty' then
-            self.canvas:add_animated_sprite(self.token.sprite, self.token.sprite_sheet_image, 21.5, 88.5, 15, 15, 0, 1, 252, true, false)
+            self.canvas:add_animated_sprite(self.token.sprite, self.canvas.sprite_sheets.tokens[1], 21.5, 88.5, 15, 15, 0, 1, 252, true, false)
         end
     end
 
