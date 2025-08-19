@@ -22,6 +22,7 @@ function StockItem:init(stock_id, item, x, y, width, height, picked_up)
     self.picked_up = picked_up
     self.scale = 1
     self.rotation = 1
+    self.visible = true
 end
 
 
@@ -191,12 +192,13 @@ end
 
 function Shop:animate_stock()
     self.stock_clock = 0
+    self.stock_time_interval = 3
 
-    self.stock_time_interval = 2
-    if self.current_mode == self.modes.CARDS then 
-        self.stock_time_interval = 3
+    for _, obj in ipairs(self.stock) do
+        obj.visible = false
     end
-    self.stock_animations = {-1, -1, -1, -1, -1, -1}
+
+    
 end
 
 
@@ -204,29 +206,27 @@ function Shop:update(time, mouse_x, mouse_y)
     self.shop_sign_rotation = math.sin(time * 0.8) * 0.03
     self.shop_sign_scale = math.sin(time * 1.5) * 0.025 + 1.025
 
-    if self.selection_scale > 1 then
-        self.selection_scale = self.selection_scale - 0.05
-    end
-
     self.stock_clock = self.stock_clock + 1
-
-    for i = 1, #self.stock_animations do
-        if self.stock_animations[i] == -1 then
-            if self.stock_clock > self.stock_time_interval * (i-1) then
-                self.stock_animations[i] = 3
-            end
-        end
-        if self.stock_animations[i] > 0 then
-            self.stock_animations[i] = self.stock_animations[i] - 1
-        end
-    end
 
     if self.current_mode == self.modes.TOKENS then
         for i=1, 6 do
+            if self.stock_clock > self.stock_time_interval * (i-1) then
+                if not self.stock[i].visible then
+                    self.stock[i].y = self.stock[i].y + 2
+                end
+                self.stock[i].visible = true
+            end
             self.stock[i]:update()
         end
+
     elseif self.current_mode == self.modes.CARDS then
         for i=7, 10 do
+            if self.stock_clock > self.stock_time_interval * (i-7) then
+                if not self.stock[i].visible then
+                    self.stock[i].y = self.stock[i].y + 2
+                end
+                self.stock[i].visible = true
+            end
             self.stock[i]:update()
         end 
     end
@@ -300,7 +300,9 @@ function Shop:draw()
         for i = 1, 6 do
             local depth = 255
             if self.stock[i].picked_up then depth = 256 end
-            self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].x, self.stock[i].y, 15, 15, 0, self.stock[i].scale, depth, true, false)
+            if self.stock[i].visible then
+                self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].x, self.stock[i].y, 15, 15, 0, self.stock[i].scale, depth, true, false)
+            end
         end
     end
 
@@ -321,7 +323,9 @@ function Shop:draw()
         for i = 7, 10 do
             local depth = 255
             if self.stock[i].picked_up then depth = 256 end
-            self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.cards[1], self.stock[i].x, self.stock[i].y, 11, 15, 0, self.stock[i].scale, depth, true, false)
+            if self.stock[i].visible then
+                self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.cards[1], self.stock[i].x, self.stock[i].y, 11, 15, 0, self.stock[i].scale, depth, true, false)
+            end
         end
     end
 
