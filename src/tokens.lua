@@ -132,7 +132,7 @@ local function generate_cards(canvas)
         CARD_J_SPADES = Card(49, 'CARD', 'Jack of spades', AbilityTypes.DAMAGE, 11, false, canvas),
         CARD_Q_SPADES = Card(50, 'CARD', 'Queen of spades', AbilityTypes.DAMAGE, 12, false, canvas),
         CARD_K_SPADES = Card(51, 'CARD', 'King of spades', AbilityTypes.DAMAGE, 13, false, canvas),
-        CARD_A_SPADES = Card(52, 'CARD', 'Ace of spades', AbilityTypes.DAMAGE, 15, false, canvas)
+        CARD_A_SPADES = Card(52, 'CARD', 'Ace of spades', AbilityTypes.DAMAGE, 15, false, canvas),
     }
 end
 

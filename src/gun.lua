@@ -28,12 +28,10 @@ function Gun:init(owner, canvas, tokens)
     for i=1, 6 do
         self.ammo[i] = tokens.AMMO_BRASSBULLET
     end
-    self.ammo[4] = tokens.AMMO_SILVERBULLET
-    self.ammo[5] = tokens.HEALTH_GIN
 
     -- Create chamber sprites
     self.chamber_sprites = {}
-    for i = 1, 6 do
+    for i = 1, 7 do
         self.chamber_sprites[i] = anim8.newAnimation(self.canvas.sprite_sheets.chambers[2](i, 1), 1)
         self.chamber_sprites[i] = anim8.newAnimation(self.canvas.sprite_sheets.chambers[2](i, 1), 1)
     end
@@ -111,6 +109,8 @@ function Gun:draw()
             spr = self.chamber_sprites[4]
         elseif self.ammo[i].type == 'MONEY' then
             spr = self.chamber_sprites[5]
+        elseif self.ammo[i].type == 'DEFENCE' then
+            spr = self.chamber_sprites[6]
         end
         self.canvas:add_animated_sprite(spr, self.canvas.sprite_sheets.chambers[1], coordinates[i][1], coordinates[i][2], 6, 6, 0, 1, 0, true, false)
     end
@@ -119,7 +119,7 @@ function Gun:draw()
     self.canvas:add_animated_sprite(self.barrel_sprites[2], self.canvas.sprite_sheets.barrel[1], 2, 100, 70, 70, self.rotation, 1, 251, true, false)
     
     if self.selected_chamber then
-        self.canvas:add_animated_sprite(self.chamber_sprites[6], self.canvas.sprite_sheets.chambers[1], coordinates[self.selected_chamber][1], coordinates[self.selected_chamber][2], 6, 6, 0, self.chamber_scale, 200, false, false)
+        self.canvas:add_animated_sprite(self.chamber_sprites[7], self.canvas.sprite_sheets.chambers[1], coordinates[self.selected_chamber][1], coordinates[self.selected_chamber][2], 6, 6, 0, self.chamber_scale, 200, false, false)
 
         self.token = self.ammo[self.selected_chamber]
         if self.token ~= 'empty' then

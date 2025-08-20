@@ -10,11 +10,12 @@ function Player:init(canvas, tokens, cards)
     self.base_xy = {64, 75}
     self.xy = {64, 75}
     self.canvas = canvas
+    self.cards = {'empty', 'empty', 'empty', 'empty'}
 
     self.gun = Gun(self, self.canvas, tokens)
 
     self.health = 5
-    self.money = 0
+    self.money = 10
     self.hand = {false, false, false, false}
 
     self.shooting = false

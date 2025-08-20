@@ -8,7 +8,8 @@ local StockItem = Class{}
 local PlayerItem = Class{}
 
 
-function StockItem:init(stock_id, item, x, y, width, height, picked_up)
+function StockItem:init(shop, stock_id, item, x, y, width, height, picked_up)
+    self.shop = shop
     self.stock_id = stock_id
     self.item = item
 
@@ -40,8 +41,22 @@ function StockItem:update()
         self.x = mx / ScreenScale
         self.y = my / ScreenScale
         self:grow(1.25)
+
         if not love.mouse.isDown(1) then
             self.picked_up = false
+
+            for i = 1, 6 do
+                player_item = self.shop.player_items[i]
+                if self.x > player_item.x - (player_item.width/2) and self.x < player_item.x + (player_item.width/2) and
+                self.y > player_item.y - (player_item.height/2) and self.y < player_item.y + (player_item.height/2) then
+                    if player_item.item == 'empty' then
+                        player_item.item = self.item
+                        self.shop.player.gun.ammo[i] = self.item
+                        self.item = 'empty'
+                    end
+                end
+            end
+
         end
     else
         self:return_to_xy()
@@ -93,11 +108,27 @@ function StockItem:IsMouseOver()
 end
 
 
+function PlayerItem:init(id, item, x, y, width, height)
+    self.id = id
+    self.item = item
+
+    self.base_x = x
+    self.base_y = y
+    self.x = x
+    self.y = y
+    self.width = width
+    self.height = height
+
+    self.scale = 1
+    self.rotation = 1
+    self.visible = true
+end
+
+
 function Shop:init(canvas, player, Tokens, Cards)
     self.canvas = canvas
     self.player = player
-    self.randomized_token_ids = {}
-    self.randomized_card_ids = {}
+    self.player_items = {}
 
     self.modes = {TOKENS = 'Tokens', CARDS = 'Cards'}
     self.current_mode = self.modes.TOKENS
@@ -126,21 +157,31 @@ function Shop:init(canvas, player, Tokens, Cards)
         self.large_card_sprites[i] = anim8.newAnimation(self.canvas.sprite_sheets.cards_large[2](x, y), 1)
     end
 
-    -- Create list of all tokens
+    -- Create list of all tokens and cards
     self.all_tokens = {}
     for _, token in pairs(Tokens) do
         table.insert(self.all_tokens, token)
     end
-
-    -- Create list of all cards
     self.all_cards = {}
     for _, card in pairs(Cards) do
         table.insert(self.all_cards, card)
     end
 
+    -- Create player items
+    local barrel_coordinates = {{131.5, 30.5}, {150.5, 41.5}, {150.5, 63.5}, {130.5, 75.5}, {111.5, 63.5}, {111.5, 41.5}}
+    for i = 1, #self.player.gun.ammo do
+        self.player_items[i] = PlayerItem(i, self.player.gun.ammo[i], barrel_coordinates[i][1], barrel_coordinates[i][2], 15, 15)
+    end
+    -- local poker_card_grid = {{113.5, 84}, {127.5, 84}, {141.5, 84}, {155.5, 84}}
+    -- for i=7, 10 do
+    --     self.player_items[i] = PlayerItem(i, self.player.cards[i], poker_card_grid[i][1], poker_card_grid[i][2], 11, 15)
+    -- end
+
+    -- Randomize all items and re-stock
     self:restock()
     self.stock_animations = {0, 0, 0, 0, 0, 0}
     self:animate_stock()
+
 end
 
 
@@ -166,12 +207,12 @@ function Shop:restock()
     -- Restock tokens
     for i = 1, 6 do
         local key = token_keys[i]
-        self.stock[i] = StockItem(i, self.all_tokens[key], stock_grid[i][1], stock_grid[i][2], 15, 15, false)
+        self.stock[i] = StockItem(self, i, self.all_tokens[key], stock_grid[i][1], stock_grid[i][2], 15, 15, false)
     end
     -- Restock cards
     for i = 7, 10 do
         local key = card_keys[i]
-        self.stock[i] = StockItem(i, self.all_cards[key], stock_grid[i][1], stock_grid[i][2], 11, 15, false)
+        self.stock[i] = StockItem(self, i, self.all_cards[key], stock_grid[i][1], stock_grid[i][2], 11, 15, false)
     end
 end
 
@@ -299,17 +340,16 @@ function Shop:draw()
         self.canvas:add_animated_sprite(self.player.gun.barrel_sprites[2], self.canvas.sprite_sheets.barrel[1], 132, 54, 72, 72, 0, 1, 251, true, false)
         
         -- Draw player's current ammo
-        local barrel_coordinates = {{131.5, 30.5}, {150.5, 41.5}, {150.5, 63.5}, {130.5, 75.5}, {111.5, 63.5}, {111.5, 41.5}}
         local currently_dragging = false
         for i = 1, 6 do
             if self.stock[i].picked_up then currently_dragging = true end
         end
         for i = 1, #self.player.gun.ammo do
             if self.player.gun.ammo[i] ~= 'empty' then
-                self.canvas:add_animated_sprite(self.player.gun.ammo[i].sprite, self.canvas.sprite_sheets.tokens[1], barrel_coordinates[i][1], barrel_coordinates[i][2], 15, 15, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
+                self.canvas:add_animated_sprite(self.player_items[i].item.sprite, self.canvas.sprite_sheets.tokens[1], self.player_items[i].x, self.player_items[i].y, 15, 15, 0, 1, 252, true, false)
             else
                 if currently_dragging then
-                    self.canvas:add_animated_sprite(self.arrows_sprites[4], self.canvas.sprite_sheets.icons[1], barrel_coordinates[i][1], (barrel_coordinates[i][2] - 13) + self.arrow_sine_wave, 7, 7, 0, 1, 254, true, false)
+                    self.canvas:add_animated_sprite(self.arrows_sprites[4], self.canvas.sprite_sheets.icons[1], self.player_items[i].x, (self.player_items[i].y - 13) + self.arrow_sine_wave, 7, 7, 0, 1, 254, true, false)
                 end
             end
         end
@@ -319,8 +359,10 @@ function Shop:draw()
             local depth = 255
             if self.stock[i].picked_up or self.stock[i].base_x ~= self.stock[i].x then depth = 256 end
             self.canvas:add_animated_sprite(self.empty_token_sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].base_x, self.stock[i].base_y, 15, 15, 0, 1, depth-1, false, false)
-            if self.stock[i].visible then
-                self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].x, self.stock[i].y, 15, 15, 0, self.stock[i].scale, depth, true, false)
+            if self.stock[i].item ~= 'empty' then
+                if self.stock[i].visible then
+                    self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].x, self.stock[i].y, 15, 15, 0, self.stock[i].scale, depth, true, false)
+                end
             end
         end
     end
