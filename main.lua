@@ -1,5 +1,5 @@
 -- ScreenWidth, ScreenHeight = love.window.getDesktopDimensions()
-ScreenWidth = 800
+ScreenWidth = 1280
 ScreenHeight = math.floor(ScreenWidth / 1.77777)
 ScreenScale = ScreenWidth/192
 
@@ -80,11 +80,6 @@ function gamestate_gunfight:draw()
 
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
-    love.graphics.print("Shooting: " .. tostring(player.shooting), 10, 30)
-    if player.gun.selected_chamber then
-        love.graphics.print("Shooting: " .. tostring(player.gun.selected_chamber), 10, 50)
-    end
-
 end
 
 
@@ -150,6 +145,8 @@ function gamestate_shop:draw()
     self.canvas:draw()
     
     love.graphics.pop()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
 end
 
 -- *********************************************************** ERRORS ***********************************************************

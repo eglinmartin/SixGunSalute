@@ -111,6 +111,7 @@ function Shop:init(canvas, player, Tokens, Cards)
     self.empty_card_sprite = anim8.newAnimation(self.canvas.sprite_sheets.cards[2](1, 5), 1)
     self.card_selection_sprite = anim8.newAnimation(self.canvas.sprite_sheets.cards[2](2, 5), 1)
     self.card_back_sprite = anim8.newAnimation(self.canvas.sprite_sheets.cards_large[2](1, 5), 1)
+    self.empty_token_sprite = anim8.newAnimation(self.canvas.sprite_sheets.tokens[2](1, 6), 1)
 
     -- Create large card sprites
     self.large_card_sprites = {}
@@ -192,7 +193,11 @@ end
 
 function Shop:animate_stock()
     self.stock_clock = 0
+
     self.stock_time_interval = 3
+    if self.current_mode == self.modes.CARDS then
+        self.stock_time_interval = 5
+    end
 
     for _, obj in ipairs(self.stock) do
         obj.visible = false
@@ -280,7 +285,7 @@ function Shop:draw()
     self.canvas:add_animated_sprite(self.player.animation_icons[1], self.canvas.sprite_sheets.icons[1], 36, 92, 7, 7, 0, 1, 1, true, false)
     self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.health, 42.5, 92, 'red')
     self.canvas:add_animated_sprite(self.player.animation_icons[2], self.canvas.sprite_sheets.icons[1], 56, 92, 7, 7, 0, 1, 1, true, false)
-    -- self.canvas:add_animated_sprite(self.canvas.digit_sprite, self.canvas.text_yellow_sprite_sheet_image, 64, 92, 7, 9, 0, 1, 1, true, false)
+    self.canvas:add_animated_sprite(self.player.dollar_sign_sprite, self.canvas.sprite_sheets.text_yellow[1], 64, 92, 7, 9, 0, 1, 1, true, false)
     self.text_tokens = self.canvas:draw_letters_to_numbers(self.player.money, 66.5, 91, 'yellow')
 
     -- Draw player's gun barrel
@@ -299,7 +304,8 @@ function Shop:draw()
         -- Draw stock (tokens)
         for i = 1, 6 do
             local depth = 255
-            if self.stock[i].picked_up then depth = 256 end
+            if self.stock[i].picked_up or self.stock[i].base_x ~= self.stock[i].x then depth = 256 end
+            self.canvas:add_animated_sprite(self.empty_token_sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].base_x, self.stock[i].base_y, 15, 15, 0, self.stock[i].scale, depth-1, false, false)
             if self.stock[i].visible then
                 self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].x, self.stock[i].y, 15, 15, 0, self.stock[i].scale, depth, true, false)
             end
@@ -322,7 +328,7 @@ function Shop:draw()
         -- Draw stock (cards)
         for i = 7, 10 do
             local depth = 255
-            if self.stock[i].picked_up then depth = 256 end
+            if self.stock[i].picked_up or self.stock[i].base_x ~= self.stock[i].x then depth = 256 end
             if self.stock[i].visible then
                 self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.cards[1], self.stock[i].x, self.stock[i].y, 11, 15, 0, self.stock[i].scale, depth, true, false)
             end
