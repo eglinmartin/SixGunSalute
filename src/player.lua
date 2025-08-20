@@ -15,7 +15,9 @@ function Player:init(canvas, tokens, cards)
     self.cards = {'empty', 'empty', 'empty', 'empty'}
 
     self.health = 5
+    self.health_sprite_scale = 1
     self.money = 10
+    self.money_sprite_scale = 1
 
     self.shooting = false
     self.shoot_cooldown = 0
@@ -41,11 +43,26 @@ function Player:init(canvas, tokens, cards)
 end
 
 
-function Player:shoot()
-    if self.gun.selected_chamber and self.gun.ammo[self.gun.selected_chamber].type == 'AMMO' then
-        self.shooting = true
-        self.shoot_cooldown = 30
-        self.xy[1] = self.xy[1] - 12
+function Player:action()
+    local current_chamber = self.gun.selected_chamber
+
+    if current_chamber then
+        local ammo = self.gun.ammo[current_chamber]
+    
+        if ammo.type == 'AMMO' then 
+            self.shooting = true
+            self.shoot_cooldown = 30
+            self.xy[1] = self.xy[1] - 12
+
+        elseif ammo.type == 'HEALTH' then
+            self.health = self.health + ammo.ability_val
+            self.health_sprite_scale = 1.5
+        
+        elseif ammo.type == 'MONEY' then
+            self.money = self.money + ammo.ability_val
+            self.money_sprite_scale = 1.5
+        
+        end
         self.gun:shoot()
     end
 end
@@ -77,6 +94,14 @@ function Player:update(dt, time)
         self.animation = self.animation_idle
     end
 
+    if self.health_sprite_scale > 1 then
+        self.health_sprite_scale = self.health_sprite_scale - 0.05
+    end
+
+    if self.money_sprite_scale > 1 then
+        self.money_sprite_scale = self.money_sprite_scale - 0.05
+    end
+
     self:return_to_xy()
     self.gun:update(dt)
 end
@@ -89,12 +114,12 @@ function Player:draw()
     -- Draw player head and hud elements
     self.canvas:add_animated_sprite(self.animation_head, self.canvas.sprite_sheets.player_head[1], 16, 18, 18, 15, self.rotation, self.scale, 1, true, false)
 
-    self.canvas:add_animated_sprite(self.animation_icons[1], self.canvas.sprite_sheets.icons[1], 14.5, 33, 7, 7, 0, 1, 1, true, false)
-    self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 21, 33, 'red')
+    self.canvas:add_animated_sprite(self.animation_icons[1], self.canvas.sprite_sheets.icons[1], 14.5, 33, 7, 7, 0, self.health_sprite_scale, 1, true, false)
+    self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 21, 33, 'red', self.health_sprite_scale)
 
-    self.canvas:add_animated_sprite(self.animation_icons[2], self.canvas.sprite_sheets.icons[1], 14.5, 43, 7, 7, 0, 1, 1, true, false)
-    self.canvas:add_animated_sprite(self.dollar_sign_sprite, self.canvas.sprite_sheets.text_yellow[1], 22.5, 42, 7, 7, 0, 1, 1, true, false)
-    self.text_money = self.canvas:draw_letters_to_numbers(self.money, 25, 42, 'yellow')
+    self.canvas:add_animated_sprite(self.animation_icons[2], self.canvas.sprite_sheets.icons[1], 14.5, 43, 7, 7, 0, self.money_sprite_scale, 1, true, false)
+    self.canvas:add_animated_sprite(self.dollar_sign_sprite, self.canvas.sprite_sheets.text_yellow[1], 22.5 + (self.money_sprite_scale * 5) - 5, 42, 7, 7, 0, 1, 1, true, false)
+    self.text_money = self.canvas:draw_letters_to_numbers(self.money, 25, 42, 'yellow', self.money_sprite_scale)
 
     local cards_grid = {{73, 12}, {88, 12}, {103, 12}, {118, 12}}
     for i = 1, #self.cards do

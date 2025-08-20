@@ -87,7 +87,7 @@ function gamestate_gunfight:keypressed(key)
     if key == "a" then
         player.gun:spin()
     elseif key == "space" then
-        player:shoot()
+        player:action()
     elseif key == "escape" then
         love.event.quit()
     end

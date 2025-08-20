@@ -70,7 +70,8 @@ function Canvas:parse_sprite_sheet(sprite, frame_width, frame_height)
 end
 
 
-function Canvas:draw_letters_to_numbers(input, x, y, colour)
+function Canvas:draw_letters_to_numbers(input, x, y, colour, scale)
+    scale = scale or 1
     local result = {}
     input = tostring(input):upper()
     local screen_x = x + 0
@@ -105,7 +106,7 @@ function Canvas:draw_letters_to_numbers(input, x, y, colour)
 
         local digit_sprite = anim8.newAnimation(sprite_sheet(digit_x, digit_y), 1)
         local digit_width = 4
-        self:add_animated_sprite(digit_sprite, sprite_sheet_image, screen_x, y, digit_width, 7, 0, 1, 200, 1, 0)
+        self:add_animated_sprite(digit_sprite, sprite_sheet_image, screen_x + (scale * 5) - 5, y, digit_width, 7, 0, 1, 200, 1, 0)
 
         if char == 'N' or char == 'Q' then digit_width = 5 end
         if char == 'M' then digit_width = 6 end
