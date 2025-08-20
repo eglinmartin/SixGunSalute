@@ -10,13 +10,12 @@ function Player:init(canvas, tokens, cards)
     self.base_xy = {64, 75}
     self.xy = {64, 75}
     self.canvas = canvas
-    self.cards = {'empty', 'empty', 'empty', 'empty'}
 
     self.gun = Gun(self, self.canvas, tokens)
+    self.cards = {cards.CARD_10_HEARTS, 'empty', 'empty', 'empty'}
 
     self.health = 5
     self.money = 10
-    self.hand = {false, false, false, false}
 
     self.shooting = false
     self.shoot_cooldown = 0
@@ -98,8 +97,10 @@ function Player:draw()
     self.text_money = self.canvas:draw_letters_to_numbers(self.money, 25, 42, 'yellow')
 
     local cards_grid = {{73, 12}, {88, 12}, {103, 12}, {118, 12}}
-    for i = 1, #self.hand do
-        if not self.hand[i] then
+    for i = 1, #self.cards do
+        if self.cards[i] ~= 'empty' then
+            self.canvas:add_animated_sprite(self.cards[i].sprite, self.canvas.sprite_sheets.cards[1], cards_grid[i][1], cards_grid[i][2], 11, 15, 0, 1, 252, true, false)
+        else
             self.canvas:add_animated_sprite(self.empty_card_sprite, self.canvas.sprite_sheets.cards[1], cards_grid[i][1], cards_grid[i][2], 11, 15, 0, 1, 252, true, false)
         end
     end
