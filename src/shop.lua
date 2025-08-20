@@ -28,20 +28,24 @@ end
 
 function StockItem:update()
     if self:IsMouseOver() then
-        self:grow()
+        self:grow(1.1)
     else
-        self:shrink()
+        if not self.picked_up then
+            self:shrink(1)
+        end
     end
 
     local mx, my = love.mouse.getPosition()
     if self.picked_up then
         self.x = mx / ScreenScale
         self.y = my / ScreenScale
+        self:grow(1.25)
         if not love.mouse.isDown(1) then
             self.picked_up = false
         end
     else
         self:return_to_xy()
+        self:shrink(1.1)
     end
 end
 
@@ -65,15 +69,15 @@ function StockItem:return_to_xy()
 end
 
 
-function StockItem:grow()
-    if self.scale < 1.1 then
+function StockItem:grow(amount)
+    if self.scale < amount then
         self.scale = self.scale + 0.05
     end
 end
 
 
-function StockItem:shrink()
-    if self.scale > 1 then
+function StockItem:shrink(amount)
+    if self.scale > amount then
         self.scale = self.scale - 0.02
     end
 end
@@ -210,6 +214,7 @@ end
 function Shop:update(time, mouse_x, mouse_y)
     self.shop_sign_rotation = math.sin(time * 0.8) * 0.03
     self.shop_sign_scale = math.sin(time * 1.5) * 0.025 + 1.025
+    self.arrow_sine_wave = math.sin(time * 5) * 0.5
 
     self.stock_clock = self.stock_clock + 1
 
@@ -295,9 +300,17 @@ function Shop:draw()
         
         -- Draw player's current ammo
         local barrel_coordinates = {{131.5, 30.5}, {150.5, 41.5}, {150.5, 63.5}, {130.5, 75.5}, {111.5, 63.5}, {111.5, 41.5}}
+        local currently_dragging = false
+        for i = 1, 6 do
+            if self.stock[i].picked_up then currently_dragging = true end
+        end
         for i = 1, #self.player.gun.ammo do
             if self.player.gun.ammo[i] ~= 'empty' then
                 self.canvas:add_animated_sprite(self.player.gun.ammo[i].sprite, self.canvas.sprite_sheets.tokens[1], barrel_coordinates[i][1], barrel_coordinates[i][2], 15, 15, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
+            else
+                if currently_dragging then
+                    self.canvas:add_animated_sprite(self.arrows_sprites[4], self.canvas.sprite_sheets.icons[1], barrel_coordinates[i][1], (barrel_coordinates[i][2] - 13) + self.arrow_sine_wave, 7, 7, 0, 1, 254, true, false)
+                end
             end
         end
 
@@ -305,7 +318,7 @@ function Shop:draw()
         for i = 1, 6 do
             local depth = 255
             if self.stock[i].picked_up or self.stock[i].base_x ~= self.stock[i].x then depth = 256 end
-            self.canvas:add_animated_sprite(self.empty_token_sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].base_x, self.stock[i].base_y, 15, 15, 0, self.stock[i].scale, depth-1, false, false)
+            self.canvas:add_animated_sprite(self.empty_token_sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].base_x, self.stock[i].base_y, 15, 15, 0, 1, depth-1, false, false)
             if self.stock[i].visible then
                 self.canvas:add_animated_sprite(self.stock[i].item.sprite, self.canvas.sprite_sheets.tokens[1], self.stock[i].x, self.stock[i].y, 15, 15, 0, self.stock[i].scale, depth, true, false)
             end

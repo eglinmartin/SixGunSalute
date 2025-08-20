@@ -147,7 +147,7 @@ function Canvas:draw()
     love.graphics.setColor(0, 0, 0, 0.25)
     for _, sprite in ipairs(self.sprites_shadow) do
         sprite.sprite_sheet_image:setFilter("nearest", "nearest")
-        sprite.animation:draw(sprite.sprite_sheet_image, sprite.x + 1, sprite.y + 1, sprite.rotation, 1, 1, sprite.width/2, sprite.height/2)
+        sprite.animation:draw(sprite.sprite_sheet_image, sprite.x + 1, sprite.y + 1, sprite.rotation, sprite.scale, sprite.scale, sprite.width/2, sprite.height/2)
     end
     self.sprites_shadow = {}
 

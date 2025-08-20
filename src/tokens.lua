@@ -6,7 +6,8 @@ AbilityTypes = {
     DAMAGE = 'damage',
     HEALTH = 'health',
     EXPLOSIVE = 'explosive',
-    MONEY = 'money'
+    MONEY = 'money',
+    DEFENCE = 'defence'
 }
 
 
@@ -65,7 +66,15 @@ local function generate_tokens(canvas)
         EXPLOSIVE_GUNPOWDERBARREL = Token(15, 'EXPLOSIVE', 'Gunpowder barrel', AbilityTypes.DAMAGE, 2, false, canvas),
         EXPLOSIVE_SHOTGUN = Token(16, 'EXPLOSIVE', 'Shotgun', AbilityTypes.DAMAGE, 2, false, canvas),
         MONEY_BAG = Token(17, 'MONEY', 'Bag of money', AbilityTypes.MONEY, 2, false, canvas),
-        MONEY_TREASURE_CHEST = Token(18, 'MONEY', 'Treasure chest', AbilityTypes.MONEY, 2, false, canvas)
+        MONEY_TREASURE_CHEST = Token(18, 'MONEY', 'Treasure chest', AbilityTypes.MONEY, 2, false, canvas),
+        HEALTH_CIGARETTES = Token(19, 'HEALTH', 'Cigarettes', AbilityTypes.HEALTH, 2, false, canvas),
+        MONEY_DOLLAR_BILL = Token(20, 'MONEY', 'Dollar bill', AbilityTypes.MONEY, 2, false, canvas),
+        EXPLOSIVE_TNT = Token(21, 'EXPLOSIVE', 'TNT', AbilityTypes.EXPLOSIVE, 2, false, canvas),
+        DEFENCE_STOVEPIPE = Token(22, 'DEFENCE', 'Stove-pipe', AbilityTypes.DEFENCE, 2, false, canvas),
+        DEFENCE_STETSON = Token(23, 'DEFENCE', 'Stetson', AbilityTypes.DEFENCE, 2, false, canvas),
+        DEFENCE_GAMBLER = Token(24, 'DEFENCE', 'Gambler', AbilityTypes.DEFENCE, 2, false, canvas),
+        EXPLOSIVE_ANVIL = Token(25, 'EXPLOSIVE', 'Anvil', AbilityTypes.EXPLOSIVE, 2, false, canvas),
+        EXPLOSIVE_GRANDPIANO = Token(26, 'EXPLOSIVE', 'Grand piano', AbilityTypes.EXPLOSIVE, 2, false, canvas)
     }
 end
 
