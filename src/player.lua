@@ -12,7 +12,7 @@ function Player:init(canvas, tokens, cards)
     self.canvas = canvas
 
     self.gun = Gun(self, self.canvas, tokens)
-    self.cards = {cards.CARD_10_HEARTS, 'empty', 'empty', 'empty'}
+    self.cards = {'empty', 'empty', 'empty', 'empty'}
 
     self.health = 5
     self.money = 10

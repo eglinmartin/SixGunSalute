@@ -159,6 +159,8 @@ function Shop:init(canvas, player, Tokens, Cards)
     self.card_back_sprite = anim8.newAnimation(self.canvas.sprite_sheets.cards_large[2](1, 5), 1)
     self.empty_token_sprite = anim8.newAnimation(self.canvas.sprite_sheets.tokens[2](1, 6), 1)
 
+    self.large_card_sprite = self.card_back_sprite
+
     -- Create large card sprites
     self.large_card_sprites = {}
     for i=1, 52 do
@@ -380,7 +382,7 @@ function Shop:draw()
 
     if self.current_mode == self.modes.CARDS then
         -- Draw big card
-        self.canvas:add_animated_sprite(self.card_back_sprite, self.canvas.sprite_sheets.cards_large[1], 134.5, 30 + (self.selection_scale * 10), 33, 47, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
+        self.canvas:add_animated_sprite(self.large_card_sprite, self.canvas.sprite_sheets.cards_large[1], 134.5, 30 + (self.selection_scale * 10), 33, 47, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
         -- elseif self.selection > 0 and self.selection <= 4 then
         --     self.canvas:add_animated_sprite(self.large_card_sprites[self.cards[self.selection].id], self.canvas.sprite_sheets.cards_large[1], 134.5, 30 + (self.selection_scale * 10), 33, 47, self.shop_sign_rotation, self.shop_sign_scale, 252, true, false)
         -- end

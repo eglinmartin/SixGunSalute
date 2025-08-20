@@ -36,14 +36,12 @@ function Card:init(id, type, name, ability_type, ability_val, active, canvas)
     self.ability_val = ability_val
     self.active = active
 
-    self.sprite_sheet_image = love.graphics.newImage('assets/sprites/cards.png')
-    local sprite_sheet = anim8.newGrid(11, 15, canvas.sprite_sheets.cards[1]:getWidth(), canvas.sprite_sheets.cards[1]:getHeight(), 0, 0, 1)
-
     local columnsPerRow = math.floor(canvas.sprite_sheets.cards[1]:getWidth() / 11) - 1
     local x = ((self.id - 1) % columnsPerRow) + 1
     local y = math.floor((self.id - 1) / columnsPerRow) + 1
 
     self.sprite = anim8.newAnimation(canvas.sprite_sheets.cards[2](x, y), 1)
+    self.sprite_large = anim8.newAnimation(canvas.sprite_sheets.cards_large[2](x, y), 1)
 end
 
 
