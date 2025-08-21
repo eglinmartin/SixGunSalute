@@ -49,7 +49,7 @@ function StockItem:update()
                 local player_item = self.shop.player_items[i]
                 if self.x > player_item.x - (player_item.width/2) and self.x < player_item.x + (player_item.width/2) and
                 self.y > player_item.y - (player_item.height/2) and self.y < player_item.y + (player_item.height/2) then
-                    if player_item.item == 'empty' then
+                    if player_item.item == 'empty' and self.stock_id <= 6 then
                         player_item.item = self.item
                         self.shop.player.gun.ammo[i] = self.item
                         self.item = 'empty'
@@ -61,7 +61,7 @@ function StockItem:update()
                 local player_item = self.shop.player_items[i]
                 if self.x > player_item.x - (player_item.width/2) and self.x < player_item.x + (player_item.width/2) and
                 self.y > player_item.y - (player_item.height/2) and self.y < player_item.y + (player_item.height/2) then
-                    if player_item.item == 'empty' then
+                    if player_item.item == 'empty' and self.stock_id >= 7 then
                         player_item.item = self.item
                         self.shop.player.cards[i-6] = self.item
                         self.item = 'empty'

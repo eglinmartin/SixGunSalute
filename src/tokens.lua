@@ -28,11 +28,11 @@ end
 
 
 Card = Class{}
-function Card:init(id, type, name, ability_type, ability_val, active, canvas)
+function Card:init(id, type, name, cost, ability_val, active, canvas)
     self.id = id
     self.type = type
     self.name = name
-    self.ability_type = ability_type
+    self.cost = cost
     self.ability_val = ability_val
     self.active = active
 
@@ -47,14 +47,14 @@ end
 
 local function generate_tokens(canvas)
     return {
-        AMMO_BRASSBULLET = Token(1, 'AMMO', 'Brass bullet', AbilityTypes.DAMAGE, 2, true, canvas),
-        AMMO_SILVERBULLET = Token(2, 'AMMO', 'Silver bullet', AbilityTypes.DAMAGE, 2, false, canvas),
-        AMMO_GOLDBULLET = Token(3, 'AMMO', 'Gold bullet', AbilityTypes.DAMAGE, 2, false, canvas),
-        AMMO_TITANIUMBULLET = Token(4, 'AMMO', 'Titanium bullet', AbilityTypes.DAMAGE, 2, false, canvas),
-        AMMO_PLUTONIUMBULLET = Token(5, 'AMMO', 'Plutonium bullet', AbilityTypes.DAMAGE, 2, false, canvas),
-        HEALTH_GIN = Token(6, 'HEALTH', 'Gin', AbilityTypes.HEALTH, 2, false, canvas),
-        HEALTH_WHISKY = Token(7, 'HEALTH', 'Whisky', AbilityTypes.HEALTH, 2, false, canvas),
-        HEALTH_COFFEE = Token(8, 'HEALTH', 'Coffee', AbilityTypes.HEALTH, 2, false, canvas),
+        AMMO_BRASSBULLET = Token(1, 'AMMO', 'Brass bullet', 1, 1, true, canvas),
+        AMMO_SILVERBULLET = Token(2, 'AMMO', 'Silver bullet', 2, 2, false, canvas),
+        AMMO_GOLDBULLET = Token(3, 'AMMO', 'Gold bullet', 3, 5, false, canvas),
+        AMMO_TITANIUMBULLET = Token(4, 'AMMO', 'Titanium bullet', 5, 10, false, canvas),
+        AMMO_PLUTONIUMBULLET = Token(5, 'AMMO', 'Plutonium bullet', 10, 15, false, canvas),
+        HEALTH_GIN = Token(6, 'HEALTH', 'Gin', 5, 2, false, canvas),
+        HEALTH_WHISKY = Token(7, 'HEALTH', 'Whisky', 5, 2, false, canvas),
+        HEALTH_COFFEE = Token(8, 'HEALTH', 'Coffee', 5, 2, false, canvas),
         HEALTH_BEANS = Token(9, 'HEALTH', 'Beans', AbilityTypes.HEALTH, 2, false, canvas),
         HEALTH_BREAD = Token(10, 'HEALTH', 'Bread', AbilityTypes.HEALTH, 2, false, canvas),
         HEALTH_BISCUITS = Token(11, 'HEALTH', 'Biscuits', AbilityTypes.HEALTH, 2, false, canvas),
@@ -63,8 +63,8 @@ local function generate_tokens(canvas)
         EXPLOSIVE_BOMB = Token(14, 'EXPLOSIVE', 'Bomb', AbilityTypes.DAMAGE, 2, false, canvas),
         EXPLOSIVE_GUNPOWDERBARREL = Token(15, 'EXPLOSIVE', 'Gunpowder barrel', AbilityTypes.DAMAGE, 2, false, canvas),
         EXPLOSIVE_SHOTGUN = Token(16, 'EXPLOSIVE', 'Shotgun', AbilityTypes.DAMAGE, 2, false, canvas),
-        MONEY_BAG = Token(17, 'MONEY', 'Bag of money', AbilityTypes.MONEY, 10, false, canvas),
-        MONEY_TREASURE_CHEST = Token(18, 'MONEY', 'Treasure chest', AbilityTypes.MONEY, 25, false, canvas),
+        MONEY_BAG = Token(17, 'MONEY', 'Bag of money', AbilityTypes.MONEY, 5, false, canvas),
+        MONEY_TREASURE_CHEST = Token(18, 'MONEY', 'Treasure chest', AbilityTypes.MONEY, 50, false, canvas),
         HEALTH_CIGARETTES = Token(19, 'HEALTH', 'Cigarettes', AbilityTypes.HEALTH, 2, false, canvas),
         MONEY_DOLLAR_BILL = Token(20, 'MONEY', 'Dollar bill', AbilityTypes.MONEY, 5, false, canvas),
         EXPLOSIVE_TNT = Token(21, 'EXPLOSIVE', 'TNT', AbilityTypes.EXPLOSIVE, 2, false, canvas),
@@ -72,7 +72,9 @@ local function generate_tokens(canvas)
         DEFENCE_STETSON = Token(23, 'DEFENCE', 'Stetson', AbilityTypes.DEFENCE, 2, false, canvas),
         DEFENCE_GAMBLER = Token(24, 'DEFENCE', 'Gambler', AbilityTypes.DEFENCE, 2, false, canvas),
         EXPLOSIVE_ANVIL = Token(25, 'EXPLOSIVE', 'Anvil', AbilityTypes.EXPLOSIVE, 2, false, canvas),
-        EXPLOSIVE_GRANDPIANO = Token(26, 'EXPLOSIVE', 'Grand piano', AbilityTypes.EXPLOSIVE, 2, false, canvas)
+        EXPLOSIVE_PIANO = Token(26, 'EXPLOSIVE', 'Piano', AbilityTypes.EXPLOSIVE, 2, false, canvas),
+        MONEY_GEM = Token(27, 'MONEY', 'Gem', AbilityTypes.MONEY, 10, false, canvas),
+        MONEY_PILE_OF_MONEY = Token(28, 'MONEY', 'Pile of money', AbilityTypes.MONEY, 25, false, canvas)
     }
 end
 
