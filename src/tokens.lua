@@ -50,7 +50,7 @@ local function generate_tokens(canvas)
         AMMO_BRASSBULLET = Token(1, 'AMMO', 'Brass bullet', 1, 1, true, canvas),
         AMMO_SILVERBULLET = Token(2, 'AMMO', 'Silver bullet', 2, 2, false, canvas),
         AMMO_GOLDBULLET = Token(3, 'AMMO', 'Gold bullet', 3, 5, false, canvas),
-        AMMO_TITANIUMBULLET = Token(4, 'AMMO', 'Titanium bullet', 5, 10, false, canvas),
+        AMMO_TITANIUMBULLET = Token(4, 'AMMO', 'Titanium bulle\\\\\\\\\\\\t', 5, 10, false, canvas),
         AMMO_PLUTONIUMBULLET = Token(5, 'AMMO', 'Plutonium bullet', 10, 15, false, canvas),
         HEALTH_GIN = Token(6, 'HEALTH', 'Gin', 5, 2, false, canvas),
         HEALTH_WHISKY = Token(7, 'HEALTH', 'Whisky', 5, 2, false, canvas),

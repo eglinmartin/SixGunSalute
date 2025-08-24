@@ -36,6 +36,7 @@ function Canvas:init()
     self:parse_sprite_sheet(self.sprite_sheets.icons, 7, 7)
     self:parse_sprite_sheet(self.sprite_sheets.player, 28, 28)
     self:parse_sprite_sheet(self.sprite_sheets.player_head, 16, 13)
+    self:parse_sprite_sheet(self.sprite_sheets.text_green, 7, 9)
     self:parse_sprite_sheet(self.sprite_sheets.text_red, 7, 7)
     self:parse_sprite_sheet(self.sprite_sheets.text_white, 7, 7)
     self:parse_sprite_sheet(self.sprite_sheets.text_yellow, 7, 9)
@@ -96,6 +97,9 @@ function Canvas:draw_letters_to_numbers(input, x, y, colour, scale)
         if colour == 'white' then
             sprite_sheet = self.sprite_sheets.text_white[2]
             sprite_sheet_image = self.sprite_sheets.text_white[1]
+        elseif colour == 'green' then
+            sprite_sheet = self.sprite_sheets.text_green[2]
+            sprite_sheet_image = self.sprite_sheets.text_green[1]
         elseif colour == 'yellow' then
             sprite_sheet = self.sprite_sheets.text_yellow[2]
             sprite_sheet_image = self.sprite_sheets.text_yellow[1]

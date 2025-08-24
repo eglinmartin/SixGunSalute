@@ -55,7 +55,6 @@ function Enemy:draw()
     self.canvas:add_animated_sprite(self.player.animation_icons[1], self.canvas.sprite_sheets.icons[1], 180.5, 33, 7, 7, 0, self.health_sprite_scale, 1, true, false)
     self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 169, 33, 'red', self.health_sprite_scale)
 
-
     self.gun:draw()
 end
 

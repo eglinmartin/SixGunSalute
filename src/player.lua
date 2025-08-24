@@ -19,6 +19,8 @@ function Player:init(canvas, tokens, cards)
     self.health_sprite_scale = 1
     self.money = 10
     self.money_sprite_scale = 1
+    self.luck = 0
+    self.luck_sprite_scale = 1
 
     self.shooting = false
     self.shoot_cooldown = 0
@@ -56,7 +58,7 @@ function Player:action()
             self.xy[1] = self.xy[1] - 12
 
             if self.enemy then
-                self.enemy:hit(2)
+                self.enemy:hit(ammo.ability_val)
             end
 
         elseif ammo.type == 'HEALTH' then
@@ -125,6 +127,9 @@ function Player:draw()
     self.canvas:add_animated_sprite(self.animation_icons[2], self.canvas.sprite_sheets.icons[1], 11.5, 43, 7, 7, 0, self.money_sprite_scale, 1, true, false)
     self.canvas:add_animated_sprite(self.dollar_sign_sprite, self.canvas.sprite_sheets.text_yellow[1], 19.5 + (self.money_sprite_scale * 5) - 5, 42, 7, 7, 0, 1, 1, true, false)
     self.text_money = self.canvas:draw_letters_to_numbers(self.money, 22, 42, 'yellow', self.money_sprite_scale)
+
+    self.canvas:add_animated_sprite(self.animation_icons[3], self.canvas.sprite_sheets.icons[1], 11.5, 53, 7, 7, 0, self.luck_sprite_scale, 1, true, false)
+    self.text_money = self.canvas:draw_letters_to_numbers(self.luck, 18, 52, 'green', self.luck_sprite_scale)
 
     local cards_grid = {{73, 12}, {88, 12}, {103, 12}, {118, 12}}
     for i = 1, #self.cards do

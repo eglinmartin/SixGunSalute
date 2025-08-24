@@ -67,7 +67,7 @@ end
 
 function gamestate_gunfight:create_enemy()
     if not enemy then
-        enemy = Enemy(canvas, player, Tokens, 10)
+        enemy = Enemy(canvas, player, Tokens, 15)
         player.enemy = enemy
     end
 end
