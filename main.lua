@@ -1,5 +1,5 @@
 ScreenWidth, ScreenHeight = love.window.getDesktopDimensions()
-ScreenWidth = 1080
+ScreenWidth = ScreenWidth * 0.8
 ScreenHeight = math.floor(ScreenWidth / 1.77777)
 ScreenScale = ScreenWidth/192
 
@@ -7,14 +7,16 @@ Canvas = require("src/canvas")
 
 local anim8 = require("src/libraries/anim8")
 local Camera = require("src/libraries/camera")
+local Enemy = require("src/enemy")
 local GameState = require("src/libraries/gamestate")
 local Player = require("src/player")
 local Shop = require("src/shop")
 
-local Tokens = require("src/tokens")
+local tokens = require("src/tokens")
 
 local canvas
 local camera
+local enemy
 local player
 local shop
 
@@ -38,21 +40,18 @@ function love.load()
 
     canvas = Canvas()
     
-    local tokens
-    tokens = Tokens.generate_tokens(canvas)
+    Tokens = tokens.generate_tokens(canvas)
+    Cards = tokens.generate_cards(canvas)
 
-    local cards
-    cards = Tokens.generate_cards(canvas)
+    player = Player(canvas, Tokens, Cards)
 
-    player = Player(canvas, tokens, cards)
-
-    GameState.switch(gamestate_gunfight, canvas, player)
+    GameState.switch(gamestate_gunfight, canvas, player, Tokens)
 end
 
 
 function love.keypressed(key)
     if key == "1" then
-        GameState.switch(gamestate_gunfight, canvas, player)
+        GameState.switch(gamestate_gunfight, canvas, player, Tokens)
     elseif key == "2" then
         GameState.switch(gamestate_shop, canvas, player)
     end
@@ -60,10 +59,28 @@ end
 
 
 function gamestate_gunfight:enter(previous, canvas, player)
+    if not enemy then
+        self:create_enemy()
+    end
+end
+
+
+function gamestate_gunfight:create_enemy()
+    if not enemy then
+        enemy = Enemy(canvas, player, Tokens, 10)
+        player.enemy = enemy
+    end
 end
 
 
 function gamestate_gunfight:update(dt)
+    if enemy then
+        enemy:update()
+        if enemy.health <= 0 then
+            enemy = false
+        end
+    end
+
     local time = love.timer.getTime()
     player:update(dt, time)
 end
@@ -74,6 +91,11 @@ function gamestate_gunfight:draw()
     love.graphics.scale(ScreenScale, ScreenScale)
 
     player:draw()
+
+    if enemy then
+        enemy:draw()
+    end
+
     canvas:draw()
     
     love.graphics.pop()
@@ -98,14 +120,8 @@ end
 function gamestate_shop:enter(previous, canvas, player)
     self.player = player
     self.canvas = canvas
-    
-    local tokens
-    tokens = Tokens.generate_tokens(canvas)
 
-    local cards
-    cards = Tokens.generate_cards(canvas)
-
-    self.shop = Shop(canvas, player, tokens, cards)
+    self.shop = Shop(canvas, player, Tokens, Cards)
 end
 
 

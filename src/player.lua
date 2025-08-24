@@ -10,6 +10,7 @@ function Player:init(canvas, tokens, cards)
     self.base_xy = {64, 75}
     self.xy = {64, 75}
     self.canvas = canvas
+    self.enemy = false
 
     self.gun = Gun(self, self.canvas, tokens)
     self.cards = {'empty', 'empty', 'empty', 'empty'}
@@ -53,6 +54,10 @@ function Player:action()
             self.shooting = true
             self.shoot_cooldown = 30
             self.xy[1] = self.xy[1] - 12
+
+            if self.enemy then
+                self.enemy:hit(2)
+            end
 
         elseif ammo.type == 'HEALTH' then
             self.health = self.health + ammo.ability_val
@@ -114,12 +119,12 @@ function Player:draw()
     -- Draw player head and hud elements
     self.canvas:add_animated_sprite(self.animation_head, self.canvas.sprite_sheets.player_head[1], 16, 18, 18, 15, self.rotation, self.scale, 1, true, false)
 
-    self.canvas:add_animated_sprite(self.animation_icons[1], self.canvas.sprite_sheets.icons[1], 14.5, 33, 7, 7, 0, self.health_sprite_scale, 1, true, false)
-    self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 21, 33, 'red', self.health_sprite_scale)
+    self.canvas:add_animated_sprite(self.animation_icons[1], self.canvas.sprite_sheets.icons[1], 11.5, 33, 7, 7, 0, self.health_sprite_scale, 1, true, false)
+    self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 18, 33, 'red', self.health_sprite_scale)
 
-    self.canvas:add_animated_sprite(self.animation_icons[2], self.canvas.sprite_sheets.icons[1], 14.5, 43, 7, 7, 0, self.money_sprite_scale, 1, true, false)
-    self.canvas:add_animated_sprite(self.dollar_sign_sprite, self.canvas.sprite_sheets.text_yellow[1], 22.5 + (self.money_sprite_scale * 5) - 5, 42, 7, 7, 0, 1, 1, true, false)
-    self.text_money = self.canvas:draw_letters_to_numbers(self.money, 25, 42, 'yellow', self.money_sprite_scale)
+    self.canvas:add_animated_sprite(self.animation_icons[2], self.canvas.sprite_sheets.icons[1], 11.5, 43, 7, 7, 0, self.money_sprite_scale, 1, true, false)
+    self.canvas:add_animated_sprite(self.dollar_sign_sprite, self.canvas.sprite_sheets.text_yellow[1], 19.5 + (self.money_sprite_scale * 5) - 5, 42, 7, 7, 0, 1, 1, true, false)
+    self.text_money = self.canvas:draw_letters_to_numbers(self.money, 22, 42, 'yellow', self.money_sprite_scale)
 
     local cards_grid = {{73, 12}, {88, 12}, {103, 12}, {118, 12}}
     for i = 1, #self.cards do

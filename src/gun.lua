@@ -41,6 +41,7 @@ function Gun:init(owner, canvas, tokens)
     for i = 1, 2 do
         self.barrel_sprites[i] = anim8.newAnimation(self.canvas.sprite_sheets.barrel[2](i, 1), 1)
     end
+    self.chamber_selected_sprite = anim8.newAnimation(self.canvas.sprite_sheets.tokens[2](2, 6), 1)
 end
 
 
@@ -124,6 +125,8 @@ function Gun:draw()
         self.token = self.ammo[self.selected_chamber]
         if self.token ~= 'empty' then
             self.canvas:add_animated_sprite(self.token.sprite, self.canvas.sprite_sheets.tokens[1], 21.5, 88.5, 15, 15, 0, 1, 252, true, false)
+        
+        self.canvas:add_animated_sprite(self.chamber_selected_sprite, self.canvas.sprite_sheets.tokens[1], 21.5, 88.5, 15, 15, 0, self.chamber_scale, 255, false, false)
         end
     end
 
