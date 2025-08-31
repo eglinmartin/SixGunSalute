@@ -16,10 +16,12 @@ function Player:init(canvas, tokens, cards)
     self.cards = {'empty', 'empty', 'empty', 'empty'}
 
     self.health = 5
-    self.health_sprite_scale = 1
     self.money = 10
-    self.money_sprite_scale = 1
     self.luck = 0
+    self.defence = 06
+
+    self.health_sprite_scale = 1
+    self.money_sprite_scale = 1
     self.luck_sprite_scale = 1
 
     self.shooting = false

@@ -67,7 +67,7 @@ end
 
 function gamestate_gunfight:create_enemy()
     if not enemy then
-        enemy = Enemy(canvas, player, Tokens, 15)
+        enemy = Enemy(canvas, player, Tokens, 2)
         player.enemy = enemy
     end
 end
@@ -75,10 +75,10 @@ end
 
 function gamestate_gunfight:update(dt)
     if enemy then
-        enemy:update()
-        if enemy.health <= 0 then
-            enemy = false
-        end
+        enemy:update(dt)
+        -- if enemy.death_timer < 0 then
+        --     enemy = false
+        -- end
     end
 
     local time = love.timer.getTime()
