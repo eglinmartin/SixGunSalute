@@ -2,15 +2,10 @@ local anim8 = require("src/libraries/anim8")
 local Class = require("src/libraries/class")
 local Canvas = require("src/canvas")
 local Gun = require("src/gun")
+local States = require("src/constants/states")
 
 local Enemy = Class{}
 
-States = {
-    IDLE = 'idle',
-    SHOOTING = 'shooting',
-    HIT = 'hit',
-    DEAD = 'dead'
-}
 
 function Enemy:init(canvas, player, tokens, health)
     self.base_xy = {128, 75}
@@ -44,6 +39,7 @@ function Enemy:hit(amount_health)
     self.hit_timer = self.hit_cooldown
 
     if self.health <= 0 then
+        self.xy[1] = self.xy[1] + 5
         self:die()
     else
         self.xy[1] = self.xy[1] + 20
@@ -59,9 +55,7 @@ end
 
 
 function Enemy:update(dt)
-    if self.state ~= States.DEAD then
-        self:return_to_xy()
-    end
+    self:return_to_xy()
 
     if self.state == States.IDLE then
         self.animation = self.animation_idle

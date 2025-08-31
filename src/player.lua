@@ -2,30 +2,35 @@ local anim8 = require("src/libraries/anim8")
 local Class = require("src/libraries/class")
 local Canvas = require("src/canvas")
 local Gun = require("src/gun")
+local Hat = require("src/hat")
+local States = require("src/constants/states")
 
 local Player = Class{}
 
 
 function Player:init(canvas, tokens, cards)
+    self.state = States.IDLE
     self.base_xy = {64, 75}
     self.xy = {64, 75}
     self.canvas = canvas
     self.enemy = false
 
     self.gun = Gun(self, self.canvas, tokens)
+    self.hat = Hat(self, self.canvas, 5, -10, 0)
     self.cards = {'empty', 'empty', 'empty', 'empty'}
 
     self.health = 5
     self.money = 10
     self.luck = 0
-    self.defence = 06
+    self.defence = 0
 
     self.health_sprite_scale = 1
     self.money_sprite_scale = 1
     self.luck_sprite_scale = 1
 
     self.shooting = false
-    self.shoot_cooldown = 0
+    self.shoot_cooldown = 30
+    self.shoot_timer = 0
 
     self.animation_idle = anim8.newAnimation(self.canvas.sprite_sheets.player[2]('1-2', 1), 0.5)
     self.animation_shoot = anim8.newAnimation(self.canvas.sprite_sheets.player[2]('3-3', 1), 0.5)
@@ -35,11 +40,7 @@ function Player:init(canvas, tokens, cards)
     for i = 1, 3 do
         self.animation_icons[i] = anim8.newAnimation(self.canvas.sprite_sheets.icons[2](i, 1), 1)
     end
-
-    -- Create dollar sign sprite
     self.dollar_sign_sprite = anim8.newAnimation(self.canvas.sprite_sheets.text_yellow[2](1, 5), 1)
-
-    -- Create empty card sprite
     self.empty_card_sprite = anim8.newAnimation(self.canvas.sprite_sheets.cards[2](1, 5), 1)
 
     self.animation = self.animation_idle
@@ -55,9 +56,10 @@ function Player:action()
         local ammo = self.gun.ammo[current_chamber]
     
         if ammo.type == 'AMMO' then 
-            self.shooting = true
             self.shoot_cooldown = 30
             self.xy[1] = self.xy[1] - 12
+            self.state = States.SHOOT
+            self.shoot_timer = 30
 
             if self.enemy then
                 self.enemy:hit(ammo.ability_val)
@@ -72,6 +74,7 @@ function Player:action()
             self.money_sprite_scale = 1.5
         
         end
+
         self.gun:shoot()
     end
 end
@@ -85,34 +88,31 @@ end
 
 
 function Player:update(dt, time)
-    self.animation:update(dt)
-    self.animation_head:update(dt)
-
     self.rotation = math.sin(time * 1) * 0.05
     self.scale = math.sin(time * 1.75) * 0.025 + 1.025
 
-    if self.shoot_cooldown > 0 then
-        self.shoot_cooldown = self.shoot_cooldown - 1
-    else
-        self.shooting = false
-    end
-
-    if self.shooting then
-        self.animation = self.animation_shoot
-    else
-        self.animation = self.animation_idle
-    end
-
-    if self.health_sprite_scale > 1 then
-        self.health_sprite_scale = self.health_sprite_scale - 0.05
-    end
-
-    if self.money_sprite_scale > 1 then
-        self.money_sprite_scale = self.money_sprite_scale - 0.05
-    end
-
     self:return_to_xy()
+    self.hat.y_off = -10
+
+    self.animation:update(dt)
+    self.animation_head:update(dt)
+
+    if self.state == States.IDLE then
+        self.animation = self.animation_idle
+        self.hat.y_off = -10 + (self.animation.position - 1)
+    
+    elseif self.state == States.SHOOT then
+        self.animation = self.animation_shoot
+        self.shoot_timer = self.shoot_timer - 1
+
+        if self.shoot_timer <= 0 then
+            self.state = States.IDLE
+        end
+
+    end
+
     self.gun:update(dt)
+    self.hat:update(dt)
 end
 
 
@@ -143,6 +143,7 @@ function Player:draw()
     end
 
     self.gun:draw()
+    self.hat:draw()
 end
 
 

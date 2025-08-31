@@ -76,9 +76,9 @@ end
 function gamestate_gunfight:update(dt)
     if enemy then
         enemy:update(dt)
-        -- if enemy.death_timer < 0 then
-        --     enemy = false
-        -- end
+        if enemy.death_timer < 0 then
+            enemy = false
+        end
     end
 
     local time = love.timer.getTime()
