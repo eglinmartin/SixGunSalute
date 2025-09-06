@@ -2,6 +2,7 @@ local anim8 = require("src/libraries/anim8")
 local Class = require("src/libraries/class")
 local Canvas = require("src/canvas")
 local Gun = require("src/gun")
+local Hat = require("src/hat")
 local States = require("src/constants/states")
 
 local Enemy = Class{}
@@ -21,6 +22,7 @@ function Enemy:init(canvas, player, tokens, health)
     self.animation_dead = anim8.newAnimation(self.canvas.sprite_sheets.enemy[2]('5-5', 1), 0.5)
 
     self.gun = Gun(self, self.canvas, tokens)
+    self.hat = Hat(self, self.canvas, 5, -10, 0)
 
     self.state = States.IDLE
     self.animation = self.animation_idle
@@ -60,6 +62,7 @@ function Enemy:update(dt)
     if self.state == States.IDLE then
         self.animation = self.animation_idle
         self.animation:gotoFrame(self.player.animation.position)
+        self.hat.y_off = -11 + (self.animation.position - 1)
     
     elseif self.state == States.HIT then
         self.animation = self.animation_hit
@@ -71,9 +74,11 @@ function Enemy:update(dt)
     elseif self.state == States.DEAD then
         self.animation = self.animation_dead
         self.death_timer = self.death_timer - 1
+        -- self.hat:launch()
     end
 
     self.animation:update(dt)
+    self.hat:update(dt)
 end
 
 
@@ -99,6 +104,7 @@ function Enemy:draw()
     self.canvas:add_animated_sprite(self.player.animation_icons[1], self.canvas.sprite_sheets.icons[1], 180.5, 33, 7, 7, 0, self.health_sprite_scale, 1, true, false)
     self.text_tokens = self.canvas:draw_letters_to_numbers(self.health, 169, 33, 'red', self.health_sprite_scale)
 
+    self.hat:draw()
 end
 
 

@@ -92,19 +92,18 @@ function Player:update(dt, time)
     self.scale = math.sin(time * 1.75) * 0.025 + 1.025
 
     self:return_to_xy()
-    self.hat.y_off = -10
 
     self.animation:update(dt)
     self.animation_head:update(dt)
 
     if self.state == States.IDLE then
         self.animation = self.animation_idle
-        self.hat.y_off = -10 + (self.animation.position - 1)
+        self.hat.y_off = -11 + (self.animation.position - 1)
     
     elseif self.state == States.SHOOT then
         self.animation = self.animation_shoot
         self.shoot_timer = self.shoot_timer - 1
-
+        self.hat.y_off = -11
         if self.shoot_timer <= 0 then
             self.state = States.IDLE
         end
