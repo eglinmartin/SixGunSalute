@@ -1,0 +1,36 @@
+{ "frames": {
+   "barrel 0.aseprite": {
+    "frame": { "x": 1, "y": 1, "w": 70, "h": 70 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 70, "h": 70 },
+    "sourceSize": { "w": 70, "h": 70 },
+    "duration": 100
+   },
+   "barrel 1.aseprite": {
+    "frame": { "x": 72, "y": 1, "w": 70, "h": 70 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 70, "h": 70 },
+    "sourceSize": { "w": 70, "h": 70 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.7-x64",
+  "image": "barrel.png",
+  "format": "RGBA8888",
+  "size": { "w": 143, "h": 72 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "base", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" },
+   { "name": "chambers", "from": 1, "to": 1, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
